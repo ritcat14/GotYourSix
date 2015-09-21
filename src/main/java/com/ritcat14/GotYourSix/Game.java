@@ -177,8 +177,8 @@ public class Game extends Canvas implements Runnable {
         game.frame.setVisible(true);
         game.frame.requestFocus();
         game.start();
-        loadBar = new LoadBar();
-        loadBar.start();
+        /*loadBar = new LoadBar();
+        loadBar.start();*/
     }
 
 }
