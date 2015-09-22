@@ -124,7 +124,7 @@ public class Player extends Mob {
       if (time % 180 == 0 && thirst < 100 && hunger < 100){
           thirst += 2;
           hunger ++;
-          Game.loadBar.stop();
+          //Game.loadBar.stop();
       }
       if (time % 180 == 0 && thirst>= 100) health -= 2;
       else if(time % 180 == 0 && hunger >= 100) health -= 1;
