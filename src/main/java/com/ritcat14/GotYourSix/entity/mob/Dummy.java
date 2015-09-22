@@ -5,7 +5,7 @@ import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.Sprite;
 import com.ritcat14.GotYourSix.graphics.SpriteSheet;
 
-public class Dummy extends Mob {
+public class Dummy extends Enemy {
 	private AnimatedObject down = new AnimatedObject(SpriteSheet.dummy_down, 32, 32, 3);
 	private AnimatedObject up = new AnimatedObject(SpriteSheet.dummy_up, 32, 32, 3);
 	private AnimatedObject left = new AnimatedObject(SpriteSheet.dummy_left, 32, 32, 3);

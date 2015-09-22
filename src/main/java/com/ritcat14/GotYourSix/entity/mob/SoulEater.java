@@ -4,7 +4,7 @@ import com.ritcat14.GotYourSix.graphics.AnimatedObject;
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.SpriteSheet;
 
-public class SoulEater extends Mob {
+public class SoulEater extends Enemy {
 	private int time = 0;
 
 	private AnimatedObject down = new AnimatedObject(SpriteSheet.soul_down, 32, 32, 3);

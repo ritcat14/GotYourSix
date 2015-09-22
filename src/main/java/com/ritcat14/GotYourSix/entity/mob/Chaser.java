@@ -8,7 +8,7 @@ import com.ritcat14.GotYourSix.graphics.Sprite;
 import com.ritcat14.GotYourSix.graphics.SpriteSheet;
 import com.ritcat14.GotYourSix.level.tile.Tile;
 
-public class Chaser extends Mob {
+public class Chaser extends Enemy {
 
     private int            time       = 0;
     private AnimatedObject down       = new AnimatedObject(SpriteSheet.soul_down, 32, 32, 3);

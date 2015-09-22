@@ -10,7 +10,7 @@ import com.ritcat14.GotYourSix.entity.mob.Mob;
 import com.ritcat14.GotYourSix.util.Debug;
 import java.util.List;
 
-public class Shooter extends Mob {
+public class Shooter extends Enemy {
     private AnimatedObject down       = new AnimatedObject(SpriteSheet.dummy_down, 32, 32, 3);
     private AnimatedObject up         = new AnimatedObject(SpriteSheet.dummy_up, 32, 32, 3);
     private AnimatedObject left       = new AnimatedObject(SpriteSheet.dummy_left, 32, 32, 3);

@@ -8,7 +8,7 @@ import com.ritcat14.GotYourSix.graphics.Sprite;
 import com.ritcat14.GotYourSix.graphics.SpriteSheet;
 import com.ritcat14.GotYourSix.level.tile.Tile;
 
-public class Zombie extends Mob{
+public class Zombie extends Enemy{
 
 	private int time = 0;
 	private double speed = 0.2;

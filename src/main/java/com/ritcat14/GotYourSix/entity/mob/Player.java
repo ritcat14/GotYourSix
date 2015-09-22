@@ -126,8 +126,8 @@ public class Player extends Mob {
           hunger ++;
           //Game.loadBar.stop();
       }
-      if (time % 180 == 0 && thirst>= 100) health -= 2;
-      else if(time % 180 == 0 && hunger >= 100) health -= 1;
+      if (time % 180 == 0 && thirst>= 100) loseHealth(2);
+      else if(time % 180 == 0 && hunger >= 100) loseHealth(1);
       UIHealthBar.setProgress(health / 100.0);
       UILevelBar.setProgress(XP / 100.0);
       UIHungerBar.setProgress(hunger / 100.0);
@@ -178,6 +178,13 @@ public class Player extends Mob {
 			fireRate = TestProjectile.FIRERATE;
 		}
 	}
+  
+   public void loseHealth(int damage){
+       health -= damage;
+        if (health <= 0){
+            remove();
+        }
+   }
 
 	public void render(Screen screen) {
 		sprite = animSprite.getSprite();

@@ -74,9 +74,23 @@ public abstract class Mob extends Entity {
 	public abstract void render(Screen screen);
 
 	protected void shoot(double x, double y, double dir) {
-		Projectile p = new TestProjectile(x, y, dir);
+		Projectile p = new TestProjectile(x, y, dir, this);
 		level.add(p);
 	}
+  
+   protected boolean entityCollided(Entity e){
+       boolean collided = false;
+       for (int c = 0; c < 4; c++){
+           double xt = ((x + e.getX() ) - (c % 2) * 15) / 16;
+           double yt = ((y + e.getY() ) - (c / 2) * 15) / 16;
+           int ix = (int) Math.ceil(xt);
+           int iy = (int) Math.ceil(yt);
+           int width = e.getSprite().getWidth();
+           int height = e.getSprite().getHeight();
+           if (ix >= x || ix <= x+width || iy >= y || iy <= y + height) collided = true;
+       }
+       return collided;
+   }
 
 	protected boolean collision(double xa, double ya) {
 		boolean solid = false;

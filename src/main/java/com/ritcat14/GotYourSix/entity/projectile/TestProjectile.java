@@ -1,13 +1,14 @@
 package com.ritcat14.GotYourSix.entity.projectile;
 
+import com.ritcat14.GotYourSix.entity.mob.Mob;
 import com.ritcat14.GotYourSix.entity.spawner.ParticleSpawner;
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.Sprite;
 
 public class TestProjectile extends Projectile{
 
-	public TestProjectile(double x, double y, double dir) {
-		super(x, y, dir);
+	public TestProjectile(double x, double y, double dir, Mob mob) {
+		super(x, y, dir, mob);
 		//range = random.nextInt(100);
 		range = 200;
 		angle = dir;

@@ -11,7 +11,7 @@ import com.ritcat14.GotYourSix.graphics.SpriteSheet;
 import com.ritcat14.GotYourSix.level.Node;
 import com.ritcat14.GotYourSix.util.Vector2i;
 
-public class Wizard extends Mob {
+public class Wizard extends Enemy {
 
     private int            time       = 0;
     private double         speed      = 1;

@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.ritcat14.GotYourSix.entity.Entity;
+import com.ritcat14.GotYourSix.entity.mob.Chaser;
+import com.ritcat14.GotYourSix.entity.mob.Enemy;
 import com.ritcat14.GotYourSix.entity.mob.Player;
 import com.ritcat14.GotYourSix.entity.particle.Particle;
 import com.ritcat14.GotYourSix.entity.projectile.Projectile;
@@ -24,6 +26,7 @@ public class Level {
 	private List<Projectile> projectiles = new ArrayList<Projectile>();
 	private List<Particle> particles = new ArrayList<Particle>();
 	private List<Player> players = new ArrayList<Player>();
+   private List<Enemy> enemies = new ArrayList<Enemy>();
 
 	private Comparator<Node> nodeSorter = new Comparator<Node>() {
 		public int compare(Node n0, Node n1) {
@@ -67,6 +70,9 @@ public class Level {
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).update();
 		}
+		for (int i = 0; i < enemies.size(); i++) {
+			enemies.get(i).update();
+		}
 		remove();
 	}
 
@@ -82,6 +88,9 @@ public class Level {
 		}
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i).isRemoved()) players.remove(i);
+		}
+		for (int i = 0; i < enemies.size(); i++) {
+			if (enemies.get(i).isRemoved()) enemies.remove(i);
 		}
 	}
 
@@ -225,6 +234,9 @@ public class Level {
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).render(screen);
 		}
+		for (int i = 0; i < enemies.size(); i++) {
+			enemies.get(i).render(screen);
+		}
 	}
 
 	public void add(Entity e) {
@@ -235,9 +247,66 @@ public class Level {
 			projectiles.add((Projectile) e);
 		} else if (e instanceof Player) {
 			players.add((Player) e);
+      }else if (e instanceof Enemy){
+          enemies.add((Enemy)e);
 		} else {
 			entities.add(e);
 		}
+	}
+  
+    public void projectileCollision(){
+		boolean loseHealth = false;
+		
+			for(int i = 0; i < enemies.size(); i++){
+				for(int j = 0; j < projectiles.size(); j++){
+					int pposX = (int)projectiles.get(j).getX();
+					int pposY = (int)projectiles.get(j).getY();
+				
+					int mposX = (int)enemies.get(i).getX();
+					int mposY = (int)enemies.get(i).getY();
+					int mwidth = enemies.get(i).getSprite().getWidth();
+					int mheight = enemies.get(i).getSprite().getHeight();
+			
+					for(int wm = 0; wm < mwidth; wm++){
+						for(int hm = 0; hm < mheight; hm++){
+							if(pposX == (mposX + wm-20) && pposY == (mposY + hm-25)) {
+								if(!(projectiles.get(j).getOrigin() == enemies.get(i))){
+									loseHealth = true;
+									projectiles.get(j).remove();
+								}
+							}
+						}
+					}
+				
+				}
+				if(loseHealth) enemies.get(i).loseHealth(1); loseHealth = false;
+            System.out.println(enemies.get(i).getHealth());
+			}
+			
+			for(int i = 0; i < players.size(); i++){
+				for(int j = 0; j < projectiles.size(); j++){
+					int pposX = (int)projectiles.get(j).getX();
+					int pposY = (int)projectiles.get(j).getY();
+				
+					int mposX = (int)players.get(i).getX();
+					int mposY = (int)players.get(i).getY();
+					int mwidth = players.get(i).getSprite().getWidth();
+					int mheight = players.get(i).getSprite().getHeight();
+			
+					for(int wm = 0; wm < mwidth; wm++){
+						for(int hm = 0; hm < mheight; hm++){
+							if(pposX == (mposX + wm-20) && pposY == (mposY + hm-25)) {
+								if(!(projectiles.get(j).getOrigin() == players.get(i))){
+									loseHealth = true;
+									projectiles.get(j).remove();
+								}
+							}
+						}
+					}
+					
+				}
+				if(loseHealth) players.get(i).loseHealth(1); loseHealth = false;
+			}
 	}
 
 	// 0xff00ff00 grass
