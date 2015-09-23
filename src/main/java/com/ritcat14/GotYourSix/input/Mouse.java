@@ -32,7 +32,7 @@ public class Mouse implements MouseListener, MouseMotionListener{
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		mouseB = -1;
+		mouseB = MouseEvent.NOBUTTON;
 	}
 
 	public void mouseDragged(MouseEvent e) {

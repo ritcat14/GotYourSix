@@ -29,12 +29,14 @@ public class Wizard extends Enemy {
         this.x = x << 4;
         this.y = y << 4;
         sprite = animSprite.getSprite();
+        health = 20;
+        XPBonus = 1;
     }
 
     private void move() {
         xa = 0;
         ya = 0;
-        //List<Player> players = level.getPlayers(this, 100);
+        List<Player> players = level.getPlayers(this, 120);
         //if (players.size() > 0) {
             int px = (int)level.getPlayerAt(0).getX();
             int py = (int)level.getPlayerAt(0).getY();

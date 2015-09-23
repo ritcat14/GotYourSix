@@ -25,6 +25,8 @@ public class Zombie extends Enemy{
 		this.x = x << 4;
 		this.y = y << 4;
 		sprite = animSprite.getSprite();
+      health = 100;
+      XPBonus = 0.5;
 	}
 
 	private void move() {

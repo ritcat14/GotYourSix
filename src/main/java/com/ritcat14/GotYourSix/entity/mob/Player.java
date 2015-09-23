@@ -1,6 +1,8 @@
 package com.ritcat14.GotYourSix.entity.mob;
 
 import java.awt.Font;
+import java.awt.Rectangle;
+import java.util.List;
 
 import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.entity.projectile.Projectile;
@@ -8,6 +10,7 @@ import com.ritcat14.GotYourSix.entity.projectile.TestProjectile;
 import com.ritcat14.GotYourSix.graphics.AnimatedObject;
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.SpriteSheet;
+import com.ritcat14.GotYourSix.graphics.UI.UIActionListener;
 import com.ritcat14.GotYourSix.graphics.UI.UIButton;
 import com.ritcat14.GotYourSix.graphics.UI.UILabel;
 import com.ritcat14.GotYourSix.graphics.UI.UIManager;
@@ -40,6 +43,7 @@ public class Player extends Mob {
    private UIProgressBar UILevelBar;
    private UIProgressBar UIHungerBar;
    private UIProgressBar UIThirstBar;
+   private UILabel xpLabel;
    private UIButton button;
 	
   @Deprecated
@@ -101,7 +105,7 @@ public class Player extends Mob {
       hpLabel.setFont(new Font("Veranda", Font.BOLD, 18));
       panel.addComponent(hpLabel);
      
-      UILabel xpLabel = new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(2, 46)),"LVL " + XPLevel);
+      xpLabel = new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(2, 46)),"LVL " + XPLevel);
       xpLabel.setColor(0xFFE7EF);
       xpLabel.setFont(new Font("Veranda", Font.BOLD, 18));
       panel.addComponent(xpLabel);
@@ -116,13 +120,33 @@ public class Player extends Mob {
       waterLabel.setFont(new Font("Veranda", Font.BOLD, 18));
       panel.addComponent(waterLabel);
      
-      button= new UIButton(new Vector2i(UIHealthBar.position).add(new Vector2i(2, 136)), new Vector2i(100, 30));
+      button= new UIButton(new Vector2i(UIHealthBar.position).add(new Vector2i(2, 136)), new Vector2i(100, 30), new UIActionListener(){
+          public void perform() {
+              System.out.println("Button pressed!");
+          }
+      });
       button.setText("Hello");
       panel.addComponent(button);
 	}
   
    public String getName(){
        return name;
+   }
+  
+   public void inXP(int xp){
+       XP += xp;
+       if (XP >= 100){
+           XPLevel += 1;
+           XP = 0;
+       }
+   }
+  
+   public int getXP(){
+       return XP;
+   }
+  
+   public int getLevel(){
+       return XPLevel;
    }
   
    private static int time = 0;
@@ -136,10 +160,12 @@ public class Player extends Mob {
       }
       if (time % 180 == 0 && thirst>= 100) loseHealth(2);
       else if(time % 180 == 0 && hunger >= 100) loseHealth(1);
+      if (time % 360 == 0 && health < 100) health += 1;
       UIHealthBar.setProgress(health / 100.0);
       UILevelBar.setProgress(XP / 100.0);
       UIHungerBar.setProgress(hunger / 100.0);
       UIThirstBar.setProgress(thirst / 100.0);
+      xpLabel.setText("LVL "+XPLevel);
      
 		if (walking) animSprite.update();
 		else animSprite.setFrame(0);
@@ -168,6 +194,7 @@ public class Player extends Mob {
 		}
 		clear();
 		updateShooting();
+      enemyCollision();
 	}
 	
 	private void clear() {
@@ -176,6 +203,18 @@ public class Player extends Mob {
 			if (p.isRemoved()) level.getProjectiles().remove(i);
 		}
 	}
+  
+   private void enemyCollision(){
+        List<Enemy> enemies = level.getEnemies();
+        List<Player> players = level.getPlayers();
+        for (int j = 0; j < players.size(); j++) {
+            for (int i = 0; i < enemies.size(); i++) {
+                Rectangle en = new Rectangle((int)(enemies.get(i).getX()) - 10, (int)(enemies.get(i).getY()) - 16, enemies.get(i).getSprite().getWidth() - 12, enemies.get(i).getSprite().getHeight());
+                Rectangle pl = new Rectangle((int)(players.get(j).getX()) - 10, (int)(players.get(j).getY()) - 16, players.get(j).getSprite().getWidth() - 12, players.get(j).getSprite().getHeight());
+                if (pl.intersects(en)) players.get(j).loseHealth(3);
+            }
+        }
+   }
 
 	private void updateShooting() {
 		if(Mouse.getButton() == 1 && fireRate <= 0){
@@ -188,8 +227,11 @@ public class Player extends Mob {
 	}
   
    public void loseHealth(int damage){
-       health -= damage;
+     if(time % 180 == 0){
+         if(health >= damage) health -= damage;
+     }
         if (health <= 0){
+            System.exit(0);
             remove();
         }
    }

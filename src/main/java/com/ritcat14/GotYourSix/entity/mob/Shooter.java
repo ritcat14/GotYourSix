@@ -26,6 +26,8 @@ public class Shooter extends Enemy {
         this.x = x << 4;
         this.y = y << 4;
         sprite = down.getSprite();
+        health = 10;
+        XPBonus = 1;
     }
 
     public void update() {
@@ -61,7 +63,7 @@ public class Shooter extends Enemy {
             dir = Direction.RIGHT;
         }
         if (xa != 0 || ya != 0) {
-            //move(xa, ya);
+            move(xa, ya);
             walking = true;
         } else {
             walking = false;

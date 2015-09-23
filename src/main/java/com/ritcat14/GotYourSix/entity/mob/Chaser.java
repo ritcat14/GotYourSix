@@ -7,6 +7,7 @@ import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.Sprite;
 import com.ritcat14.GotYourSix.graphics.SpriteSheet;
 import com.ritcat14.GotYourSix.level.tile.Tile;
+import com.ritcat14.GotYourSix.graphics.Font;
 
 public class Chaser extends Enemy {
 
@@ -24,6 +25,8 @@ public class Chaser extends Enemy {
         this.x = x << 4;
         this.y = y << 4;
         sprite = animSprite.getSprite();
+        health = 10;
+        XPBonus = 1;
     }
 
     private void move() {

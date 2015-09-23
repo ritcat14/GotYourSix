@@ -20,6 +20,8 @@ public class SoulEater extends Enemy {
 		this.x = x << 4;
 		this.y = y << 4;
 		sprite = animSprite.getSprite();
+        health = 15;
+        XPBonus = 1;
 	}
 
 	private void move() {

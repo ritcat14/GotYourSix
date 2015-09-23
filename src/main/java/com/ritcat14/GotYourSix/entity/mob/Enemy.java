@@ -1,23 +1,26 @@
 package com.ritcat14.GotYourSix.entity.mob;
 
 import com.ritcat14.GotYourSix.graphics.Screen;
+import com.ritcat14.GotYourSix.entity.mob.Player;
 
-public abstract class Enemy extends Mob{
-
-    public void render(Screen screen) {
-        
-    }
-
-    public abstract void update();
+public abstract class Enemy extends Mob {
   
-    public void loseHealth(int damage){
+   public double XPBonus = 1;
+
+	public abstract void update();
+
+	public abstract void render(Screen screen);
+
+    public void loseHealth(int damage, Player player) {
         health -= damage;
-        if (health <= 0){
+        if (health <= 0) {
             remove();
+            player.inXP((int)Math.ceil(XPBonus / player.getLevel()));
         }
     }
-  
-    public int getHealth(){
+
+    public int getHealth() {
         return health;
     }
+  
 }

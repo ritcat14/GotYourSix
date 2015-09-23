@@ -1,5 +1,8 @@
 package com.ritcat14.GotYourSix.entity.projectile;
 
+import java.util.List;
+
+import com.ritcat14.GotYourSix.entity.mob.Enemy;
 import com.ritcat14.GotYourSix.entity.mob.Mob;
 import com.ritcat14.GotYourSix.entity.spawner.ParticleSpawner;
 import com.ritcat14.GotYourSix.graphics.Screen;
@@ -10,7 +13,7 @@ public class TestProjectile extends Projectile{
 	public TestProjectile(double x, double y, double dir, Mob mob) {
 		super(x, y, dir, mob);
 		//range = random.nextInt(100);
-		range = 200;
+		range = 130;
 		angle = dir;
 		speed = 3;
 		damage = 20;
@@ -21,6 +24,7 @@ public class TestProjectile extends Projectile{
 	}
 
 	public void update(){
+      projectileCollision((int)(x + nx), (int)(y + ny));
 		if(level.tileCollision((int)(x + nx), (int)(y + ny), 8, 4, 4)){
 			level.add(new ParticleSpawner((int)x, (int) y, 100, 52, level));
 			remove();
@@ -41,6 +45,7 @@ public class TestProjectile extends Projectile{
 
 	public void render(Screen screen){
 		screen.renderProjectile((int)x - 7, (int)y - 2, this);
+      List<Enemy> enemies = level.getEnemies();
 	}
 
 }

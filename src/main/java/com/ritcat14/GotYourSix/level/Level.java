@@ -62,7 +62,6 @@ public class Level {
         for (int i = 0; i < entities.size(); i++) {
             entities.get(i).update();
         }
-        projectileCollision();
         for (int i = 0; i < projectiles.size(); i++) {
             projectiles.get(i).update();
         }
@@ -108,8 +107,8 @@ public class Level {
     public List<Player> getPlayers() {
         return players;
     }
-  
-    public List<Enemy> getEnemies(){
+
+    public List<Enemy> getEnemies() {
         return enemies;
     }
 
@@ -273,66 +272,6 @@ public class Level {
             enemies.add((Enemy)e);
         } else {
             entities.add(e);
-        }
-    }
-
-    public void projectileCollision() {
-        boolean loseHealth = false;
-        for (int i = 0; i < enemies.size(); i++) {
-            for (int j = 0; j < projectiles.size(); j++) {
-                int pposX = (int)projectiles.get(j).getX();
-                int pposY = (int)projectiles.get(j).getY();
-
-                int mposX = (int)enemies.get(i).getX();
-                int mposY = (int)enemies.get(i).getY();
-                int mwidth = enemies.get(i).getSprite().getWidth();
-                int mheight = enemies.get(i).getSprite().getHeight();
-
-                for (int wm = 0; wm < mwidth; wm++) {
-                    for (int hm = 0; hm < mheight; hm++) {
-                        if (pposX == (mposX + wm - 20) && pposY == (mposY + hm - 25)) {
-                            if (!(projectiles.get(j).getOrigin() == enemies.get(i))) {
-                                loseHealth = true;
-                                projectiles.get(j).remove();
-                					  System.out.println("Collided 1");
-                            }
-                        }
-                    }
-                }
-
-            }
-            if (loseHealth) {
-                enemies.get(i).loseHealth(1);
-                loseHealth = false;
-                System.out.println(enemies.get(i).getHealth());
-            }
-        }
-
-        for (int i = 0; i < players.size(); i++) {
-            for (int j = 0; j < projectiles.size(); j++) {
-                int pposX = (int)projectiles.get(j).getX();
-                int pposY = (int)projectiles.get(j).getY();
-
-                int mposX = (int)players.get(i).getX();
-                int mposY = (int)players.get(i).getY();
-                int mwidth = players.get(i).getSprite().getWidth();
-                int mheight = players.get(i).getSprite().getHeight();
-
-                for (int wm = 0; wm < mwidth; wm++) {
-                    for (int hm = 0; hm < mheight; hm++) {
-                        if (pposX == (mposX + wm - 20) && pposY == (mposY + hm - 25)) {
-                            if (!(projectiles.get(j).getOrigin() == players.get(i))) {
-                                loseHealth = true;
-                                projectiles.get(j).remove();
-                            }
-                        }
-                    }
-                }
-
-            }
-            if (loseHealth)
-                players.get(i).loseHealth(1);
-            loseHealth = false;
         }
     }
 
