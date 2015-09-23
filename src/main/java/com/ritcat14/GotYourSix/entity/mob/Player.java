@@ -7,8 +7,8 @@ import com.ritcat14.GotYourSix.entity.projectile.Projectile;
 import com.ritcat14.GotYourSix.entity.projectile.TestProjectile;
 import com.ritcat14.GotYourSix.graphics.AnimatedObject;
 import com.ritcat14.GotYourSix.graphics.Screen;
-import com.ritcat14.GotYourSix.graphics.Sprite;
 import com.ritcat14.GotYourSix.graphics.SpriteSheet;
+import com.ritcat14.GotYourSix.graphics.UI.UIButton;
 import com.ritcat14.GotYourSix.graphics.UI.UILabel;
 import com.ritcat14.GotYourSix.graphics.UI.UIManager;
 import com.ritcat14.GotYourSix.graphics.UI.UIPanel;
@@ -21,7 +21,6 @@ public class Player extends Mob {
 	
    private String name;
 	private Keyboard input;
-	private Sprite sprite;
 	private double speed = 2.5;
 	private AnimatedObject down = new AnimatedObject(SpriteSheet.player_down, 32, 32, 3);
 	private AnimatedObject up = new AnimatedObject(SpriteSheet.player_up, 32, 32, 3);
@@ -41,12 +40,14 @@ public class Player extends Mob {
    private UIProgressBar UILevelBar;
    private UIProgressBar UIHungerBar;
    private UIProgressBar UIThirstBar;
+   private UIButton button;
 	
   @Deprecated
 	public Player(String name, Keyboard input) {
       this.name = name;
 		this.input = input;
 		animSprite = down;
+      sprite = animSprite.getSprite();
       health = 100;
       XPLevel =1;
       XP = 0;
@@ -59,6 +60,8 @@ public class Player extends Mob {
 		this.y = y;
 		this.input = input;
 		animSprite = down;
+      sprite = animSprite.getSprite();
+      System.out.println(sprite);
 		fireRate = TestProjectile.FIRERATE;
      
       // Player default attributes
@@ -112,6 +115,10 @@ public class Player extends Mob {
       waterLabel.setColor(0xFFE7EF);
       waterLabel.setFont(new Font("Veranda", Font.BOLD, 18));
       panel.addComponent(waterLabel);
+     
+      button= new UIButton(new Vector2i(UIHealthBar.position).add(new Vector2i(2, 136)), new Vector2i(100, 30));
+      button.setText("Hello");
+      panel.addComponent(button);
 	}
   
    public String getName(){
@@ -120,6 +127,7 @@ public class Player extends Mob {
   
    private static int time = 0;
 	public void update() {
+      sprite = animSprite.getSprite();
       time++;
       if (time % 180 == 0 && thirst < 100 && hunger < 100){
           thirst += 2;
@@ -187,7 +195,6 @@ public class Player extends Mob {
    }
 
 	public void render(Screen screen) {
-		sprite = animSprite.getSprite();
 		screen.renderMob((int)(x - 16), (int)(y - 16), sprite);
 	}
 }
