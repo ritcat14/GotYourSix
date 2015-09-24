@@ -27,7 +27,7 @@ public class TestProjectile extends Projectile{
 	public void update(){
       projectileCollision((int)(x + nx), (int)(y + ny));
 		if(level.tileCollision((int)(x + nx), (int)(y + ny), 8, 4, 4)){
-			level.add(new ParticleSpawner((int)x, (int) y, 100, 52, level, Sprite.particle_normal));
+			level.add(new ParticleSpawner((int)x, (int) y, 100, 15, level, Sprite.particle_normal));
 			remove();
 		} else if(collided){
 			level.add(new ParticleSpawner((int)x, (int) y, 50, 15, level, Sprite.particle_blood));

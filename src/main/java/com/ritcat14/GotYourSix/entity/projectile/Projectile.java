@@ -64,12 +64,16 @@ public abstract class Projectile extends Entity {
                         enemies.get(i).loseHealth(damage, players.get(j));
                         remove();
                         collided = true;
+                    }else{
+                        collided = false;
                     }
                 } else if (mob.equals(enemies.get(i))){
                     if (pl.contains(ploc)) {
                         players.get(j).loseHealth(damage);
                         remove();
                         collided = true;
+                    }else{
+                        collided = false;
                     }
                 }
             }

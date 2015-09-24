@@ -278,6 +278,8 @@ public class Level {
             entities.add(e);
         }
     }
+  
+    public void setPlayerLocation(){}
 
     // 0xff00ff00 grass
     // 0xffffff00 flower

@@ -18,6 +18,7 @@ import com.ritcat14.GotYourSix.graphics.UI.UIPanel;
 import com.ritcat14.GotYourSix.graphics.UI.UIProgressBar;
 import com.ritcat14.GotYourSix.input.Keyboard;
 import com.ritcat14.GotYourSix.input.Mouse;
+import com.ritcat14.GotYourSix.level.Level;
 import com.ritcat14.GotYourSix.util.Vector2i;
 
 public class Player extends Mob {
@@ -121,6 +122,8 @@ public class Player extends Mob {
       button= new UIButton(new Vector2i(UIHealthBar.position).add(new Vector2i(2, 136)), new Vector2i(100, 30), new UIActionListener(){
           public void perform() {
               //Change level
+              if (Game.getLevel() == Level.spawn) Game.changeLevel(Level.test);
+              else if (Game.getLevel() == Level.test) Game.changeLevel(Level.spawn);
           }
       });
       button.setText("Enter");
@@ -136,6 +139,7 @@ public class Player extends Mob {
        if (XP >= 100){
            XPLevel += 1;
            XP = 0;
+           health = 100;
        }
    }
   
@@ -147,17 +151,22 @@ public class Player extends Mob {
        return XPLevel;
    }
   
+   public void setLocation(Vector2i p){
+       this.x = p.x;
+       this.y = p.y;
+   }
+  
    private static int time = 0;
 	public void update() {
       sprite = animSprite.getSprite();
       time++;
-      if (time % 180 == 0 && thirst < 100 && hunger < 100){
+      /*if (time % 180 == 0 && thirst < 100 && hunger < 100){
           thirst += 2;
           hunger ++;
           //Game.loadBar.stop();
       }
       if (time % 180 == 0 && thirst>= 100) loseHealth(2);
-      else if(time % 180 == 0 && hunger >= 100) loseHealth(1);
+      else if(time % 180 == 0 && hunger >= 100) loseHealth(1);*/
       if (time % 360 == 0 && health < 100) health += 1;
       UIHealthBar.setProgress(health / 100.0);
       UILevelBar.setProgress(XP / 100.0);
@@ -225,9 +234,7 @@ public class Player extends Mob {
 	}
   
    public void loseHealth(int damage){
-     if(time % 180 == 0){
-         if(health >= damage) health -= damage;
-     }
+        if(health >= damage) health -= damage;
         if (health <= 0){
             System.exit(0);
             remove();

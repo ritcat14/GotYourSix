@@ -31,8 +31,8 @@ public class Game extends Canvas implements Runnable {
     private Thread            thread;
     private JFrame            frame;
     private Keyboard          key;
-    private Level             level;
-    private Player            player;
+    private static Level             level;
+    private static Player            player;
     private boolean           running          = false;
 
     private static UIManager  uiManager;
@@ -52,10 +52,9 @@ public class Game extends Canvas implements Runnable {
         uiManager = new UIManager();
         frame = new JFrame();
         key = new Keyboard();
-        level = Level.spawn;
-        TileCoordinate playerSpawn = new TileCoordinate(15, 66);
+        TileCoordinate playerSpawn = new TileCoordinate(15, 60);
         player = new Player("Kris", playerSpawn.x(), playerSpawn.y(), key); //Initialise the player
-        level.add(player);
+        changeLevel(Level.spawn);
 
         addKeyListener(key); //Add our key detector
 
@@ -82,6 +81,16 @@ public class Game extends Canvas implements Runnable {
 
     public JFrame getFrame() {
         return frame;
+    }
+  
+   public static Level getLevel(){
+       return level;
+   }
+  
+    public static void changeLevel(Level lev){
+        level = lev;
+        level.add(player);
+        level.setPlayerLocation();
     }
 
     public synchronized void start() { //Starts the Thread running
