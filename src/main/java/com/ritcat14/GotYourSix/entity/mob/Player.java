@@ -45,6 +45,8 @@ public class Player extends Mob {
    private UIProgressBar UIThirstBar;
    private UILabel xpLabel;
    private UIButton button;
+  
+   private Screen screen;
 	
   @Deprecated
 	public Player(String name, Keyboard input) {
@@ -122,7 +124,7 @@ public class Player extends Mob {
      
       button= new UIButton(new Vector2i(UIHealthBar.position).add(new Vector2i(2, 136)), new Vector2i(100, 30), new UIActionListener(){
           public void perform() {
-              System.out.println("Button pressed!");
+            
           }
       });
       button.setText("Hello");
@@ -237,6 +239,7 @@ public class Player extends Mob {
    }
 
 	public void render(Screen screen) {
+      this.screen = screen;
 		screen.renderMob((int)(x - 16), (int)(y - 16), sprite);
 	}
 }

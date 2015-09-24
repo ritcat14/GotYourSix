@@ -52,6 +52,7 @@ public class Chaser extends Enemy {
                     ya = 0;
                 }
             }
+          shootRandom();
         }
 
         if (xa != 0 || ya != 0) {

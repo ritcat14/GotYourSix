@@ -32,7 +32,7 @@ public class Zombie extends Enemy{
 	private void move() {
 		xa = 0;
 		ya = 0;
-		List<Player> players = level.getPlayers(this, 130);
+		List<Player> players = level.getPlayers(this, 200);
 		if (players.size() > 0) {
 			Player player = players.get(0);
 			if (x < player.getX()) xa+=speed;

@@ -34,7 +34,7 @@ public class SpawnLevel extends Level {
 	}
 	
 	protected void generateLevel(){
-		for (int i = 0; i < 1; i++){
+		for (int i = 0; i < 5; i++){
 			Random random = new Random();
          add(new Shooter(random.nextInt(20) + 3, random.nextInt(60) + 3));
 			add(new Wizard(random.nextInt(20) + 3, random.nextInt(60) + 3));

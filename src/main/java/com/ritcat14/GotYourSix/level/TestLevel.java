@@ -30,12 +30,8 @@ public class TestLevel extends Level {
 			e.printStackTrace();
 			System.out.println("Failed to load level file.");
 		}
-		for (int i = 0; i < 1; i++){
+		for (int i = 0; i < 100; i++){
 			Random random = new Random();
-         add(new Shooter(random.nextInt(20) + 3, random.nextInt(60) + 3));
-			add(new Wizard(random.nextInt(20) + 3, random.nextInt(60) + 3));
-			add(new SoulEater(random.nextInt(20) + 3, random.nextInt(60) + 3));
-			add(new Dummy(random.nextInt(20) + 3, random.nextInt(60) + 3));
 			add(new Zombie(random.nextInt(20) + 3, random.nextInt(60) + 3));
 		}
 	}
