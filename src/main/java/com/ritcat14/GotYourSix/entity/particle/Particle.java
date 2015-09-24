@@ -14,13 +14,13 @@ public class Particle extends Entity{
 	protected double xx, yy, zz;
 	protected double xa, ya, za;
 	
-	public Particle(int x, int y, int life){
+	public Particle(int x, int y, int life, Sprite sprite){
 		this.x = x;
 		this.y = y;
 		this.xx = x;
 		this.yy = y;
 		this.life = life + (random.nextInt(50) - 25);
-		sprite = Sprite.particle_normal;
+		this.sprite = sprite;
 		this.xa = random.nextGaussian();
 		this.ya = random.nextGaussian();
 		this.zz = random.nextFloat() + 2.0;

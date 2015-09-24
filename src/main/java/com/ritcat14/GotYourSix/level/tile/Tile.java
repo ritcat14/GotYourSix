@@ -12,7 +12,6 @@ public class Tile {
     
     public int x, y;
     public Sprite sprite;
-    private Screen screen;
   
     public static Tile grass = new GrassTile(Sprite.grass);
     public static Tile flower = new FlowerTile(Sprite.flower);

@@ -23,6 +23,7 @@ public abstract class Projectile extends Entity {
     protected double        distance;
     protected int           speed, range, damage;
     private Mob             mob;
+    protected boolean collided = false;
 
     protected final Random  random   = new Random();
 
@@ -60,13 +61,15 @@ public abstract class Projectile extends Entity {
                 Rectangle pl = new Rectangle((int)(players.get(j).getX()) - 10, (int)(players.get(j).getY()) - 16, players.get(j).getSprite().getWidth() - 12, players.get(j).getSprite().getHeight());
                 if (mob.equals(players.get(j))) {
                     if (en.contains(ploc)) {
-                        enemies.get(i).loseHealth(1, players.get(j));
+                        enemies.get(i).loseHealth(damage, players.get(j));
                         remove();
+                        collided = true;
                     }
                 } else if (mob.equals(enemies.get(i))){
                     if (pl.contains(ploc)) {
-                        players.get(j).loseHealth(8);
+                        players.get(j).loseHealth(damage);
                         remove();
+                        collided = true;
                     }
                 }
             }

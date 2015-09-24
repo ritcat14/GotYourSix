@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.entity.Entity;
 import com.ritcat14.GotYourSix.entity.mob.Enemy;
 import com.ritcat14.GotYourSix.entity.mob.Player;
@@ -59,8 +60,10 @@ public class Level {
     }
 
     public void update() {
-        for (int i = 0; i < entities.size(); i++) {
-            entities.get(i).update();
+        if (Game.loaded) {
+            for (int i = 0; i < entities.size(); i++) {
+                entities.get(i).update();
+            }
         }
         for (int i = 0; i < projectiles.size(); i++) {
             projectiles.get(i).update();
@@ -258,6 +261,7 @@ public class Level {
         for (int i = 0; i < enemies.size(); i++) {
             enemies.get(i).render(screen);
         }
+        Game.loaded = true;
     }
 
     public void add(Entity e) {

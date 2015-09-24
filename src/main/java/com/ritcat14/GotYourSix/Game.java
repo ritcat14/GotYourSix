@@ -24,25 +24,25 @@ import com.ritcat14.GotYourSix.util.Console;
 public class Game extends Canvas implements Runnable {
     private static final long serialVersionUID = 1L;
     private static int        scale            = 5;
-  
+
     private static int        width            = (Toolkit.getDefaultToolkit().getScreenSize().width / scale) - 60;
     private static int        height           = Toolkit.getDefaultToolkit().getScreenSize().height / scale;
 
     private Thread            thread;
-    private JFrame            frame;  
+    private JFrame            frame;
     private Keyboard          key;
     private Level             level;
-    private Player player;
-    private boolean running = false;
-  
-    private static UIManager uiManager;
+    private Player            player;
+    private boolean           running          = false;
+
+    private static UIManager  uiManager;
 
     private Screen            screen;
     private BufferedImage     image            = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     private int[]             pixels           = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
-    public static LoadBar loadBar;
-    private static Game game;
-    public static boolean loaded = false;
+    public static LoadBar     loadBar;
+    private static Game       game;
+    public static boolean     loaded           = false;
 
     public Game() {
         Dimension size = new Dimension((width * scale) + (60 * 5), height * scale);
@@ -52,36 +52,36 @@ public class Game extends Canvas implements Runnable {
         uiManager = new UIManager();
         frame = new JFrame();
         key = new Keyboard();
-        level = Level.test;
+        level = Level.spawn;
         TileCoordinate playerSpawn = new TileCoordinate(15, 66);
         player = new Player("Kris", playerSpawn.x(), playerSpawn.y(), key); //Initialise the player
         level.add(player);
-      
+
         addKeyListener(key); //Add our key detector
 
         Mouse mouse = new Mouse(); //Create and instantiate our mouse detector
         addMouseListener(mouse); //Add the mouse detector
         addMouseMotionListener(mouse);
     }
-  
-    public static UIManager getUIManager(){
+
+    public static UIManager getUIManager() {
         return uiManager;
     }
-  
-    public static int getWindowWidth(){
-        return (width*scale);
+
+    public static int getWindowWidth() {
+        return (width * scale);
     }
-  
-    public static int getWindowHeight(){
-        return (height*scale);
+
+    public static int getWindowHeight() {
+        return (height * scale);
     }
-  
-    public synchronized static Game getGame(){
+
+    public synchronized static Game getGame() {
         return game;
     }
-    
+
     public JFrame getFrame() {
-      return frame;
+        return frame;
     }
 
     public synchronized void start() { //Starts the Thread running
@@ -111,13 +111,13 @@ public class Game extends Canvas implements Runnable {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
+            render();
+            frames++;
             while (delta >= 1) {
                 update();
                 updates++;
                 delta--;
             }
-            render();
-            frames++;
 
             if (System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
@@ -155,13 +155,13 @@ public class Game extends Canvas implements Runnable {
         g.setColor(new Color(0xff00ff));
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        g.drawImage(image, 0, 0,getWindowWidth(), getWindowHeight(), null);
-		  uiManager.render(g);
+        g.drawImage(image, 0, 0, getWindowWidth(), getWindowHeight(), null);
+        uiManager.render(g);
         g.dispose();
         bs.show();
     }
-  
-    public Graphics getGrapics(){
+
+    public Graphics getGrapics() {
         return getBufferStrategy().getDrawGraphics();
     }
 

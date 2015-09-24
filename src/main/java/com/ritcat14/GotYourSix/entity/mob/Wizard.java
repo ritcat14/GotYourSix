@@ -10,6 +10,7 @@ import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.SpriteSheet;
 import com.ritcat14.GotYourSix.level.Node;
 import com.ritcat14.GotYourSix.util.Vector2i;
+import com.ritcat14.GotYourSix.Game;
 
 public class Wizard extends Enemy {
 
@@ -37,7 +38,7 @@ public class Wizard extends Enemy {
         xa = 0;
         ya = 0;
         List<Player> players = level.getPlayers(this, 120);
-        //if (players.size() > 0) {
+        if (players.size() > 0) {
             int px = (int)level.getPlayerAt(0).getX();
             int py = (int)level.getPlayerAt(0).getY();
             Vector2i start = new Vector2i((int)getX() >> 4, (int)getY() >> 4);
@@ -55,7 +56,7 @@ public class Wizard extends Enemy {
                         ya += speed;
                     if (y > vec.getY() << 4)
                         ya -= speed;
-                //}
+                }
             }
         }
         if (xa != 0 || ya != 0) {
@@ -66,28 +67,30 @@ public class Wizard extends Enemy {
     }
 
     public void update() {
-        time++;
-        if (!collision(xa, ya)) {
+        if (Game.loaded) {
+            time++;
+            if (!collision(xa, ya)) {
+                move();
+            }
             move();
-        }
-        move();
-        if (walking)
-            animSprite.update();
-        else
-            animSprite.setFrameRate(0);
-        if (ya < 0) {
-            animSprite = up;
-            dir = Direction.UP;
-        } else if (ya > 0) {
-            animSprite = down;
-            dir = Direction.DOWN;
-        }
-        if (xa < 0) {
-            animSprite = left;
-            dir = Direction.LEFT;
-        } else if (xa > 0) {
-            animSprite = right;
-            dir = Direction.RIGHT;
+            if (walking)
+                animSprite.update();
+            else
+                animSprite.setFrameRate(0);
+            if (ya < 0) {
+                animSprite = up;
+                dir = Direction.UP;
+            } else if (ya > 0) {
+                animSprite = down;
+                dir = Direction.DOWN;
+            }
+            if (xa < 0) {
+                animSprite = left;
+                dir = Direction.LEFT;
+            } else if (xa > 0) {
+                animSprite = right;
+                dir = Direction.RIGHT;
+            }
         }
     }
 

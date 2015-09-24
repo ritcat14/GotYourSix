@@ -4,6 +4,7 @@ import com.ritcat14.GotYourSix.entity.Entity;
 import com.ritcat14.GotYourSix.entity.projectile.Projectile;
 import com.ritcat14.GotYourSix.entity.projectile.TestProjectile;
 import com.ritcat14.GotYourSix.graphics.Screen;
+import com.ritcat14.GotYourSix.level.tile.spawn_level.SpawnEdgeTile;
 
 public abstract class Mob extends Entity {
 
@@ -101,6 +102,7 @@ public abstract class Mob extends Entity {
          int iy = (int) Math.ceil(yt);
          if (c % 2 == 0) ix = (int) Math.floor(xt);
          if (c / 2 == 0) iy = (int) Math.floor(yt);
+         if (this instanceof Enemy && level.getTile(ix, iy) instanceof SpawnEdgeTile) return true;
 			if (level.getTile(ix, iy).solid()) solid = true;
 		}
 		return solid;

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ritcat14.GotYourSix.entity.mob.Enemy;
 import com.ritcat14.GotYourSix.entity.mob.Mob;
+import com.ritcat14.GotYourSix.entity.mob.Player;
 import com.ritcat14.GotYourSix.entity.spawner.ParticleSpawner;
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.Sprite;
@@ -16,8 +17,8 @@ public class TestProjectile extends Projectile{
 		range = 130;
 		angle = dir;
 		speed = 3;
-		damage = 20;
-		sprite = Sprite.rotate(Sprite.testArrow, angle);
+		damage = 1;
+		sprite = Sprite.test;
 
 		nx = speed * Math.cos(angle);
 		ny = speed * Math.sin(angle);
@@ -26,9 +27,19 @@ public class TestProjectile extends Projectile{
 	public void update(){
       projectileCollision((int)(x + nx), (int)(y + ny));
 		if(level.tileCollision((int)(x + nx), (int)(y + ny), 8, 4, 4)){
-			level.add(new ParticleSpawner((int)x, (int) y, 100, 52, level));
+			level.add(new ParticleSpawner((int)x, (int) y, 100, 52, level, Sprite.particle_normal));
 			remove();
-		}
+		} else if(collided){
+			level.add(new ParticleSpawner((int)x, (int) y, 50, 15, level, Sprite.particle_blood));
+         collided = false;
+      }
+      if(Player.getLevel() > 1){
+        sprite = Sprite.test;
+        damage = 1;
+      }else{
+        sprite = Sprite.rotate(Sprite.testArrow, angle);
+        damage = Player.getLevel();
+      }
 		move();
 	}
 	

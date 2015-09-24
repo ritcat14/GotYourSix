@@ -33,7 +33,7 @@ public class Player extends Mob {
 	private AnimatedObject animSprite = down;
 	
 	private int fireRate = 0;
-   private int XPLevel = 0;
+   private static int XPLevel = 1;
    private int XP = 0;
    private int hunger = 0;
    private int thirst = 0;
@@ -45,8 +45,6 @@ public class Player extends Mob {
    private UIProgressBar UIThirstBar;
    private UILabel xpLabel;
    private UIButton button;
-  
-   private Screen screen;
 	
   @Deprecated
 	public Player(String name, Keyboard input) {
@@ -55,7 +53,6 @@ public class Player extends Mob {
 		animSprite = down;
       sprite = animSprite.getSprite();
       health = 100;
-      XPLevel =1;
       XP = 0;
       hunger = 0;
       thirst = 0;
@@ -72,7 +69,6 @@ public class Player extends Mob {
      
       // Player default attributes
       health = 100;
-      XPLevel =1;
       XP = 0;
       hunger = 0;
       thirst = 0;
@@ -124,10 +120,10 @@ public class Player extends Mob {
      
       button= new UIButton(new Vector2i(UIHealthBar.position).add(new Vector2i(2, 136)), new Vector2i(100, 30), new UIActionListener(){
           public void perform() {
-            
+              //Change level
           }
       });
-      button.setText("Hello");
+      button.setText("Enter");
       panel.addComponent(button);
 	}
   
@@ -147,7 +143,7 @@ public class Player extends Mob {
        return XP;
    }
   
-   public int getLevel(){
+   public static int getLevel(){
        return XPLevel;
    }
   
@@ -239,7 +235,6 @@ public class Player extends Mob {
    }
 
 	public void render(Screen screen) {
-      this.screen = screen;
 		screen.renderMob((int)(x - 16), (int)(y - 16), sprite);
 	}
 }
