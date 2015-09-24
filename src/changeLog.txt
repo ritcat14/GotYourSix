@@ -1,3 +1,11 @@
 From 23/09/2015
 
 23/09 - Added UI button events
+
+24/09 - Story line intro:
+
+ IDEA: Start off in a bedroom, with bed and crate. crate contains armour (beginners). Tutorial/helper advises equiping the armour
+ (introduction to equiping, and give knowledge that armour is required to survive).
+ Arrows indicate health, food, water etc. bars, explaing what they're for.
+ 
+ Buttons toggle levels. Player can be shot and take damage on collision, and can kill enemies. Weapon upgrade at level 2.
