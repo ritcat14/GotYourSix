@@ -176,10 +176,7 @@ public class Player extends Mob {
       }
       if (time % 180 == 0 && thirst>= 100) loseHealth(2);
       else if(time % 180 == 0 && hunger >= 100) loseHealth(1);*/
-      if (time % 360 == 0 && health < 100){
-          health += 1;
-      }
-      if (time % 120 == 0) XPLevel ++;
+      if (time % 360 == 0 && health < 100) health += 1;
       UIHealthBar.setProgress(health / 100.0);
       UILevelBar.setProgress(XP / 100.0);
       UIHungerBar.setProgress(hunger / 100.0);

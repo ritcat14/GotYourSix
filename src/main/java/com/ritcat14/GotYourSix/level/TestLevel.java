@@ -41,9 +41,9 @@ public class TestLevel extends Level {
    }
 	
 	protected void generateLevel(){
-		for (int i = 0; i < 500; i++){
+		for (int i = 0; i < 10; i++){
 			Random random = new Random();
-			//add(new Zombie(random.nextInt(20) + 3, random.nextInt(60) + 3));
+			add(new Zombie(random.nextInt(20) + 3, random.nextInt(60) + 3));
 		}
 	}
 
