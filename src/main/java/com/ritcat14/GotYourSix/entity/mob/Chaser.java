@@ -27,6 +27,7 @@ public class Chaser extends Enemy {
         sprite = animSprite.getSprite();
         health = 10;
         XPBonus = 1;
+        collidable = true;
     }
 
     private void move() {

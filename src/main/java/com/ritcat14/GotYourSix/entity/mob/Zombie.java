@@ -27,6 +27,7 @@ public class Zombie extends Enemy{
 		sprite = animSprite.getSprite();
       health = 100;
       XPBonus = 10;
+      collidable = true;
 	}
 
 	private void move() {

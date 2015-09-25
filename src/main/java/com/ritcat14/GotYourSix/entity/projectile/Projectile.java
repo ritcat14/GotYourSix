@@ -51,7 +51,7 @@ public abstract class Projectile extends Entity {
     protected void move() {
     }
 
-    public void projectileCollision(int x, int y) {
+    public boolean projectileCollision(int x, int y) {
         Point ploc = new Point(x, y);
         List<Enemy> enemies = level.getEnemies();
         List<Player> players = level.getPlayers();
@@ -62,21 +62,15 @@ public abstract class Projectile extends Entity {
                 if (mob.equals(players.get(j))) {
                     if (en.contains(ploc)) {
                         enemies.get(i).loseHealth(damage, players.get(j));
-                        remove();
                         collided = true;
-                    }else{
-                        collided = false;
                     }
                 } else if (mob.equals(enemies.get(i))){
                     if (pl.contains(ploc)) {
                         players.get(j).loseHealth(damage);
-                        remove();
-                        collided = true;
-                    }else{
-                        collided = false;
                     }
                 }
             }
         }
+      return collided;
     }
 }

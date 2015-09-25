@@ -26,6 +26,7 @@ public class Shooter extends Enemy {
         sprite = down.getSprite();
         health = 10;
         XPBonus = 1;
+        collidable = true;
     }
 
     public void update() {

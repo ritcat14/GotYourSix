@@ -34,7 +34,7 @@ public class Player extends Mob {
 	private AnimatedObject animSprite = down;
 	
 	private int fireRate = 0;
-   private static int XPLevel = 1;
+   private static int XPLevel = 7;
    private int XP = 0;
    private int hunger = 0;
    private int thirst = 0;

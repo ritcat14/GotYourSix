@@ -32,6 +32,7 @@ public class Wizard extends Enemy {
         sprite = animSprite.getSprite();
         health = 20;
         XPBonus = 1;
+        collidable = true;
     }
 
     private void move() {

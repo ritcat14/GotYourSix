@@ -12,6 +12,7 @@ public abstract class Enemy extends Mob {
    public double XPBonus = 1;
    public int time = 0;
    private Entity         rand       = null;
+   protected boolean collidable = false;
 
 	public abstract void update();
 

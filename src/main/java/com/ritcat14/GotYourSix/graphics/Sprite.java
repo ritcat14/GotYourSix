@@ -46,10 +46,12 @@ public class Sprite {
     //Projectile sprites here:
     public static Sprite  test              = new Sprite(16, 0, 0, SpriteSheet.projectile_test);
     public static Sprite  testArrow              = new Sprite(16, 1, 0, SpriteSheet.projectile_test);
+    public static Sprite  fireBall              = new Sprite(16, 2, 0, SpriteSheet.projectile_test);
 
     //Particles
     public static Sprite  particle_normal   = new Sprite(2, 0xFFAAAAAA);
     public static Sprite  particle_blood   = new Sprite(2, 0xFFFF0000);
+    public static Sprite  particle_fire   = new Sprite(2, 0xFFF86800);
 
     protected Sprite(SpriteSheet sheet, int width, int height) {
         if (width == height)
@@ -172,7 +174,7 @@ public class Sprite {
     }
 
 
-    private void setColour(int colour) {
+    public void setColour(int colour) {
         for (int i = 0; i < width * height; i++) {
             pixels[i] = colour;
         }
