@@ -62,7 +62,6 @@ public class SoulEater extends Enemy {
 			animSprite = right;
 			dir = Direction.RIGHT;
 		}
-     shootRandom();
 	}
 
 	public void render(Screen screen) {

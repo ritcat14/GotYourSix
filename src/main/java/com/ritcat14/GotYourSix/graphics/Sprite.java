@@ -10,48 +10,54 @@ public class Sprite {
     public int[]          pixels;
     protected SpriteSheet sheet;
 
-    public static Sprite  grass             = new Sprite(16, 0, 0, SpriteSheet.tiles);
-    public static Sprite  flower            = new Sprite(16, 1, 0, SpriteSheet.tiles);
-    public static Sprite  voidSprite        = new Sprite(16, 6, 1, SpriteSheet.spawn_level);
+    public static Sprite  grass               = new Sprite(16, 0, 0, SpriteSheet.tiles);
+    public static Sprite  flower              = new Sprite(16, 1, 0, SpriteSheet.tiles);
+    public static Sprite  voidSprite          = new Sprite(16, 6, 1, SpriteSheet.spawn_level);
 
     //Spawn level sprites:
-    public static Sprite  spawn_grass       = new Sprite(16, 3, 1, SpriteSheet.spawn_level);
-    public static Sprite  spawn_flower      = new Sprite(16, 1, 0, SpriteSheet.spawn_level);
-    public static Sprite  spawn_water       = new Sprite(16, 6, 1, SpriteSheet.spawn_level);
-    public static Sprite  spawn_gravel      = new Sprite(16, 0, 1, SpriteSheet.spawn_level);
-    public static Sprite  spawn_woodFloor   = new Sprite(16, 1, 1, SpriteSheet.spawn_level);
-    public static Sprite  spawn_mossWall    = new Sprite(16, 1, 2, SpriteSheet.spawn_level);
-    public static Sprite  spawn_brickWall   = new Sprite(16, 0, 2, SpriteSheet.spawn_level);
-    public static Sprite  spawn_door_closed = new Sprite(16, 0, 3, SpriteSheet.spawn_level);
-    public static Sprite  spawn_door_open   = new Sprite(16, 1, 3, SpriteSheet.spawn_level);
+    public static Sprite  spawn_grass         = new Sprite(16, 3, 1, SpriteSheet.spawn_level);
+    public static Sprite  spawn_flower        = new Sprite(16, 1, 0, SpriteSheet.spawn_level);
+    public static Sprite  spawn_water         = new Sprite(16, 6, 1, SpriteSheet.spawn_level);
+    public static Sprite  spawn_gravel        = new Sprite(16, 0, 1, SpriteSheet.spawn_level);
+    public static Sprite  spawn_woodFloor     = new Sprite(16, 1, 1, SpriteSheet.spawn_level);
+    public static Sprite  spawn_mossWall      = new Sprite(16, 1, 2, SpriteSheet.spawn_level);
+    public static Sprite  spawn_brickWall     = new Sprite(16, 0, 2, SpriteSheet.spawn_level);
+    public static Sprite  spawn_portal        = new Sprite(16, 2, 3, SpriteSheet.spawn_level);
 
-    public static Sprite  spawn_wallGrassTL = new Sprite(16, 2, 0, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallGrassTM = new Sprite(16, 3, 0, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallGrassTR = new Sprite(16, 4, 0, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallGrassLM = new Sprite(16, 2, 1, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallGrassRM = new Sprite(16, 4, 1, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallGrassBL = new Sprite(16, 2, 2, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallGrassBM = new Sprite(16, 3, 2, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallGrassBR = new Sprite(16, 4, 2, SpriteSheet.spawn_level);
+    public static Sprite  spawn_wallGrassTL   = new Sprite(16, 2, 0, SpriteSheet.spawn_level);
+    public static Sprite  spawn_wallGrassTM   = new Sprite(16, 3, 0, SpriteSheet.spawn_level);
+    public static Sprite  spawn_wallGrassTR   = new Sprite(16, 4, 0, SpriteSheet.spawn_level);
+    public static Sprite  spawn_wallGrassLM   = new Sprite(16, 2, 1, SpriteSheet.spawn_level);
+    public static Sprite  spawn_wallGrassRM   = new Sprite(16, 4, 1, SpriteSheet.spawn_level);
+    public static Sprite  spawn_wallGrassBL   = new Sprite(16, 2, 2, SpriteSheet.spawn_level);
+    public static Sprite  spawn_wallGrassBM   = new Sprite(16, 3, 2, SpriteSheet.spawn_level);
+    public static Sprite  spawn_wallGrassBR   = new Sprite(16, 4, 2, SpriteSheet.spawn_level);
 
-    public static Sprite  spawn_wallWaterTL = new Sprite(16, 5, 0, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallWaterTM = new Sprite(16, 6, 0, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallWaterTR = new Sprite(16, 7, 0, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallWaterLM = new Sprite(16, 5, 1, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallWaterRM = new Sprite(16, 7, 1, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallWaterBL = new Sprite(16, 5, 2, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallWaterBM = new Sprite(16, 6, 2, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallWaterBR = new Sprite(16, 7, 2, SpriteSheet.spawn_level);
+    public static Sprite  spawn_wallWaterTL   = new Sprite(16, 5, 0, SpriteSheet.spawn_level);
+    public static Sprite  spawn_wallWaterTM   = new Sprite(16, 6, 0, SpriteSheet.spawn_level);
+    public static Sprite  spawn_wallWaterTR   = new Sprite(16, 7, 0, SpriteSheet.spawn_level);
+    public static Sprite  spawn_wallWaterLM   = new Sprite(16, 5, 1, SpriteSheet.spawn_level);
+    public static Sprite  spawn_wallWaterRM   = new Sprite(16, 7, 1, SpriteSheet.spawn_level);
+    public static Sprite  spawn_wallWaterBL   = new Sprite(16, 5, 2, SpriteSheet.spawn_level);
+    public static Sprite  spawn_wallWaterBM   = new Sprite(16, 6, 2, SpriteSheet.spawn_level);
+    public static Sprite  spawn_wallWaterBR   = new Sprite(16, 7, 2, SpriteSheet.spawn_level);
 
     //Projectile sprites here:
-    public static Sprite  test              = new Sprite(16, 0, 0, SpriteSheet.projectile_test);
-    public static Sprite  testArrow              = new Sprite(16, 1, 0, SpriteSheet.projectile_test);
-    public static Sprite  fireBall              = new Sprite(16, 2, 0, SpriteSheet.projectile_test);
+    public static Sprite  test                = new Sprite(16, 0, 0, SpriteSheet.projectile_test);
+    public static Sprite  fireCannon          = new Sprite(16, 1, 0, SpriteSheet.projectile_test);
+    public static Sprite  testArrow           = new Sprite(16, 2, 0, SpriteSheet.projectile_test);
+    public static Sprite  fireArrow           = new Sprite(16, 0, 1, SpriteSheet.projectile_test);
+    public static Sprite  fireBall            = new Sprite(16, 1, 1, SpriteSheet.projectile_test);
+    public static Sprite  blueFireBall        = new Sprite(16, 2, 1, SpriteSheet.projectile_test);
 
     //Particles
-    public static Sprite  particle_normal   = new Sprite(2, 0xFFAAAAAA);
-    public static Sprite  particle_blood   = new Sprite(2, 0xFFFF0000);
-    public static Sprite  particle_fire   = new Sprite(2, 0xFFF86800);
+    public static Sprite  particle_normal     = new Sprite(2, 0xFF000000);
+    public static Sprite  particle_blood      = new Sprite(2, 0xFFFF0000);
+    public static Sprite  particle_fire       = new Sprite(2, 0xFFF86800);
+    public static Sprite  particle_fireArrow  = new Sprite(2, 0xFFF86800);
+    public static Sprite  particle_fireCannon = new Sprite(2, 0xFFF86800);
+    public static Sprite  particle_blueFire   = new Sprite(2, 0xFFF86800);
+
 
     protected Sprite(SpriteSheet sheet, int width, int height) {
         if (width == height)
@@ -89,6 +95,7 @@ public class Sprite {
         pixels = new int[SIZE * SIZE];
         setColour(colour);
     }
+
     public Sprite(int[] pixels, int width, int height) {
         if (width == height)
             SIZE = width;
@@ -101,52 +108,54 @@ public class Sprite {
             this.pixels[i] = pixels[i];
         }
     }
-  
-    public static Sprite rotate(Sprite sprite, double angle){
+
+    public static Sprite rotate(Sprite sprite, double angle) {
         return new Sprite(rotate(sprite.pixels, sprite.width, sprite.height, angle), sprite.width, sprite.height);
     }
-  
-   private static int[] rotate(int[] pixels, int width, int height, double angle){
-       int[] result = new int[width * height];
-       double nxx = rotX(-angle, 1.0, 0.0);
-       double nxy = rotY(-angle, 1.0, 0.0);
-       double nyx = rotX(-angle, 0.0, 1.0);
-       double nyy = rotY(-angle, 0.0, 1.0);
-       //initial value of pixel
-       double x0 = rotX(-angle, -width/2.0, -height/2.0) + width / 2.0;
-       double y0 = rotY(-angle, -width/2.0, -height/2.0) + height / 2.0;
-       
-       for (int y = 0; y < height; y++){
-           double x1 = x0;
-           double y1 = y0;
-           for (int x = 0; x < width; x++){
-               int xx = (int) x1; //convert to int for drawing
-               int yy = (int) y1;
-               int col = 0;
-               if(xx < 0 || xx >= width || yy < 0 || yy >= height) col = 0xffff00ff;
-               else col = pixels[xx + yy * width];
-               result[x + y * width] = col;
-               x1 += nxx;
-               y1 += nxy;
-           }
-           x0 += nyx;
-           y0 += nyy;
-       }
-       
-       return result;
-   }
-	
-   private static double rotX(double angle, double x, double y){
-       double cos = Math.cos(angle - (Math.PI / 2));
-       double sin = Math.sin(angle - (Math.PI / 2));
-       return x * cos + y * -sin;
-   }
-	
-   private static double rotY(double angle, double x, double y){
-       double cos = Math.cos(angle - (Math.PI / 2));
-       double sin = Math.sin(angle - (Math.PI / 2));
-       return x * sin + y * cos;
-   }
+
+    private static int[] rotate(int[] pixels, int width, int height, double angle) {
+        int[] result = new int[width * height];
+        double nxx = rotX(-angle, 1.0, 0.0);
+        double nxy = rotY(-angle, 1.0, 0.0);
+        double nyx = rotX(-angle, 0.0, 1.0);
+        double nyy = rotY(-angle, 0.0, 1.0);
+        //initial value of pixel
+        double x0 = rotX(-angle, -width / 2.0, -height / 2.0) + width / 2.0;
+        double y0 = rotY(-angle, -width / 2.0, -height / 2.0) + height / 2.0;
+
+        for (int y = 0; y < height; y++) {
+            double x1 = x0;
+            double y1 = y0;
+            for (int x = 0; x < width; x++) {
+                int xx = (int)x1; //convert to int for drawing
+                int yy = (int)y1;
+                int col = 0;
+                if (xx < 0 || xx >= width || yy < 0 || yy >= height)
+                    col = 0xffff00ff;
+                else
+                    col = pixels[xx + yy * width];
+                result[x + y * width] = col;
+                x1 += nxx;
+                y1 += nxy;
+            }
+            x0 += nyx;
+            y0 += nyy;
+        }
+
+        return result;
+    }
+
+    private static double rotX(double angle, double x, double y) {
+        double cos = Math.cos(angle - (Math.PI / 2));
+        double sin = Math.sin(angle - (Math.PI / 2));
+        return x * cos + y * -sin;
+    }
+
+    private static double rotY(double angle, double x, double y) {
+        double cos = Math.cos(angle - (Math.PI / 2));
+        double sin = Math.sin(angle - (Math.PI / 2));
+        return x * sin + y * cos;
+    }
 
     public static Sprite[] split(SpriteSheet sheet) {
         int amount = (sheet.getWidth() * sheet.getHeight()) / (sheet.SPRITE_WIDTH * sheet.SPRITE_HEIGHT);

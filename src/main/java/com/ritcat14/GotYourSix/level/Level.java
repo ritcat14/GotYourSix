@@ -76,6 +76,7 @@ public class Level {
         }
         for (int i = 0; i < enemies.size(); i++) {
             enemies.get(i).update();
+            enemies.get(i).checkLocation();
         }
         remove();
     }
@@ -286,7 +287,7 @@ public class Level {
     // 0xff7f7f00 rock
     public Tile getTile(int x, int y) {
         if (x < 0 || y < 0 || x >= width || y >= height)
-            return Tile.voidTile;
+            return Tile.spawn_water;
         if (tiles[x + y * width] == Tile.col_spawn_grass)
             return Tile.spawn_grass;
         if (tiles[x + y * width] == Tile.col_spawn_flower)
@@ -301,6 +302,8 @@ public class Level {
             return Tile.spawn_water;
         if (tiles[x + y * width] == Tile.col_spawn_woodFloor)
             return Tile.spawn_woodFloor;
+        if (tiles[x + y * width] == Tile.col_spawn_portal)
+            return Tile.spawn_portal;
 
         if (tiles[x + y * width] == Tile.col_spawn_wallGrassTL)
             return Tile.spawn_wallGrassTL;
@@ -335,7 +338,7 @@ public class Level {
             return Tile.spawn_wallWaterBM;
         if (tiles[x + y * width] == Tile.col_spawn_wallWaterBR)
             return Tile.spawn_wallWaterBR;
-        return Tile.voidTile;
+        return Tile.spawn_water;
     }
 
 }

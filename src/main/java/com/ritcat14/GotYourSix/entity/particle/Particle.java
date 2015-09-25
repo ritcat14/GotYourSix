@@ -3,9 +3,9 @@ package com.ritcat14.GotYourSix.entity.particle;
 import java.util.Random;
 
 import com.ritcat14.GotYourSix.entity.Entity;
+import com.ritcat14.GotYourSix.entity.mob.Player;
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.Sprite;
-import com.ritcat14.GotYourSix.graphics.SpriteSheet;
 
 public class Particle extends Entity {
 
@@ -28,11 +28,22 @@ public class Particle extends Entity {
         this.xa = random.nextGaussian();
         this.ya = random.nextGaussian();
         this.zz = random.nextFloat() + 2.0;
-        int col = ran.nextInt(3);
-        if (sprite.equals(Sprite.particle_fire)) {
+        int col = ran.nextInt(4);
+         if (Player.getLevel() >= 25) {
+            if (col == 0) this.sprite = new Sprite(2, 0xff427AFF);
+            if (col == 1) this.sprite = new Sprite(2, 0xff607BFF);
+            if (col == 2) this.sprite = new Sprite(2, 0xff7C9BFF);
+            if (col == 3) this.sprite = new Sprite(2, 0xffD3DEFF);
+        }else if (Player.getLevel() >= 20) {
             if (col == 0) this.sprite = new Sprite(2, 0xffF86800);
             if (col == 1) this.sprite = new Sprite(2, 0xffF8A800);
             if (col == 2) this.sprite = new Sprite(2, 0xffF8F8C8);
+            if (col == 3) this.sprite = new Sprite(2, 0xffF8D840);
+        } else if ((Player.getLevel() >= 5 && Player.getLevel() < 10) || (Player.getLevel() >= 15 && Player.getLevel() < 20)) {
+            if (col == 0) this.sprite = new Sprite(2, 0xff000000);
+            if (col == 1) this.sprite = new Sprite(2, 0xffF8A800);
+            if (col == 2) this.sprite = new Sprite(2, 0xffF8F8C8);
+            if (col == 3) this.sprite = new Sprite(2, 0xffF8A800);
         }
     }
 

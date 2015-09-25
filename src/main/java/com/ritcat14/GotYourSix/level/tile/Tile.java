@@ -5,6 +5,7 @@ import com.ritcat14.GotYourSix.graphics.Sprite;
 import com.ritcat14.GotYourSix.level.tile.spawn_level.SpawnEdgeTile;
 import com.ritcat14.GotYourSix.level.tile.spawn_level.SpawnFloorTile;
 import com.ritcat14.GotYourSix.level.tile.spawn_level.SpawnGrassTile;
+import com.ritcat14.GotYourSix.level.tile.spawn_level.SpawnPortalTile;
 import com.ritcat14.GotYourSix.level.tile.spawn_level.SpawnWallTile;
 import com.ritcat14.GotYourSix.level.tile.spawn_level.SpawnWaterTile;
 
@@ -15,7 +16,6 @@ public class Tile {
   
     public static Tile grass = new GrassTile(Sprite.grass);
     public static Tile flower = new FlowerTile(Sprite.flower);
-    public static Tile voidTile = new VoidTile(Sprite.voidSprite);
     
     public static Tile spawn_grass = new SpawnGrassTile(Sprite.spawn_grass);
     public static Tile spawn_flower = new SpawnGrassTile(Sprite.spawn_flower);
@@ -24,6 +24,7 @@ public class Tile {
     public static Tile spawn_woodFloor = new SpawnFloorTile(Sprite.spawn_woodFloor);
     public static Tile spawn_mossWall = new SpawnWallTile(Sprite.spawn_mossWall);
     public static Tile spawn_brickWall = new SpawnWallTile(Sprite.spawn_brickWall);
+    public static Tile spawn_portal = new SpawnPortalTile(Sprite.spawn_portal);
   
     public static Tile spawn_wallGrassTL = new SpawnEdgeTile(Sprite.spawn_wallGrassTL);
     public static Tile spawn_wallGrassTM = new SpawnEdgeTile(Sprite.spawn_wallGrassTM);
@@ -50,7 +51,7 @@ public class Tile {
     public static final int col_spawn_woodFloor = 0xff7f0000;
     public static final int col_spawn_mossWall = 0xff606060;
     public static final int col_spawn_brickWall = 0xff808080;
-    public static final int col_spawn_door = 0xff460037;
+    public static final int col_spawn_portal = 0xff2FFCFF;
   
     public static final int col_spawn_wallGrassTL = 0xff000000;
     public static final int col_spawn_wallGrassTM = 0xff00FF90;

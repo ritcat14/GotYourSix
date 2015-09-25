@@ -97,10 +97,6 @@ public class Wizard extends Enemy {
 
     public void render(Screen screen) {
         sprite = animSprite.getSprite();
-        if (level.getTile((int)x, (int)y).solid()) {
-            x += 16;
-            y += 16;
-        }
         screen.renderMob((int)(x - 16), (int)(y - 16), this);
     }
 

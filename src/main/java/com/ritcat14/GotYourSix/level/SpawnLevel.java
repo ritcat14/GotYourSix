@@ -44,13 +44,9 @@ public class SpawnLevel extends Level {
       for (int i = 0; i < getPlayers().size(); i ++){
           getPlayers().get(i).setLocation(new Vector2i((18 * 16) * i, 5 * 16));
       }
-		for (int i = 0; i < 5; i++){
+		for (int i = 0; i < 15; i++){
 			Random random = new Random();
-         add(new Shooter(random.nextInt(20) + 3, random.nextInt(60) + 3));
-			add(new Wizard(random.nextInt(20) + 3, random.nextInt(60) + 3));
-			add(new SoulEater(random.nextInt(20) + 3, random.nextInt(60) + 3));
 			add(new Dummy(random.nextInt(20) + 3, random.nextInt(60) + 3));
-			add(new Zombie(random.nextInt(20) + 3, random.nextInt(60) + 3));
 		}
 	}
 

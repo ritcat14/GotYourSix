@@ -26,15 +26,25 @@ public class Player extends Mob {
    private String name;
 	private Keyboard input;
 	private double speed = 2.5;
+   public static boolean swimming = false;
+   public static boolean canShoot = true;
+   public static boolean changeLevel = false;
+   public static Level levelToGo;
+  
 	private AnimatedObject down = new AnimatedObject(SpriteSheet.player_down, 32, 32, 3);
 	private AnimatedObject up = new AnimatedObject(SpriteSheet.player_up, 32, 32, 3);
 	private AnimatedObject left = new AnimatedObject(SpriteSheet.player_left, 32, 32, 3);
 	private AnimatedObject right = new AnimatedObject(SpriteSheet.player_right, 32, 32, 3);
+  
+	private AnimatedObject downSwim = new AnimatedObject(SpriteSheet.player_downSwim, 32, 32, 3);
+	private AnimatedObject upSwim = new AnimatedObject(SpriteSheet.player_upSwim, 32, 32, 3);
+	private AnimatedObject leftSwim = new AnimatedObject(SpriteSheet.player_leftSwim, 32, 32, 3);
+	private AnimatedObject rightSwim = new AnimatedObject(SpriteSheet.player_rightSwim, 32, 32, 3);
 	
 	private AnimatedObject animSprite = down;
 	
 	private int fireRate = 0;
-   private static int XPLevel = 7;
+   private static int XPLevel = 1;
    private int XP = 0;
    private int hunger = 0;
    private int thirst = 0;
@@ -122,8 +132,7 @@ public class Player extends Mob {
       button= new UIButton(new Vector2i(UIHealthBar.position).add(new Vector2i(2, 136)), new Vector2i(100, 30), new UIActionListener(){
           public void perform() {
               //Change level
-              if (Game.getLevel() == Level.spawn) Game.changeLevel(Level.test);
-              else if (Game.getLevel() == Level.test) Game.changeLevel(Level.spawn);
+              if (changeLevel) Game.changeLevel(levelToGo);
           }
       });
       button.setText("Enter");
@@ -167,7 +176,10 @@ public class Player extends Mob {
       }
       if (time % 180 == 0 && thirst>= 100) loseHealth(2);
       else if(time % 180 == 0 && hunger >= 100) loseHealth(1);*/
-      if (time % 360 == 0 && health < 100) health += 1;
+      if (time % 360 == 0 && health < 100){
+          health += 1;
+      }
+      if (time % 120 == 0) XPLevel ++;
       UIHealthBar.setProgress(health / 100.0);
       UILevelBar.setProgress(XP / 100.0);
       UIHungerBar.setProgress(hunger / 100.0);
@@ -180,17 +192,21 @@ public class Player extends Mob {
 		double xa = 0, ya = 0;
 		if(input.up) {
 			ya -= speed;
-			animSprite = up;
+         if (swimming) animSprite = upSwim;
+			else animSprite = up;
 		}else if(input.down) {
 			ya += speed;
-			animSprite = down;
+         if (swimming) animSprite = downSwim;
+			else animSprite = down;
 		}
 		if(input.left) {
 			xa -= speed;
-			animSprite = left;
+         if (swimming) animSprite = leftSwim;
+			else animSprite = left;
 		} else if(input.right){
 			xa += speed;
-			animSprite = right;
+         if (swimming) animSprite = rightSwim;
+			else animSprite = right;
 		}
 		
 		if(xa != 0 || ya != 0){
@@ -224,7 +240,7 @@ public class Player extends Mob {
    }
 
 	private void updateShooting() {
-		if(Mouse.getButton() == 1 && fireRate <= 0){
+		if(Mouse.getButton() == 1 && fireRate <= 0 && canShoot){
 			double dx = Mouse.getX() - (Game.getWindowWidth()/2);
 			double dy = Mouse.getY() - (Game.getWindowHeight()/2);
 			double dir = Math.atan2(dy, dx);
@@ -234,7 +250,7 @@ public class Player extends Mob {
 	}
   
    public void loseHealth(int damage){
-        if(health >= damage) health -= damage;
+        health -= damage;
         if (health <= 0){
             System.exit(0);
             remove();

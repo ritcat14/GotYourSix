@@ -3,26 +3,36 @@ package com.ritcat14.GotYourSix.entity.mob;
 import java.util.List;
 
 import com.ritcat14.GotYourSix.graphics.Screen;
+import com.ritcat14.GotYourSix.level.tile.Tile;
 import com.ritcat14.GotYourSix.util.Vector2i;
+import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.entity.Entity;
 import com.ritcat14.GotYourSix.entity.mob.Player;
 
 public abstract class Enemy extends Mob {
-  
-   public double XPBonus = 1;
-   public int time = 0;
-   private Entity         rand       = null;
-   protected boolean collidable = false;
 
-	public abstract void update();
+    public double     XPBonus    = 1;
+    public int        time       = 0;
+    private Entity    rand       = null;
+    protected boolean collidable = false;
 
-	public abstract void render(Screen screen);
+    public abstract void update();
+
+    public abstract void render(Screen screen);
 
     public void loseHealth(int damage, Player player) {
         health -= damage;
         if (health <= 0) {
             remove();
-            player.inXP((int)Math.ceil(XPBonus / player.getLevel()));
+            player.inXP((int)Math.ceil(XPBonus / Player.getLevel()));
+        }
+    }
+
+    public void checkLocation() {
+        Tile at = Game.getLevel().getTile((int)x, (int)y);
+        if (at.solid()) {
+            x = random.nextInt(20) + 3;
+            y = random.nextInt(60) + 3;
         }
     }
 
@@ -70,5 +80,5 @@ public abstract class Enemy extends Mob {
             shoot(x, y, dir);
         }
     }
-  
+
 }

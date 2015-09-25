@@ -17,31 +17,37 @@ public class SpriteSheet {
     public static SpriteSheet spawn_level     = new SpriteSheet("/textures/sheets/spawn_level.png", 128, 64);
     public static SpriteSheet projectile_test = new SpriteSheet("/textures/sheets/projectiles/test.png", 48);
 
-    public static SpriteSheet player          = new SpriteSheet("/textures/sheets/mainSprite.png", 128, 96);
+    public static SpriteSheet player          = new SpriteSheet("/textures/sheets/mob/player/mainSprite.png", 128, 96);
     public static SpriteSheet player_down     = new SpriteSheet(player, 0, 0, 1, 3, 32);
     public static SpriteSheet player_up       = new SpriteSheet(player, 1, 0, 1, 3, 32);
     public static SpriteSheet player_left     = new SpriteSheet(player, 2, 0, 1, 3, 32);
     public static SpriteSheet player_right    = new SpriteSheet(player, 3, 0, 1, 3, 32);
 
-    public static SpriteSheet soul            = new SpriteSheet("/textures/sheets/soulEaterSprite.png", 128, 96);
+    public static SpriteSheet playerSwim          = new SpriteSheet("/textures/sheets/mob/player/mainSpriteSwim.png", 128, 96);
+    public static SpriteSheet player_downSwim     = new SpriteSheet(playerSwim, 0, 0, 1, 3, 32);
+    public static SpriteSheet player_upSwim       = new SpriteSheet(playerSwim, 1, 0, 1, 3, 32);
+    public static SpriteSheet player_leftSwim     = new SpriteSheet(playerSwim, 2, 0, 1, 3, 32);
+    public static SpriteSheet player_rightSwim    = new SpriteSheet(playerSwim, 3, 0, 1, 3, 32);
+
+    public static SpriteSheet soul            = new SpriteSheet("/textures/sheets/mob/enemy/soulEaterSprite.png", 128, 96);
     public static SpriteSheet soul_down       = new SpriteSheet(soul, 0, 0, 1, 3, 32);
     public static SpriteSheet soul_up         = new SpriteSheet(soul, 1, 0, 1, 3, 32);
     public static SpriteSheet soul_left       = new SpriteSheet(soul, 2, 0, 1, 3, 32);
     public static SpriteSheet soul_right      = new SpriteSheet(soul, 3, 0, 1, 3, 32);
 
-    public static SpriteSheet dummy           = new SpriteSheet("/textures/sheets/npc01.png", 128, 96);
+    public static SpriteSheet dummy           = new SpriteSheet("/textures/sheets/mob/npc01.png", 128, 96);
     public static SpriteSheet dummy_down      = new SpriteSheet(dummy, 0, 0, 1, 3, 32);
     public static SpriteSheet dummy_up        = new SpriteSheet(dummy, 1, 0, 1, 3, 32);
     public static SpriteSheet dummy_left      = new SpriteSheet(dummy, 2, 0, 1, 3, 32);
     public static SpriteSheet dummy_right     = new SpriteSheet(dummy, 3, 0, 1, 3, 32);
 
-    public static SpriteSheet zombie          = new SpriteSheet("/textures/sheets/zombieSprite.png", 128, 96);
+    public static SpriteSheet zombie          = new SpriteSheet("/textures/sheets/mob/enemy/zombieSprite.png", 128, 96);
     public static SpriteSheet zombie_down     = new SpriteSheet(zombie, 0, 0, 1, 3, 32);
     public static SpriteSheet zombie_up       = new SpriteSheet(zombie, 1, 0, 1, 3, 32);
     public static SpriteSheet zombie_left     = new SpriteSheet(zombie, 2, 0, 1, 3, 32);
     public static SpriteSheet zombie_right    = new SpriteSheet(zombie, 3, 0, 1, 3, 32);
 
-    public static SpriteSheet wizard          = new SpriteSheet("/textures/sheets/wizardSprite.png", 128, 96);
+    public static SpriteSheet wizard          = new SpriteSheet("/textures/sheets/mob/enemy/wizardSprite.png", 128, 96);
     public static SpriteSheet wizard_down     = new SpriteSheet(wizard, 0, 0, 1, 3, 32);
     public static SpriteSheet wizard_up       = new SpriteSheet(wizard, 1, 0, 1, 3, 32);
     public static SpriteSheet wizard_left     = new SpriteSheet(wizard, 2, 0, 1, 3, 32);

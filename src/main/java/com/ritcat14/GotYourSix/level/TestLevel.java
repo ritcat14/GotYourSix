@@ -36,14 +36,14 @@ public class TestLevel extends Level {
   
    public void setPlayerLocation(){
       for (int i = 0; i < getPlayers().size(); i ++){
-          getPlayers().get(i).setLocation(new Vector2i(10 * 16, 60 * 16));
+          getPlayers().get(i).setLocation(new Vector2i(6 * 16, 60 * 16));
       }
    }
 	
 	protected void generateLevel(){
 		for (int i = 0; i < 500; i++){
 			Random random = new Random();
-			add(new Zombie(random.nextInt(20) + 3, random.nextInt(60) + 3));
+			//add(new Zombie(random.nextInt(20) + 3, random.nextInt(60) + 3));
 		}
 	}
 
