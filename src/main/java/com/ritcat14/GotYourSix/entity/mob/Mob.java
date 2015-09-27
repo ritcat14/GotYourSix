@@ -5,6 +5,7 @@ import com.ritcat14.GotYourSix.entity.projectile.Projectile;
 import com.ritcat14.GotYourSix.entity.projectile.TestProjectile;
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.level.Level;
+import com.ritcat14.GotYourSix.level.tile.spawn_level.SpawnDoorTile;
 import com.ritcat14.GotYourSix.level.tile.spawn_level.SpawnEdgeTile;
 import com.ritcat14.GotYourSix.level.tile.spawn_level.SpawnPortalTile;
 import com.ritcat14.GotYourSix.level.tile.spawn_level.SpawnWaterTile;
@@ -122,19 +123,24 @@ public abstract class Mob extends Entity {
                 ix = (int)Math.floor(xt);
             if (c / 2 == 0)
                 iy = (int)Math.floor(yt);
+            if (level.getTile(ix, iy) instanceof SpawnDoorTile && Door.doorOpen == false) return false;
+            else if (level.getTile(ix, iy) instanceof SpawnDoorTile && Door.doorOpen == true) return false;
             if (this instanceof Enemy && level.getTile(ix, iy) instanceof SpawnEdgeTile)
                 return true;
             if (this instanceof Player) {
                 if (level.getTile(ix, iy) instanceof SpawnWaterTile) {
                     Player.swimming = true;
                     Player.canShoot = false;
-                } else if (level.getTile(ix, iy) instanceof SpawnPortalTile){
-                    Player.changeLevel = true;
-                    if (level == Level.test) Player.levelToGo = Level.spawn;
-                    else if (level == Level.spawn) Player.levelToGo = Level.test;
                 } else {
                     Player.swimming = false;
                     Player.canShoot = true;
+                }
+                if (level.getTile(ix, iy) instanceof SpawnPortalTile){
+                    Player.changeLevel = true;
+                    if (level == Level.test) Player.levelToGo = Level.spawn;
+                    else if (level == Level.spawn) Player.levelToGo = Level.level1;
+                } else{
+                    Player.changeLevel = false;
                 }
             }
             if (level.getTile(ix, iy).solid())

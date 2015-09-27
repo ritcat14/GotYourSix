@@ -23,6 +23,8 @@ public class Sprite {
     public static Sprite  spawn_mossWall      = new Sprite(16, 1, 2, SpriteSheet.spawn_level);
     public static Sprite  spawn_brickWall     = new Sprite(16, 0, 2, SpriteSheet.spawn_level);
     public static Sprite  spawn_portal        = new Sprite(16, 2, 3, SpriteSheet.spawn_level);
+    public static Sprite  spawn_doorClosed    = new Sprite(16, 0, 3, SpriteSheet.spawn_level);
+    public static Sprite  spawn_doorOpen      = new Sprite(16, 1, 3, SpriteSheet.spawn_level);
 
     public static Sprite  spawn_wallGrassTL   = new Sprite(16, 2, 0, SpriteSheet.spawn_level);
     public static Sprite  spawn_wallGrassTM   = new Sprite(16, 3, 0, SpriteSheet.spawn_level);

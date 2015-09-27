@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.entity.Entity;
+import com.ritcat14.GotYourSix.entity.mob.Door;
 import com.ritcat14.GotYourSix.entity.mob.Enemy;
 import com.ritcat14.GotYourSix.entity.mob.Player;
 import com.ritcat14.GotYourSix.entity.particle.Particle;
@@ -21,25 +22,28 @@ public class Level {
     protected int[]          tilesInt;
     protected int[]          tiles;
     protected int            tile_size;
+    private boolean          createdDoors = false;
 
-    private List<Entity>     entities    = new ArrayList<Entity>();
-    private List<Projectile> projectiles = new ArrayList<Projectile>();
-    private List<Particle>   particles   = new ArrayList<Particle>();
-    private List<Player>     players     = new ArrayList<Player>();
-    private List<Enemy>      enemies     = new ArrayList<Enemy>();
+    private List<Entity>     entities     = new ArrayList<Entity>();
+    private List<Projectile> projectiles  = new ArrayList<Projectile>();
+    private List<Particle>   particles    = new ArrayList<Particle>();
+    private List<Player>     players      = new ArrayList<Player>();
+    private List<Enemy>      enemies      = new ArrayList<Enemy>();
+    private List<Door>       doors        = new ArrayList<Door>();
 
-    private Comparator<Node> nodeSorter  = new Comparator<Node>() {
-                                             public int compare(Node n0, Node n1) {
-                                                 if (n1.fCost < n0.fCost)
-                                                     return +1;
-                                                 if (n1.fCost > n0.fCost)
-                                                     return -1;
-                                                 return 0;
-                                             }
-                                         };
+    private Comparator<Node> nodeSorter   = new Comparator<Node>() {
+                                              public int compare(Node n0, Node n1) {
+                                                  if (n1.fCost < n0.fCost)
+                                                      return +1;
+                                                  if (n1.fCost > n0.fCost)
+                                                      return -1;
+                                                  return 0;
+                                              }
+                                          };
 
-    public static Level      spawn       = new SpawnLevel("/levels/spawn.png");
-    public static Level      test        = new TestLevel("/levels/testLevel.png");
+    public static Level      spawn        = new SpawnLevel("/levels/spawn.png");
+    public static Level      test         = new TestLevel("/levels/testLevel.png");
+    public static Level      level1       = new Level1("/levels/level1.png");
 
     public Level(int width, int height) {
         this.width = width;
@@ -77,6 +81,20 @@ public class Level {
         for (int i = 0; i < enemies.size(); i++) {
             enemies.get(i).update();
             enemies.get(i).checkLocation();
+        }
+        if (!createdDoors) {
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    if (tiles[x + y * width] == Tile.col_spawn_door) {
+                        Door d = new Door(x, y);
+                        add(d);
+                    }
+                }
+            }
+          createdDoors = true;
+        } 
+        for (int i = 0; i < doors.size(); i++) {
+            doors.get(i).update();
         }
         remove();
     }
@@ -262,6 +280,9 @@ public class Level {
         for (int i = 0; i < enemies.size(); i++) {
             enemies.get(i).render(screen);
         }
+        for (int i = 0; i < doors.size(); i++) {
+            doors.get(i).render(screen);
+        }
         Game.loaded = true;
     }
 
@@ -275,12 +296,15 @@ public class Level {
             players.add((Player)e);
         } else if (e instanceof Enemy) {
             enemies.add((Enemy)e);
+        } else if (e instanceof Door) {
+            doors.add((Door)e);
         } else {
             entities.add(e);
         }
     }
-  
-    public void setPlayerLocation(){}
+
+    public void setPlayerLocation() {
+    }
 
     // 0xff00ff00 grass
     // 0xffffff00 flower
@@ -304,6 +328,8 @@ public class Level {
             return Tile.spawn_woodFloor;
         if (tiles[x + y * width] == Tile.col_spawn_portal)
             return Tile.spawn_portal;
+        if (tiles[x + y * width] == Tile.col_spawn_door)
+            return Tile.spawn_door;
 
         if (tiles[x + y * width] == Tile.col_spawn_wallGrassTL)
             return Tile.spawn_wallGrassTL;

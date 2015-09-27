@@ -8,10 +8,12 @@ import javax.imageio.ImageIO;
 
 import com.ritcat14.GotYourSix.entity.mob.Wizard;
 import com.ritcat14.GotYourSix.entity.mob.Zombie;
+import com.ritcat14.GotYourSix.entity.mob.Door;
 import com.ritcat14.GotYourSix.entity.mob.Dummy;
 import com.ritcat14.GotYourSix.entity.mob.Shooter;
 import com.ritcat14.GotYourSix.entity.mob.SoulEater;
 import com.ritcat14.GotYourSix.level.Level;
+import com.ritcat14.GotYourSix.level.tile.Tile;
 import com.ritcat14.GotYourSix.util.Vector2i;
 
 public class TestLevel extends Level {
@@ -43,7 +45,7 @@ public class TestLevel extends Level {
 	protected void generateLevel(){
 		for (int i = 0; i < 10; i++){
 			Random random = new Random();
-			add(new Zombie(random.nextInt(20) + 3, random.nextInt(60) + 3));
+			//add(new Zombie(random.nextInt(20) + 3, random.nextInt(60) + 3));
 		}
 	}
 

@@ -17,11 +17,17 @@ public class SpriteSheet {
     public static SpriteSheet spawn_level     = new SpriteSheet("/textures/sheets/spawn_level.png", 128, 64);
     public static SpriteSheet projectile_test = new SpriteSheet("/textures/sheets/projectiles/test.png", 48);
 
-    public static SpriteSheet player          = new SpriteSheet("/textures/sheets/mob/player/mainSprite.png", 128, 96);
-    public static SpriteSheet player_down     = new SpriteSheet(player, 0, 0, 1, 3, 32);
-    public static SpriteSheet player_up       = new SpriteSheet(player, 1, 0, 1, 3, 32);
-    public static SpriteSheet player_left     = new SpriteSheet(player, 2, 0, 1, 3, 32);
-    public static SpriteSheet player_right    = new SpriteSheet(player, 3, 0, 1, 3, 32);
+    public static SpriteSheet fireKing          = new SpriteSheet("/textures/sheets/mob/player/fireKingSprite.png", 128, 64);
+    public static SpriteSheet fireKing_down     = new SpriteSheet(fireKing, 0, 0, 1, 2, 32);
+    public static SpriteSheet fireKing_up       = new SpriteSheet(fireKing, 1, 0, 1, 2, 32);
+    public static SpriteSheet fireKing_left     = new SpriteSheet(fireKing, 2, 0, 1, 2, 32);
+    public static SpriteSheet fireKing_right    = new SpriteSheet(fireKing, 3, 0, 1, 2, 32);
+
+    public static SpriteSheet iceKing          = new SpriteSheet("/textures/sheets/mob/player/iceKingSprite.png", 128, 64);
+    public static SpriteSheet iceKing_down     = new SpriteSheet(iceKing, 0, 0, 1, 2, 32);
+    public static SpriteSheet iceKing_up       = new SpriteSheet(iceKing, 1, 0, 1, 2, 32);
+    public static SpriteSheet iceKing_left     = new SpriteSheet(iceKing, 2, 0, 1, 2, 32);
+    public static SpriteSheet iceKing_right    = new SpriteSheet(iceKing, 3, 0, 1, 2, 32);
 
     public static SpriteSheet playerSwim          = new SpriteSheet("/textures/sheets/mob/player/mainSpriteSwim.png", 128, 96);
     public static SpriteSheet player_downSwim     = new SpriteSheet(playerSwim, 0, 0, 1, 3, 32);
