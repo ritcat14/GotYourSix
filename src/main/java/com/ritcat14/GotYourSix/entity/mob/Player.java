@@ -58,7 +58,7 @@ public class Player extends Mob {
    private UIButton button;
   
    public static enum Type {
-     FIRE, FIREKING, ICE, ICEKING
+     FIRE, FIREKING, ICE, ICEKING, NULL
    }
   
    public static Type type;
@@ -67,7 +67,7 @@ public class Player extends Mob {
 	public Player(String name, Keyboard input) {
       this.name = name;
 		this.input = input;
-      type = Type.ICEKING;
+      type = Type.ICE;
       checkSprite();
 		animSprite = down;
       sprite = animSprite.getSprite();
@@ -76,26 +76,12 @@ public class Player extends Mob {
       hunger = 0;
       thirst = 0;
 	}
-   
-   private void checkSprite(){
-       if (type == Type.FIREKING){
-           down = new AnimatedObject(SpriteSheet.fireKing_down, 32, 32, 2);
-           up = new AnimatedObject(SpriteSheet.fireKing_up, 32, 32, 2);
-           left = new AnimatedObject(SpriteSheet.fireKing_left, 32, 32, 2);
-           right = new AnimatedObject(SpriteSheet.fireKing_right, 32, 32, 2);
-       } else if (type == Type.ICEKING){
-           down = new AnimatedObject(SpriteSheet.iceKing_down, 32, 32, 2);
-           up = new AnimatedObject(SpriteSheet.iceKing_up, 32, 32, 2);
-           left = new AnimatedObject(SpriteSheet.iceKing_left, 32, 32, 2);
-           right = new AnimatedObject(SpriteSheet.iceKing_right, 32, 32, 2);
-     }
-   }
 	
 	public Player(String name, double x, double y, Keyboard input) {
 		this.x = x;
 		this.y = y;
 		this.input = input;
-      type = Type.ICEKING;
+      type = Type.ICE;
       checkSprite();
 		animSprite = down;
       sprite = animSprite.getSprite();
@@ -191,16 +177,11 @@ public class Player extends Mob {
   
    private static int time = 0;
 	public void update() {
+      checkSprite();
       sprite = animSprite.getSprite();
       time++;
       if (time % 120 == 0){
           XPLevel ++;
-          if (type == Type.FIREKING){
-              type = Type.ICEKING;
-          } else {
-              type = Type.FIREKING;
-          }
-              checkSprite();
       }
       /*if (time % 180 == 0 && thirst < 100 && hunger < 100){
           thirst += 2;
@@ -285,6 +266,33 @@ public class Player extends Mob {
             Game.changeLevel(Level.spawn);
             health = 1;
         }
+   }
+   
+   private void checkSprite(){
+     if (!(type == Type.NULL)){
+       if (type == Type.FIREKING){
+           down = new AnimatedObject(SpriteSheet.fireKing_down, 32, 32, 2);
+           up = new AnimatedObject(SpriteSheet.fireKing_up, 32, 32, 2);
+           left = new AnimatedObject(SpriteSheet.fireKing_left, 32, 32, 2);
+           right = new AnimatedObject(SpriteSheet.fireKing_right, 32, 32, 2);
+       } else if (type == Type.ICEKING){
+           down = new AnimatedObject(SpriteSheet.iceKing_down, 32, 32, 2);
+           up = new AnimatedObject(SpriteSheet.iceKing_up, 32, 32, 2);
+           left = new AnimatedObject(SpriteSheet.iceKing_left, 32, 32, 2);
+           right = new AnimatedObject(SpriteSheet.iceKing_right, 32, 32, 2);
+     } else if (type == Type.ICE){
+           down = new AnimatedObject(SpriteSheet.iceSprite_down, 32, 32, 2);
+           up = new AnimatedObject(SpriteSheet.iceSprite_up, 32, 32, 2);
+           left = new AnimatedObject(SpriteSheet.iceSprite_left, 32, 32, 2);
+           right = new AnimatedObject(SpriteSheet.iceSprite_right, 32, 32, 2);
+     } else if (type == Type.FIRE){
+           down = new AnimatedObject(SpriteSheet.fireSprite_down, 32, 32, 2);
+           up = new AnimatedObject(SpriteSheet.fireSprite_up, 32, 32, 2);
+           left = new AnimatedObject(SpriteSheet.fireSprite_left, 32, 32, 2);
+           right = new AnimatedObject(SpriteSheet.fireSprite_right, 32, 32, 2);
+     }
+       type = Type.NULL;
+     }
    }
 
 	public void render(Screen screen) {

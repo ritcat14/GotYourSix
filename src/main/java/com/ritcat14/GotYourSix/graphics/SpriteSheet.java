@@ -29,6 +29,18 @@ public class SpriteSheet {
     public static SpriteSheet iceKing_left     = new SpriteSheet(iceKing, 2, 0, 1, 2, 32);
     public static SpriteSheet iceKing_right    = new SpriteSheet(iceKing, 3, 0, 1, 2, 32);
 
+    public static SpriteSheet fireSprite          = new SpriteSheet("/textures/sheets/mob/player/fireSprite.png", 128, 64);
+    public static SpriteSheet fireSprite_down     = new SpriteSheet(fireSprite, 0, 0, 1, 2, 32);
+    public static SpriteSheet fireSprite_up       = new SpriteSheet(fireSprite, 1, 0, 1, 2, 32);
+    public static SpriteSheet fireSprite_left     = new SpriteSheet(fireSprite, 2, 0, 1, 2, 32);
+    public static SpriteSheet fireSprite_right    = new SpriteSheet(fireSprite, 3, 0, 1, 2, 32);
+
+    public static SpriteSheet iceSprite          = new SpriteSheet("/textures/sheets/mob/player/iceSprite.png", 128, 64);
+    public static SpriteSheet iceSprite_down     = new SpriteSheet(iceSprite, 0, 0, 1, 2, 32);
+    public static SpriteSheet iceSprite_up       = new SpriteSheet(iceSprite, 1, 0, 1, 2, 32);
+    public static SpriteSheet iceSprite_left     = new SpriteSheet(iceSprite, 2, 0, 1, 2, 32);
+    public static SpriteSheet iceSprite_right    = new SpriteSheet(iceSprite, 3, 0, 1, 2, 32);
+
     public static SpriteSheet playerSwim          = new SpriteSheet("/textures/sheets/mob/player/mainSpriteSwim.png", 128, 96);
     public static SpriteSheet player_downSwim     = new SpriteSheet(playerSwim, 0, 0, 1, 3, 32);
     public static SpriteSheet player_upSwim       = new SpriteSheet(playerSwim, 1, 0, 1, 3, 32);
