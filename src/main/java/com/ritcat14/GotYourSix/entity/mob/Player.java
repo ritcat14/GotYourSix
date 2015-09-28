@@ -36,10 +36,10 @@ public class Player extends Mob {
 	private AnimatedObject left;
 	private AnimatedObject right;
   
-	private AnimatedObject downSwim = new AnimatedObject(SpriteSheet.player_downSwim, 32, 32, 3);
-	private AnimatedObject upSwim = new AnimatedObject(SpriteSheet.player_upSwim, 32, 32, 3);
-	private AnimatedObject leftSwim = new AnimatedObject(SpriteSheet.player_leftSwim, 32, 32, 3);
-	private AnimatedObject rightSwim = new AnimatedObject(SpriteSheet.player_rightSwim, 32, 32, 3);
+	private AnimatedObject upSwim;
+	private AnimatedObject downSwim;
+	private AnimatedObject leftSwim;
+	private AnimatedObject rightSwim;
 	
 	private AnimatedObject animSprite;
 	
@@ -180,9 +180,6 @@ public class Player extends Mob {
       checkSprite();
       sprite = animSprite.getSprite();
       time++;
-      if (time % 120 == 0){
-          XPLevel ++;
-      }
       /*if (time % 180 == 0 && thirst < 100 && hunger < 100){
           thirst += 2;
           hunger ++;
@@ -271,25 +268,41 @@ public class Player extends Mob {
    private void checkSprite(){
      if (!(type == Type.NULL)){
        if (type == Type.FIREKING){
-           down = new AnimatedObject(SpriteSheet.fireKing_down, 32, 32, 2);
-           up = new AnimatedObject(SpriteSheet.fireKing_up, 32, 32, 2);
-           left = new AnimatedObject(SpriteSheet.fireKing_left, 32, 32, 2);
-           right = new AnimatedObject(SpriteSheet.fireKing_right, 32, 32, 2);
+           up = AnimatedObject.fireKingUp;
+           down = AnimatedObject.fireKingDown;
+           left = AnimatedObject.fireKingLeft;
+           right = AnimatedObject.fireKingRight;
+           upSwim = AnimatedObject.fireKingUpSwim;
+           downSwim = AnimatedObject.fireKingDownSwim;
+           leftSwim = AnimatedObject.fireKingLeftSwim;
+           rightSwim = AnimatedObject.fireKingRightSwim;
        } else if (type == Type.ICEKING){
-           down = new AnimatedObject(SpriteSheet.iceKing_down, 32, 32, 2);
-           up = new AnimatedObject(SpriteSheet.iceKing_up, 32, 32, 2);
-           left = new AnimatedObject(SpriteSheet.iceKing_left, 32, 32, 2);
-           right = new AnimatedObject(SpriteSheet.iceKing_right, 32, 32, 2);
+           up = AnimatedObject.iceKingUp;
+           down = AnimatedObject.iceKingDown;
+           left = AnimatedObject.iceKingLeft;
+           right = AnimatedObject.iceKingRight;
+           upSwim = AnimatedObject.iceKingUpSwim;
+           downSwim = AnimatedObject.iceKingDownSwim;
+           leftSwim = AnimatedObject.iceKingLeftSwim;
+           rightSwim = AnimatedObject.iceKingRightSwim;
      } else if (type == Type.ICE){
-           down = new AnimatedObject(SpriteSheet.iceSprite_down, 32, 32, 2);
-           up = new AnimatedObject(SpriteSheet.iceSprite_up, 32, 32, 2);
-           left = new AnimatedObject(SpriteSheet.iceSprite_left, 32, 32, 2);
-           right = new AnimatedObject(SpriteSheet.iceSprite_right, 32, 32, 2);
+           up = AnimatedObject.iceSpriteUp;
+           down = AnimatedObject.iceSpriteDown;
+           left = AnimatedObject.iceSpriteLeft;
+           right = AnimatedObject.iceSpriteRight;
+           upSwim = AnimatedObject.iceSpriteUpSwim;
+           downSwim = AnimatedObject.iceSpriteDownSwim;
+           leftSwim = AnimatedObject.iceSpriteLeftSwim;
+           rightSwim = AnimatedObject.iceSpriteRightSwim;
      } else if (type == Type.FIRE){
-           down = new AnimatedObject(SpriteSheet.fireSprite_down, 32, 32, 2);
-           up = new AnimatedObject(SpriteSheet.fireSprite_up, 32, 32, 2);
-           left = new AnimatedObject(SpriteSheet.fireSprite_left, 32, 32, 2);
-           right = new AnimatedObject(SpriteSheet.fireSprite_right, 32, 32, 2);
+           up = AnimatedObject.fireKingUp;
+           down = AnimatedObject.fireKingDown;
+           left = AnimatedObject.fireKingLeft;
+           right = AnimatedObject.fireKingRight;
+           upSwim = AnimatedObject.fireKingUpSwim;
+           downSwim = AnimatedObject.fireKingDownSwim;
+           leftSwim = AnimatedObject.fireKingLeftSwim;
+           rightSwim = AnimatedObject.fireKingRightSwim;
      }
        type = Type.NULL;
      }
