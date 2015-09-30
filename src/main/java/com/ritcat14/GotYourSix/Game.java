@@ -3,7 +3,6 @@ package com.ritcat14.GotYourSix;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
@@ -20,7 +19,6 @@ import com.ritcat14.GotYourSix.graphics.UI.UIManager;
 import com.ritcat14.GotYourSix.graphics.UI.UIPanel;
 import com.ritcat14.GotYourSix.graphics.UI.UIActionListener;
 import com.ritcat14.GotYourSix.graphics.UI.UIButton;
-import com.ritcat14.GotYourSix.graphics.UI.UILabel;
 import com.ritcat14.GotYourSix.input.Keyboard;
 import com.ritcat14.GotYourSix.input.Mouse;
 import com.ritcat14.GotYourSix.level.Level;
@@ -117,14 +115,14 @@ public class Game extends Canvas implements Runnable {
         } else if (state == State.START) {
             //initiate start menu items here
             uiManager.addPanel(startPanel);            
-            startButton.setText("Enter");
+            startButton.setText("START");
             startPanel.addComponent(startButton);
             loadedStart = true;
             loadedGame = false;
             paused = false;
         } else if (state == State.PAUSE){
             uiManager.addPanel(pausePanel);
-            pauseButton.setText("Play");
+            pauseButton.setText("CONTINUE");
             pausePanel.addComponent(pauseButton);
             loadedStart = false;
             paused = true;
