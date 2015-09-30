@@ -75,8 +75,8 @@ public class Game extends Canvas implements Runnable {
     private UIPanel          pausePanel =
                          (UIPanel)new UIPanel(new Vector2i(((getWindowWidth() + (60 * scale))/2) - (40 * scale), (getWindowHeight()/2) - (40 * scale)),
                                               new Vector2i((80 * scale), (80 * scale))).setColor(0x363636);
-    private UIButton         pauseButton = new UIButton(new Vector2i(150, 0),
-                                  new Vector2i(100, 30), new UIActionListener() {
+    private UIButton         pauseButton = new UIButton(new Vector2i(130, 0),
+                                  new Vector2i(140, 30), new UIActionListener() {
                                       public void perform() {
                                           paused = false;
                                           STATE = State.GAME;
