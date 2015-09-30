@@ -2,9 +2,11 @@ package com.ritcat14.GotYourSix.graphics.UI;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
 import com.ritcat14.GotYourSix.graphics.UI.UIButtonListener;
 import com.ritcat14.GotYourSix.graphics.UI.UIComponent;
@@ -16,6 +18,8 @@ public class UIButton extends UIComponent {
     public UILabel           label;
     private UIButtonListener buttonListener;
     private UIActionListener actionListener;
+
+    private BufferedImage            image;
 
     private boolean          inside        = false;
     private boolean          pressed       = false;
@@ -30,15 +34,32 @@ public class UIButton extends UIComponent {
         label = new UILabel(lp, "");
         label.setColor(0x444444);
         label.active = false;
+        init();
+    }
 
+    public UIButton(Vector2i position, BufferedImage image, UIActionListener actionListener) {
+        super(position, new Vector2i(image.getWidth(), image.getHeight()));
+        this.actionListener = actionListener;
+        setImage(image);
+        init();
+    }
+  
+    private void init() {
         setColor(0xAAAAAA);
-
         buttonListener = new UIButtonListener();
     }
 
     void init(UIPanel panel) {
         super.init(panel);
-        panel.addComponent(label);
+        if (label != null) panel.addComponent(label);
+    }
+
+    public void setButtonListener(UIButtonListener buttonListener) {
+        this.buttonListener = buttonListener;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
     }
 
     public void setText(String text) {
@@ -82,10 +103,16 @@ public class UIButton extends UIComponent {
     }
 
     public void render(Graphics g) {
-        g.setColor(colour);
-        g.fillRect(position.x + offset.x, position.y + offset.y, size.x, size.y);
-        if (label != null)
-            label.render(g);
+        int x = position.x + offset.x;
+        int y = position.y + offset.y;
+        if (image != null) {
+            g.drawImage(image, x, y, null);
+        } else {
+            g.setColor(colour);
+            g.fillRect(x, y, size.x, size.y);
+            if (label != null)
+                label.render(g);
+        }
     }
 
 }

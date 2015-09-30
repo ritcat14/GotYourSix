@@ -17,6 +17,14 @@ public class UIManager {
     public void addPanel(UIPanel panel) {
         panels.add(panel);
     }
+  
+    public void removePanel(UIPanel panel){
+        panels.remove(panel);
+    }
+  
+    public List<UIPanel> getPanels(){
+        return panels;
+    }
 
     public void update() {
         for (UIPanel panel : panels) {

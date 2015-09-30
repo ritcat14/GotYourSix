@@ -9,7 +9,6 @@ import com.ritcat14.GotYourSix.entity.projectile.Projectile;
 import com.ritcat14.GotYourSix.entity.projectile.TestProjectile;
 import com.ritcat14.GotYourSix.graphics.AnimatedObject;
 import com.ritcat14.GotYourSix.graphics.Screen;
-import com.ritcat14.GotYourSix.graphics.SpriteSheet;
 import com.ritcat14.GotYourSix.graphics.UI.UIActionListener;
 import com.ritcat14.GotYourSix.graphics.UI.UIButton;
 import com.ritcat14.GotYourSix.graphics.UI.UILabel;
@@ -19,6 +18,7 @@ import com.ritcat14.GotYourSix.graphics.UI.UIProgressBar;
 import com.ritcat14.GotYourSix.input.Keyboard;
 import com.ritcat14.GotYourSix.input.Mouse;
 import com.ritcat14.GotYourSix.level.Level;
+import com.ritcat14.GotYourSix.util.ImageUtil;
 import com.ritcat14.GotYourSix.util.Vector2i;
 
 public class Player extends Mob {
@@ -56,6 +56,7 @@ public class Player extends Mob {
    private UIProgressBar UIThirstBar;
    private UILabel xpLabel;
    private UIButton button;
+   private UIButton face;
   
    public static enum Type {
      FIRE, FIREKING, ICE, ICEKING, NULL
@@ -67,7 +68,7 @@ public class Player extends Mob {
 	public Player(String name, Keyboard input) {
       this.name = name;
 		this.input = input;
-      type = Type.ICE;
+      type = Type.FIRE;
       checkSprite();
 		animSprite = down;
       sprite = animSprite.getSprite();
@@ -81,7 +82,7 @@ public class Player extends Mob {
 		this.x = x;
 		this.y = y;
 		this.input = input;
-      type = Type.ICE;
+      type = Type.FIRE;
       checkSprite();
 		animSprite = down;
       sprite = animSprite.getSprite();
@@ -147,6 +148,12 @@ public class Player extends Mob {
       });
       button.setText("Enter");
       panel.addComponent(button);
+      face = new UIButton(new Vector2i(6, 280),ImageUtil.getImage("/textures/sheets/buttons/playerFire.png"), new UIActionListener() {
+          public void perform() {
+              Game.STATE = Game.State.PAUSE;
+          }
+      });
+     panel.addComponent(face);
 	}
   
    public String getName(){
@@ -187,6 +194,7 @@ public class Player extends Mob {
       }
       if (time % 180 == 0 && thirst>= 100) loseHealth(2);
       else if(time % 180 == 0 && hunger >= 100) loseHealth(1);*/
+      if (time % 360 == 0) XPLevel ++;
       if (time % 360 == 0 && health < 100) health += 1;
       UIHealthBar.setProgress(health / 100.0);
       UILevelBar.setProgress(XP / 100.0);
@@ -276,6 +284,7 @@ public class Player extends Mob {
            downSwim = AnimatedObject.fireKingDownSwim;
            leftSwim = AnimatedObject.fireKingLeftSwim;
            rightSwim = AnimatedObject.fireKingRightSwim;
+           if (face != null) face.setImage(ImageUtil.getImage("/textures/sheets/buttons/playerFireKing.png"));
        } else if (type == Type.ICEKING){
            up = AnimatedObject.iceKingUp;
            down = AnimatedObject.iceKingDown;
@@ -285,6 +294,7 @@ public class Player extends Mob {
            downSwim = AnimatedObject.iceKingDownSwim;
            leftSwim = AnimatedObject.iceKingLeftSwim;
            rightSwim = AnimatedObject.iceKingRightSwim;
+           if (face != null) face.setImage(ImageUtil.getImage("/textures/sheets/buttons/playerIceKing.png"));
      } else if (type == Type.ICE){
            up = AnimatedObject.iceSpriteUp;
            down = AnimatedObject.iceSpriteDown;
@@ -294,6 +304,7 @@ public class Player extends Mob {
            downSwim = AnimatedObject.iceSpriteDownSwim;
            leftSwim = AnimatedObject.iceSpriteLeftSwim;
            rightSwim = AnimatedObject.iceSpriteRightSwim;
+           if (face != null) face.setImage(ImageUtil.getImage("/textures/sheets/buttons/playerFire.png"));
      } else if (type == Type.FIRE){
            up = AnimatedObject.fireKingUp;
            down = AnimatedObject.fireKingDown;
@@ -303,6 +314,7 @@ public class Player extends Mob {
            downSwim = AnimatedObject.fireKingDownSwim;
            leftSwim = AnimatedObject.fireKingLeftSwim;
            rightSwim = AnimatedObject.fireKingRightSwim;
+           if (face != null) face.setImage(ImageUtil.getImage("/textures/sheets/buttons/playerIce.png"));
      }
        type = Type.NULL;
      }
