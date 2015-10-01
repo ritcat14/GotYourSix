@@ -33,49 +33,67 @@ public class SpriteSheet {
     public static SpriteSheet fireKingSwim_up      = new SpriteSheet(fireKing, 1, 5, 1, 2, 32);
     public static SpriteSheet fireKingSwim_left    = new SpriteSheet(fireKing, 2, 5, 1, 2, 32);
     public static SpriteSheet fireKingSwim_right   = new SpriteSheet(fireKing, 3, 5, 1, 2, 32);
-    //glancing and shooting
+    //glancing and sleeping
     public static SpriteSheet fireKingGlance   = new SpriteSheet(fireKing, 0, 4, 2, 1, 32);
     public static SpriteSheet fireKingSleep   = new SpriteSheet(fireKing, 2, 4, 1, 1, 32);
 
     public static SpriteSheet iceKing               = new SpriteSheet("/textures/sheets/mob/player/iceKingSprite.png", 128, 64);
+    //walking
     public static SpriteSheet iceKing_down          = new SpriteSheet(iceKing, 0, 0, 1, 2, 32);
     public static SpriteSheet iceKing_up            = new SpriteSheet(iceKing, 1, 0, 1, 2, 32);
     public static SpriteSheet iceKing_left          = new SpriteSheet(iceKing, 2, 0, 1, 2, 32);
     public static SpriteSheet iceKing_right         = new SpriteSheet(iceKing, 3, 0, 1, 2, 32);
-  
+    //shooting
     public static SpriteSheet iceKingShoot_down     = new SpriteSheet(iceKing, 0, 2, 1, 2, 32);
     public static SpriteSheet iceKingShoot_up       = new SpriteSheet(iceKing, 1, 2, 1, 2, 32);
     public static SpriteSheet iceKingShoot_left     = new SpriteSheet(iceKing, 2, 2, 1, 2, 32);
     public static SpriteSheet iceKingShoot_right    = new SpriteSheet(iceKing, 3, 2, 1, 2, 32);
-  
+    //swimming
+    public static SpriteSheet iceKingSwim_down    = new SpriteSheet(iceKing, 0, 5, 1, 2, 32);
+    public static SpriteSheet iceKingSwim_up      = new SpriteSheet(iceKing, 1, 5, 1, 2, 32);
+    public static SpriteSheet iceKingSwim_left    = new SpriteSheet(iceKing, 2, 5, 1, 2, 32);
+    public static SpriteSheet iceKingSwim_right   = new SpriteSheet(iceKing, 3, 5, 1, 2, 32);
+    //glancing and sleeping
     public static SpriteSheet iceKingGlance   = new SpriteSheet(iceKing, 0, 4, 2, 1, 32);
     public static SpriteSheet iceKingSleep   = new SpriteSheet(iceKing, 2, 4, 1, 1, 32);
 
     public static SpriteSheet fireSprite            = new SpriteSheet("/textures/sheets/mob/player/fireSprite.png", 128, 64);
+    //moving
     public static SpriteSheet fireSprite_down       = new SpriteSheet(fireSprite, 0, 0, 1, 2, 32);
     public static SpriteSheet fireSprite_up         = new SpriteSheet(fireSprite, 1, 0, 1, 2, 32);
     public static SpriteSheet fireSprite_left       = new SpriteSheet(fireSprite, 2, 0, 1, 2, 32);
     public static SpriteSheet fireSprite_right      = new SpriteSheet(fireSprite, 3, 0, 1, 2, 32);
-  
+    //shooting
     public static SpriteSheet fireSpriteShoot_down  = new SpriteSheet(fireSprite, 0, 2, 1, 2, 32);
     public static SpriteSheet fireSpriteShoot_up    = new SpriteSheet(fireSprite, 1, 2, 1, 2, 32);
     public static SpriteSheet fireSpriteShoot_left  = new SpriteSheet(fireSprite, 2, 2, 1, 2, 32);
     public static SpriteSheet fireSpriteShoot_right = new SpriteSheet(fireSprite, 3, 2, 1, 2, 32);
-  
+    //swimming
+    public static SpriteSheet fireSpriteSwim_down    = new SpriteSheet(fireSprite, 0, 5, 1, 2, 32);
+    public static SpriteSheet fireSpriteSwim_up      = new SpriteSheet(fireSprite, 1, 5, 1, 2, 32);
+    public static SpriteSheet fireSpriteSwim_left    = new SpriteSheet(fireSprite, 2, 5, 1, 2, 32);
+    public static SpriteSheet fireSpriteSwim_right   = new SpriteSheet(fireSprite, 3, 5, 1, 2, 32);
+    //glancing and sleeping
     public static SpriteSheet fireSpriteGlance   = new SpriteSheet(fireSprite, 0, 4, 2, 1, 32);
     public static SpriteSheet fireSpriteSleep   = new SpriteSheet(fireSprite, 2, 4, 1, 1, 32);
 
     public static SpriteSheet iceSprite             = new SpriteSheet("/textures/sheets/mob/player/iceSprite.png", 128, 64);
+    //moving
     public static SpriteSheet iceSprite_down        = new SpriteSheet(iceSprite, 0, 0, 1, 2, 32);
     public static SpriteSheet iceSprite_up          = new SpriteSheet(iceSprite, 1, 0, 1, 2, 32);
     public static SpriteSheet iceSprite_left        = new SpriteSheet(iceSprite, 2, 0, 1, 2, 32);
     public static SpriteSheet iceSprite_right       = new SpriteSheet(iceSprite, 3, 0, 1, 2, 32);
-  
+    //shooting
     public static SpriteSheet iceSpriteShoot_down   = new SpriteSheet(iceSprite, 0, 0, 2, 2, 32);
     public static SpriteSheet iceSpriteShoot_up     = new SpriteSheet(iceSprite, 1, 0, 2, 2, 32);
     public static SpriteSheet iceSpriteShoot_left   = new SpriteSheet(iceSprite, 2, 0, 2, 2, 32);
     public static SpriteSheet iceSpriteShoot_right  = new SpriteSheet(iceSprite, 3, 0, 2, 2, 32);
-  
+    //swimming
+    public static SpriteSheet iceSpriteSwim_down    = new SpriteSheet(iceSprite, 0, 5, 1, 2, 32);
+    public static SpriteSheet iceSpriteSwim_up      = new SpriteSheet(iceSprite, 1, 5, 1, 2, 32);
+    public static SpriteSheet iceSpriteSwim_left    = new SpriteSheet(iceSprite, 2, 5, 1, 2, 32);
+    public static SpriteSheet iceSpriteSwim_right   = new SpriteSheet(iceSprite, 3, 5, 1, 2, 32);
+    //glancing and sleeping
     public static SpriteSheet iceSpriteGlance   = new SpriteSheet(iceSprite, 0, 4, 2, 1, 32);
     public static SpriteSheet iceSpriteSleep   = new SpriteSheet(iceSprite, 2, 4, 1, 1, 32);
 

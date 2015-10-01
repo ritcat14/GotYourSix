@@ -16,7 +16,7 @@ public class AnimatedObject extends Sprite {
     public static AnimatedObject iceKingUp            = new AnimatedObject(SpriteSheet.iceKing_up, 32, 32, 2);
     public static AnimatedObject iceKingDown          = new AnimatedObject(SpriteSheet.iceKing_down, 32, 32, 2);
     public static AnimatedObject iceKingLeft          = new AnimatedObject(SpriteSheet.iceKing_left, 32, 32, 2);
-    public static AnimatedObject iceKingRight         = new AnimatedObject(SpriteSheet.fireKing_right, 32, 32, 2);
+    public static AnimatedObject iceKingRight         = new AnimatedObject(SpriteSheet.iceKing_right, 32, 32, 2);
 
     public static AnimatedObject iceSpriteUp          = new AnimatedObject(SpriteSheet.iceSprite_up, 32, 32, 2);
     public static AnimatedObject iceSpriteDown        = new AnimatedObject(SpriteSheet.iceSprite_down, 32, 32, 2);
@@ -29,20 +29,20 @@ public class AnimatedObject extends Sprite {
     public static AnimatedObject fireKingLeftSwim     = new AnimatedObject(SpriteSheet.fireKingSwim_left, 32, 32, 2);
     public static AnimatedObject fireKingRightSwim    = new AnimatedObject(SpriteSheet.fireKingSwim_right, 32, 32, 2);
 
-    public static AnimatedObject fireSpriteUpSwim     = new AnimatedObject(SpriteSheet.fireSprite_up, 32, 16, 2);
-    public static AnimatedObject fireSpriteDownSwim   = new AnimatedObject(SpriteSheet.fireSprite_down, 32, 16, 2);
-    public static AnimatedObject fireSpriteLeftSwim   = new AnimatedObject(SpriteSheet.fireSprite_left, 32, 16, 2);
-    public static AnimatedObject fireSpriteRightSwim  = new AnimatedObject(SpriteSheet.fireSprite_right, 32, 16, 2);
+    public static AnimatedObject fireSpriteUpSwim     = new AnimatedObject(SpriteSheet.fireSpriteSwim_up, 32, 16, 2);
+    public static AnimatedObject fireSpriteDownSwim   = new AnimatedObject(SpriteSheet.fireSpriteSwim_down, 32, 16, 2);
+    public static AnimatedObject fireSpriteLeftSwim   = new AnimatedObject(SpriteSheet.fireSpriteSwim_left, 32, 16, 2);
+    public static AnimatedObject fireSpriteRightSwim  = new AnimatedObject(SpriteSheet.fireSpriteSwim_right, 32, 16, 2);
 
-    public static AnimatedObject iceKingUpSwim        = new AnimatedObject(SpriteSheet.iceKing_up, 32, 16, 2);
-    public static AnimatedObject iceKingDownSwim      = new AnimatedObject(SpriteSheet.iceKing_down, 32, 16, 2);
-    public static AnimatedObject iceKingLeftSwim      = new AnimatedObject(SpriteSheet.iceKing_left, 32, 16, 2);
-    public static AnimatedObject iceKingRightSwim     = new AnimatedObject(SpriteSheet.fireKing_right, 32, 16, 2);
+    public static AnimatedObject iceKingUpSwim        = new AnimatedObject(SpriteSheet.iceKingSwim_up, 32, 16, 2);
+    public static AnimatedObject iceKingDownSwim      = new AnimatedObject(SpriteSheet.iceKingSwim_down, 32, 16, 2);
+    public static AnimatedObject iceKingLeftSwim      = new AnimatedObject(SpriteSheet.iceKingSwim_left, 32, 16, 2);
+    public static AnimatedObject iceKingRightSwim     = new AnimatedObject(SpriteSheet.iceKingSwim_right, 32, 16, 2);
 
-    public static AnimatedObject iceSpriteUpSwim      = new AnimatedObject(SpriteSheet.iceSprite_up, 32, 16, 2);
-    public static AnimatedObject iceSpriteDownSwim    = new AnimatedObject(SpriteSheet.iceSprite_down, 32, 16, 2);
-    public static AnimatedObject iceSpriteLeftSwim    = new AnimatedObject(SpriteSheet.iceSprite_left, 32, 16, 2);
-    public static AnimatedObject iceSpriteRightSwim   = new AnimatedObject(SpriteSheet.iceSprite_right, 32, 16, 2);
+    public static AnimatedObject iceSpriteUpSwim      = new AnimatedObject(SpriteSheet.iceSpriteSwim_up, 32, 16, 2);
+    public static AnimatedObject iceSpriteDownSwim    = new AnimatedObject(SpriteSheet.iceSpriteSwim_down, 32, 16, 2);
+    public static AnimatedObject iceSpriteLeftSwim    = new AnimatedObject(SpriteSheet.iceSpriteSwim_left, 32, 16, 2);
+    public static AnimatedObject iceSpriteRightSwim   = new AnimatedObject(SpriteSheet.iceSpriteSwim_right, 32, 16, 2);
 
     //shooting animations
     public static AnimatedObject fireKingUpShoot      = new AnimatedObject(SpriteSheet.fireKingShoot_up, 32, 32, 2);
@@ -58,7 +58,7 @@ public class AnimatedObject extends Sprite {
     public static AnimatedObject iceKingUpShoot       = new AnimatedObject(SpriteSheet.iceKingShoot_up, 32, 32, 2);
     public static AnimatedObject iceKingDownShoot     = new AnimatedObject(SpriteSheet.iceKingShoot_down, 32, 32, 2);
     public static AnimatedObject iceKingLeftShoot     = new AnimatedObject(SpriteSheet.iceKingShoot_left, 32, 32, 2);
-    public static AnimatedObject iceKingRightShoot    = new AnimatedObject(SpriteSheet.fireKingShoot_right, 32, 32, 2);
+    public static AnimatedObject iceKingRightShoot    = new AnimatedObject(SpriteSheet.iceKingShoot_right, 32, 32, 2);
 
     public static AnimatedObject iceSpriteUpShoot     = new AnimatedObject(SpriteSheet.iceSpriteShoot_up, 32, 32, 2);
     public static AnimatedObject iceSpriteDownShoot   = new AnimatedObject(SpriteSheet.iceSpriteShoot_down, 32, 32, 2);

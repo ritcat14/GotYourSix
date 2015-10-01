@@ -91,6 +91,12 @@ public class Game extends Canvas implements Runnable {
                                           STATE = State.GAME;
                                       }
                                   });
+    private UIButton         exitButton = new UIButton(new Vector2i(130, 40),
+                                  new Vector2i(100, 30), new UIActionListener() {
+                                      public void perform() {
+                                        System.exit(0);
+                                      }
+                                  });
 
     public Game() {
         Dimension size = new Dimension((width * scale) + (60 * 5), height * scale);
@@ -137,6 +143,8 @@ public class Game extends Canvas implements Runnable {
             uiManager.addPanel(pausePanel);
             pauseButton.setText("CONTINUE");
             pausePanel.addComponent(pauseButton);
+            exitButton.setText("EXIT");
+            pausePanel.addComponent(exitButton);
             loadedStart = false;
             paused = true;
         }
