@@ -68,7 +68,6 @@ public class Player extends Mob {
 	public Player(String name, Keyboard input) {
       this.name = name;
 		this.input = input;
-      type = Type.FIRE;
       checkSprite();
 		animSprite = down;
       sprite = animSprite.getSprite();
@@ -82,7 +81,6 @@ public class Player extends Mob {
 		this.x = x;
 		this.y = y;
 		this.input = input;
-      type = Type.FIRE;
       checkSprite();
 		animSprite = down;
       sprite = animSprite.getSprite();

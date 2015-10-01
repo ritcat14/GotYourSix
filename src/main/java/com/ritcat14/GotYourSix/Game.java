@@ -24,6 +24,7 @@ import com.ritcat14.GotYourSix.input.Mouse;
 import com.ritcat14.GotYourSix.level.Level;
 import com.ritcat14.GotYourSix.level.TileCoordinate;
 import com.ritcat14.GotYourSix.util.Console;
+import com.ritcat14.GotYourSix.util.ImageUtil;
 import com.ritcat14.GotYourSix.util.Vector2i;
 
 public class Game extends Canvas implements Runnable {
@@ -63,11 +64,19 @@ public class Game extends Canvas implements Runnable {
     //start menu items
     private boolean          loadedStart = false;
     private UIPanel          startPanel = (UIPanel)new UIPanel(new Vector2i(0, 0),
-                                              new Vector2i(Game.getWindowWidth() + (60 * scale), Game.getWindowHeight())).setColor(0x363636);
-    private UIButton         startButton = new UIButton(new Vector2i((getWindowWidth() + (60 * scale)) / 2, getWindowHeight() / 2).add(new Vector2i(2, 136)),
+                                              new Vector2i(Game.getWindowWidth() + (60 * scale), Game.getWindowHeight()), ImageUtil.getImage("/textures/sheets/buttons/background.png")).setColor(0x363636);
+    private UIButton         startFireButton = new UIButton(new Vector2i((getWindowWidth() + (60 * scale)) / 2, getWindowHeight() / 2).add(new Vector2i(2, 136)),
                                   new Vector2i(100, 30), new UIActionListener() {
                                       public void perform() {
                                           STATE = State.GAME;
+                                          Player.type = Player.Type.FIRE;
+                                      }
+                                  });
+    private UIButton         startIceButton = new UIButton(new Vector2i((getWindowWidth() + (60 * scale)) / 2, (getWindowHeight() / 2) + 40).add(new Vector2i(2, 136)),
+                                  new Vector2i(100, 30), new UIActionListener() {
+                                      public void perform() {
+                                          STATE = State.GAME;
+                                          Player.type = Player.Type.ICE;
                                       }
                                   });
   
@@ -115,8 +124,12 @@ public class Game extends Canvas implements Runnable {
         } else if (state == State.START) {
             //initiate start menu items here
             uiManager.addPanel(startPanel);            
-            startButton.setText("START");
-            startPanel.addComponent(startButton);
+            startFireButton.setText("FIRE");
+            startFireButton.label.setColor(0XFFB44720);
+            startPanel.addComponent(startFireButton);
+            startIceButton.setText("ICE");
+            startIceButton.label.setColor(0XFF2A7BCC);
+            startPanel.addComponent(startIceButton);
             loadedStart = true;
             loadedGame = false;
             paused = false;
