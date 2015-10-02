@@ -25,6 +25,7 @@ import com.ritcat14.GotYourSix.level.Level;
 import com.ritcat14.GotYourSix.level.TileCoordinate;
 import com.ritcat14.GotYourSix.util.Console;
 import com.ritcat14.GotYourSix.util.ImageUtil;
+//import com.ritcat14.GotYourSix.util.Sound;
 import com.ritcat14.GotYourSix.util.Vector2i;
 
 public class Game extends Canvas implements Runnable {
@@ -60,6 +61,7 @@ public class Game extends Canvas implements Runnable {
     public static boolean    loaded      = false;
     private boolean          loadedGame  = false;
     private static  boolean paused = false;
+    //private Sound sound;
 
     //start menu items
     private boolean          loadedStart = false;
@@ -136,6 +138,7 @@ public class Game extends Canvas implements Runnable {
             startIceButton.setText("ICE");
             startIceButton.label.setColor(0XFF2A7BCC);
             startPanel.addComponent(startIceButton);
+            //sound = new Sound("/music/Intro.wav");
             loadedStart = true;
             loadedGame = false;
             paused = false;
@@ -287,8 +290,12 @@ public class Game extends Canvas implements Runnable {
         bs.show();
     }
 
-    public Graphics getGrapics() {
+    public Graphics getGraphics() {
         return getBufferStrategy().getDrawGraphics();
+    }
+  
+    public BufferedImage getMapImage(){
+        return image;
     }
 
     public static void main(String[] args) {

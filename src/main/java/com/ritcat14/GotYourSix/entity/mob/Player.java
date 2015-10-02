@@ -1,5 +1,6 @@
 package com.ritcat14.GotYourSix.entity.mob;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -11,6 +12,8 @@ import com.ritcat14.GotYourSix.entity.projectile.TestProjectile;
 import com.ritcat14.GotYourSix.graphics.AnimatedObject;
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.Sprite;
+import com.ritcat14.GotYourSix.graphics.UI.Inventory;
+import com.ritcat14.GotYourSix.graphics.UI.Minimap;
 import com.ritcat14.GotYourSix.graphics.UI.UIActionListener;
 import com.ritcat14.GotYourSix.graphics.UI.UIButton;
 import com.ritcat14.GotYourSix.graphics.UI.UILabel;
@@ -61,10 +64,12 @@ public class Player extends Mob {
    private UIProgressBar UIHungerBar;
    private UIProgressBar UIThirstBar;
    private UIProgressBar UIStaminaBar;
+   private Inventory invent;
    private UILabel xpLabel;
    private UIButton button;
    private UIButton face;
    private BufferedImage image;
+   private Game game = Game.getGame();
   
    public static enum Type {
      FIRE, FIREKING, ICE, ICEKING, NULL
@@ -94,11 +99,6 @@ public class Player extends Mob {
 		this.x = x;
 		this.y = y;
 		this.input = input;
-      checkSprite();
-		animSprite = down;
-      sprite = animSprite.getSprite();
-      System.out.println(sprite);
-		fireRate = TestProjectile.FIRERATE;
      
       // Player default attributes
       health = 100;
@@ -110,76 +110,78 @@ public class Player extends Mob {
       staminaInc = 3;
       
       ui = Game.getUIManager();
+      BufferedImage back = ImageUtil.getImage("/ui/bars/back.png");
+      int fontCol = 0xFFE7EF;
+      Font font = new Font("Serif", Font.BOLD + Font.ITALIC, 24);
+      if (type == Type.FIRE || type == Type.FIREKING){
+          back = ImageUtil.getImage("/ui/bars/back.png");
+          fontCol = 0xE83E44;
+      }else if (type == Type.ICE || type == Type.ICEKING){
+          back = ImageUtil.getImage("/ui/bars/back.png");
+          fontCol = 0x417FEA;
+      }
       UIPanel panel = (UIPanel) new UIPanel(new Vector2i(Game.getWindowWidth(), 0), new Vector2i(60 * 5, Game.getWindowHeight())).setColor(0x363636);
       ui.addPanel(panel);
-      panel.addComponent(((UILabel)new UILabel(new Vector2i(40, 300), name).setColor(0xB3B3B3)).setFont(new Font("Veranda", Font.BOLD, 24)));
+      Minimap map = new Minimap(new Vector2i(Game.getWindowWidth(), 0));
+      ui.addPanel(map);
+      panel.addComponent(((UILabel)new UILabel(new Vector2i(250, 330), name).setColor(0xB3B3B3)).setFont(new Font("Veranda", Font.BOLD, 24)));
      
-      UIHealthBar = new UIProgressBar(new Vector2i(10, 315), new Vector2i((60 * 5) - 20, 20));
-      UIHealthBar.setColor(0x545454);
-      UIHealthBar.setForegroundColour(0xE03434);
+      UIHealthBar = new UIProgressBar(new Vector2i(20, 345), back, ImageUtil.getImage("/ui/bars/healthFront.png"));
       panel.addComponent(UIHealthBar);
       
-      UIStaminaBar = new UIProgressBar(new Vector2i(10, 345), new Vector2i((60 * 5) - 20, 20));
-      UIStaminaBar.setColor(0x545454);
-      UIStaminaBar.setForegroundColour(0xFFCC26);
+      UIStaminaBar = new UIProgressBar(new Vector2i(20, 405), back, ImageUtil.getImage("/ui/bars/staminaFront.png"));
       panel.addComponent(UIStaminaBar);
       
-      UILevelBar = new UIProgressBar(new Vector2i(10, 375), new Vector2i((60 * 5) - 20, 20));
-      UILevelBar.setColor(0x545454);
-      UILevelBar.setForegroundColour(0x548915);
+      UILevelBar = new UIProgressBar(new Vector2i(20, 465), back, ImageUtil.getImage("/ui/bars/xpFront.png"));
       panel.addComponent(UILevelBar);
       
-      UIHungerBar = new UIProgressBar(new Vector2i(10, 405), new Vector2i((60 * 5) - 20, 20));
-      UIHungerBar.setColor(0x545454);
-      UIHungerBar.setForegroundColour(0x511F16);
+      UIHungerBar = new UIProgressBar(new Vector2i(20, 525), back, ImageUtil.getImage("/ui/bars/foodFront.png"));
       panel.addComponent(UIHungerBar);
       
-      UIThirstBar = new UIProgressBar(new Vector2i(10, 435), new Vector2i((60 * 5) - 20, 20));
+      UIThirstBar = new UIProgressBar(new Vector2i(20, 585), back, ImageUtil.getImage("/ui/bars/waterFront.png"));
       UIThirstBar.setColor(0x545454);
       UIThirstBar.setForegroundColour(0x0094FF);
       panel.addComponent(UIThirstBar);
       
-      UILabel hpLabel = new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(2, 16)),"HP");
-      hpLabel.setColor(0xFFE7EF);
-      hpLabel.setFont(new Font("Veranda", Font.BOLD, 18));
+      UILabel hpLabel = ((UILabel)new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(-5, -16)),"HP").setColor(fontCol)).setFont(font);
       panel.addComponent(hpLabel);
      
-      UILabel staminaLabel = new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(2, 46)),"STAMINA");
-      staminaLabel.setColor(0xFFE7EF);
-      staminaLabel.setFont(new Font("Veranda", Font.BOLD, 18));
+      UILabel staminaLabel = ((UILabel)new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(-5, 46)),"STAMINA").setColor(fontCol)).setFont(font);
       panel.addComponent(staminaLabel);
      
-      xpLabel = new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(2, 76)),"LVL " + XPLevel);
-      xpLabel.setColor(0xFFE7EF);
-      xpLabel.setFont(new Font("Veranda", Font.BOLD, 18));
+      xpLabel = ((UILabel)new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(-5, 106)),"LVL " + XPLevel).setColor(fontCol)).setFont(font);
       panel.addComponent(xpLabel);
      
-      UILabel foodLabel = new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(2, 106)),"FOOD");
-      foodLabel.setColor(0xFFE7EF);
-      foodLabel.setFont(new Font("Veranda", Font.BOLD, 18));
+      UILabel foodLabel = ((UILabel)new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(-5, 166)),"FOOD").setColor(fontCol)).setFont(font);
       panel.addComponent(foodLabel);
      
-      UILabel waterLabel = new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(2, 136)),"WATER");
-      waterLabel.setColor(0xFFE7EF);
-      waterLabel.setFont(new Font("Veranda", Font.BOLD, 18));
+      UILabel waterLabel = ((UILabel)new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(-5, 226)),"WATER").setColor(fontCol)).setFont(font);
       panel.addComponent(waterLabel);
      
-      button= new UIButton(new Vector2i(UIHealthBar.position).add(new Vector2i(2, 166)), new Vector2i(100, 30), new UIActionListener(){
+      button= new UIButton(new Vector2i(UIHealthBar.position).add(new Vector2i(2, 600)), new Vector2i(100, 30), new UIActionListener(){
           public void perform() {
               //Change level
               if (changeLevel) Game.changeLevel(levelToGo);
           }
       });
       button.setText("Enter");
-      panel.addComponent(button);
+      panel.addComponent(button);     
+     
+      checkSprite();
+		animSprite = down;
+      sprite = animSprite.getSprite();
+		fireRate = TestProjectile.FIRERATE;
+     
       if (image != null){
-      face = new UIButton(new Vector2i(6, 280),image, new UIActionListener() {
+      face = new UIButton(new Vector2i(200, 330 - 20),image, new UIActionListener() {
           public void perform() {
               Game.STATE = Game.State.PAUSE;
           }
       });
      panel.addComponent(face);
       }
+      /*invent = new Inventory(new Vector2i((Game.getWindowWidth() + (60 * 5)) - 275, Game.getWindowHeight() - 400));
+      ui.addPanel(invent);*/
 	}
   
    public String getName(){
@@ -213,15 +215,15 @@ public class Player extends Mob {
       checkSprite();
       sprite = animSprite.getSprite();
       time++;
-      /*if (time % 180 == 0 && thirst < 100 && hunger < 100){
+      if (time % 180 == 0 && thirst < 100 && hunger < 100){
           thirst += 2;
           hunger ++;
           //Game.loadBar.stop();
       }
       if (time % 180 == 0 && thirst>= 100) loseHealth(2);
-      else if(time % 180 == 0 && hunger >= 100) loseHealth(1);*/
+      else if(time % 180 == 0 && hunger >= 100) loseHealth(1);
       if (time % 360 == 0) XPLevel ++;
-      if (time % 360 == 0 && health < 100) health += 1;
+      if (time % 60 == 0 && health < 100) health += 1;
       UIHealthBar.setProgress(health / 100.0);
       UILevelBar.setProgress(XP / 100.0);
       UIHungerBar.setProgress(hunger / 100.0);
@@ -316,7 +318,7 @@ public class Player extends Mob {
            downSwim = AnimatedObject.fireKingDownSwim;
            leftSwim = AnimatedObject.fireKingLeftSwim;
            rightSwim = AnimatedObject.fireKingRightSwim;
-           image = ImageUtil.getImage("/textures/sheets/buttons/playerFireKing.png");
+           image = ImageUtil.getImage("/ui/buttons/playerFireKing.png");
        } else if (type == Type.ICEKING){
            up = AnimatedObject.iceKingUp;
            down = AnimatedObject.iceKingDown;
@@ -326,7 +328,7 @@ public class Player extends Mob {
            downSwim = AnimatedObject.iceKingDownSwim;
            leftSwim = AnimatedObject.iceKingLeftSwim;
            rightSwim = AnimatedObject.iceKingRightSwim;
-           image = ImageUtil.getImage("/textures/sheets/buttons/playerIceKing.png");
+           image = ImageUtil.getImage("/ui/buttons/playerIceKing.png");
      } else if (type == Type.ICE){
            up = AnimatedObject.iceSpriteUp;
            down = AnimatedObject.iceSpriteDown;
@@ -336,7 +338,7 @@ public class Player extends Mob {
            downSwim = AnimatedObject.iceSpriteDownSwim;
            leftSwim = AnimatedObject.iceSpriteLeftSwim;
            rightSwim = AnimatedObject.iceSpriteRightSwim;
-           image = ImageUtil.getImage("/textures/sheets/buttons/playerIce.png");
+           image = ImageUtil.getImage("/ui/buttons/playerIce.png");
      } else if (type == Type.FIRE){
            up = AnimatedObject.fireSpriteUp;
            down = AnimatedObject.fireSpriteDown;
@@ -346,7 +348,7 @@ public class Player extends Mob {
            downSwim = AnimatedObject.fireSpriteDownSwim;
            leftSwim = AnimatedObject.fireSpriteLeftSwim;
            rightSwim = AnimatedObject.fireSpriteRightSwim;
-           image = ImageUtil.getImage("/textures/sheets/buttons/playerFire.png");
+           image = ImageUtil.getImage("/ui/buttons/playerFire.png");
      }
        type = Type.NULL;
      }
@@ -354,5 +356,6 @@ public class Player extends Mob {
 
 	public void render(Screen screen) {
 		screen.renderMob((int)(x - 16), (int)(y - 16), sprite);
+      //invent.render(game.getGraphics());
 	}
 }

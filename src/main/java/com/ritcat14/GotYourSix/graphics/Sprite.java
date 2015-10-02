@@ -10,39 +10,40 @@ public class Sprite {
     public int[]          pixels;
     protected SpriteSheet sheet;
 
-    public static Sprite  grass               = new Sprite(16, 0, 0, SpriteSheet.tiles);
+    public static Sprite  voidSprite          = new Sprite(16, 6, 1, SpriteSheet.tiles);
+
+    //sprites:
+    public static Sprite  bush                = new Sprite(16, 0, 0, SpriteSheet.tiles);
     public static Sprite  flower              = new Sprite(16, 1, 0, SpriteSheet.tiles);
-    public static Sprite  voidSprite          = new Sprite(16, 6, 1, SpriteSheet.spawn_level);
+    public static Sprite  gravel              = new Sprite(16, 0, 1, SpriteSheet.tiles);
+    public static Sprite  woodFloor           = new Sprite(16, 1, 1, SpriteSheet.tiles);
+    public static Sprite  grass               = new Sprite(16, 3, 1, SpriteSheet.tiles);
+    public static Sprite  water               = new Sprite(16, 9, 0, SpriteSheet.tiles);
+    public static Sprite  brickWall           = new Sprite(16, 0, 2, SpriteSheet.tiles);
+    public static Sprite  mossWall            = new Sprite(16, 1, 2, SpriteSheet.tiles);
+    public static Sprite  doorClosed          = new Sprite(16, 0, 3, SpriteSheet.tiles);
+    public static Sprite  doorOpen            = new Sprite(16, 1, 3, SpriteSheet.tiles);
+    public static Sprite  portal              = new Sprite(16, 2, 3, SpriteSheet.tiles);
+    public static Sprite  brickWallShad       = new Sprite(16, 3, 3, SpriteSheet.tiles);
+    public static Sprite  mossWallShad        = new Sprite(16, 4, 3, SpriteSheet.tiles);
 
-    //Spawn level sprites:
-    public static Sprite  spawn_grass         = new Sprite(16, 3, 1, SpriteSheet.spawn_level);
-    public static Sprite  spawn_flower        = new Sprite(16, 1, 0, SpriteSheet.spawn_level);
-    public static Sprite  spawn_water         = new Sprite(16, 6, 1, SpriteSheet.spawn_level);
-    public static Sprite  spawn_gravel        = new Sprite(16, 0, 1, SpriteSheet.spawn_level);
-    public static Sprite  spawn_woodFloor     = new Sprite(16, 1, 1, SpriteSheet.spawn_level);
-    public static Sprite  spawn_mossWall      = new Sprite(16, 1, 2, SpriteSheet.spawn_level);
-    public static Sprite  spawn_brickWall     = new Sprite(16, 0, 2, SpriteSheet.spawn_level);
-    public static Sprite  spawn_portal        = new Sprite(16, 2, 3, SpriteSheet.spawn_level);
-    public static Sprite  spawn_doorClosed    = new Sprite(16, 0, 3, SpriteSheet.spawn_level);
-    public static Sprite  spawn_doorOpen      = new Sprite(16, 1, 3, SpriteSheet.spawn_level);
+    public static Sprite  wallGrassTL         = new Sprite(16, 2, 0, SpriteSheet.tiles);
+    public static Sprite  wallGrassTM         = new Sprite(16, 3, 0, SpriteSheet.tiles);
+    public static Sprite  wallGrassTR         = new Sprite(16, 4, 0, SpriteSheet.tiles);
+    public static Sprite  wallGrassLM         = new Sprite(16, 2, 1, SpriteSheet.tiles);
+    public static Sprite  wallGrassRM         = new Sprite(16, 4, 1, SpriteSheet.tiles);
+    public static Sprite  wallGrassBL         = new Sprite(16, 2, 2, SpriteSheet.tiles);
+    public static Sprite  wallGrassBM         = new Sprite(16, 3, 2, SpriteSheet.tiles);
+    public static Sprite  wallGrassBR         = new Sprite(16, 4, 2, SpriteSheet.tiles);
 
-    public static Sprite  spawn_wallGrassTL   = new Sprite(16, 2, 0, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallGrassTM   = new Sprite(16, 3, 0, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallGrassTR   = new Sprite(16, 4, 0, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallGrassLM   = new Sprite(16, 2, 1, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallGrassRM   = new Sprite(16, 4, 1, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallGrassBL   = new Sprite(16, 2, 2, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallGrassBM   = new Sprite(16, 3, 2, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallGrassBR   = new Sprite(16, 4, 2, SpriteSheet.spawn_level);
-
-    public static Sprite  spawn_wallWaterTL   = new Sprite(16, 5, 0, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallWaterTM   = new Sprite(16, 6, 0, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallWaterTR   = new Sprite(16, 7, 0, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallWaterLM   = new Sprite(16, 5, 1, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallWaterRM   = new Sprite(16, 7, 1, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallWaterBL   = new Sprite(16, 5, 2, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallWaterBM   = new Sprite(16, 6, 2, SpriteSheet.spawn_level);
-    public static Sprite  spawn_wallWaterBR   = new Sprite(16, 7, 2, SpriteSheet.spawn_level);
+    public static Sprite  wallWaterTL         = new Sprite(16, 5, 0, SpriteSheet.tiles);
+    public static Sprite  wallWaterTM         = new Sprite(16, 6, 0, SpriteSheet.tiles);
+    public static Sprite  wallWaterTR         = new Sprite(16, 7, 0, SpriteSheet.tiles);
+    public static Sprite  wallWaterLM         = new Sprite(16, 8, 0, SpriteSheet.tiles);
+    public static Sprite  wallWaterRM         = new Sprite(16, 10, 0, SpriteSheet.tiles);
+    public static Sprite  wallWaterBL         = new Sprite(16, 11, 0, SpriteSheet.tiles);
+    public static Sprite  wallWaterBM         = new Sprite(16, 12, 0, SpriteSheet.tiles);
+    public static Sprite  wallWaterBR         = new Sprite(16, 13, 0, SpriteSheet.tiles);
 
     //Projectile sprites here:
     public static Sprite  test                = new Sprite(16, 0, 0, SpriteSheet.projectile_test);

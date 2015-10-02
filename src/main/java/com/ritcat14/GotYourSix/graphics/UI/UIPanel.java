@@ -26,7 +26,6 @@ public class UIPanel extends UIComponent{
         super(position);
         this.position = position;
         this.size = size;
-        colour = new Color(0xff00ff);
         this.image = image;
     }
   
@@ -47,11 +46,11 @@ public class UIPanel extends UIComponent{
     }
   
     public void render(Graphics g) {
-        g.setColor(colour);
+        if (colour != null) g.setColor(colour);
         g.fillRect(position.x, position.y, size.x, size.y);
-        if (image != null) g.drawImage(image, 0,0,size.x, size.y, null);
+        if (image != null) g.drawImage(image, position.x,position.y,size.x, size.y, null);
         for (UIComponent component : components){
             component.render(g);
         }
-    }  
+    }
 }

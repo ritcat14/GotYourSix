@@ -32,7 +32,7 @@ public class Console implements ActionListener{
     this.frame = new JFrame("Server Console");
     this.frame.setSize(600, 400);
     this.frame.setLocationRelativeTo(null);
-    this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+    this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
     this.textPane = new JTextPane();
     this.textPane.setEditable(false);

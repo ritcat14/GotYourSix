@@ -85,7 +85,7 @@ public class Level {
         if (!createdDoors) {
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
-                    if (tiles[x + y * width] == Tile.col_spawn_door) {
+                    if (tiles[x + y * width] == Tile.col_door) {
                         Door d = new Door(x, y);
                         add(d);
                     }
@@ -311,60 +311,64 @@ public class Level {
     // 0xff7f7f00 rock
     public Tile getTile(int x, int y) {
         if (x < 0 || y < 0 || x >= width || y >= height)
-            return Tile.spawn_water;
-        if (tiles[x + y * width] == Tile.col_spawn_grass)
-            return Tile.spawn_grass;
-        if (tiles[x + y * width] == Tile.col_spawn_flower)
-            return Tile.spawn_flower;
-        if (tiles[x + y * width] == Tile.col_spawn_brickWall)
-            return Tile.spawn_brickWall;
-        if (tiles[x + y * width] == Tile.col_spawn_gravel)
-            return Tile.spawn_gravel;
-        if (tiles[x + y * width] == Tile.col_spawn_mossWall)
-            return Tile.spawn_mossWall;
-        if (tiles[x + y * width] == Tile.col_spawn_water)
-            return Tile.spawn_water;
-        if (tiles[x + y * width] == Tile.col_spawn_woodFloor)
-            return Tile.spawn_woodFloor;
-        if (tiles[x + y * width] == Tile.col_spawn_portal)
-            return Tile.spawn_portal;
-        if (tiles[x + y * width] == Tile.col_spawn_door)
-            return Tile.spawn_door;
+            return Tile.water;
+        if (tiles[x + y * width] == Tile.col_grass)
+            return Tile.grass;
+        if (tiles[x + y * width] == Tile.col_flower)
+            return Tile.flower;
+        if (tiles[x + y * width] == Tile.col_brickWall)
+            return Tile.brickWall;
+        if (tiles[x + y * width] == Tile.col_gravel)
+            return Tile.gravel;
+        if (tiles[x + y * width] == Tile.col_mossWall)
+            return Tile.mossWall;
+        if (tiles[x + y * width] == Tile.col_water)
+            return Tile.water;
+        if (tiles[x + y * width] == Tile.col_woodFloor)
+            return Tile.woodFloor;
+        if (tiles[x + y * width] == Tile.col_portal)
+            return Tile.portal;
+        if (tiles[x + y * width] == Tile.col_door)
+            return Tile.door;
+        if (tiles[x + y * width] == Tile.col_mossWallShad)
+            return Tile.mossWallShad;
+        if (tiles[x + y * width] == Tile.col_brickWallShad)
+            return Tile.brickWallShad;
 
-        if (tiles[x + y * width] == Tile.col_spawn_wallGrassTL)
-            return Tile.spawn_wallGrassTL;
-        if (tiles[x + y * width] == Tile.col_spawn_wallGrassTM)
-            return Tile.spawn_wallGrassTM;
-        if (tiles[x + y * width] == Tile.col_spawn_wallGrassTR)
-            return Tile.spawn_wallGrassTR;
-        if (tiles[x + y * width] == Tile.col_spawn_wallGrassLM)
-            return Tile.spawn_wallGrassLM;
-        if (tiles[x + y * width] == Tile.col_spawn_wallGrassRM)
-            return Tile.spawn_wallGrassRM;
-        if (tiles[x + y * width] == Tile.col_spawn_wallGrassBL)
-            return Tile.spawn_wallGrassBL;
-        if (tiles[x + y * width] == Tile.col_spawn_wallGrassBM)
-            return Tile.spawn_wallGrassBM;
-        if (tiles[x + y * width] == Tile.col_spawn_wallGrassBR)
-            return Tile.spawn_wallGrassBR;
+        if (tiles[x + y * width] == Tile.col_wallGrassTL)
+            return Tile.wallGrassTL;
+        if (tiles[x + y * width] == Tile.col_wallGrassTM)
+            return Tile.wallGrassTM;
+        if (tiles[x + y * width] == Tile.col_wallGrassTR)
+            return Tile.wallGrassTR;
+        if (tiles[x + y * width] == Tile.col_wallGrassLM)
+            return Tile.wallGrassLM;
+        if (tiles[x + y * width] == Tile.col_wallGrassRM)
+            return Tile.wallGrassRM;
+        if (tiles[x + y * width] == Tile.col_wallGrassBL)
+            return Tile.wallGrassBL;
+        if (tiles[x + y * width] == Tile.col_wallGrassBM)
+            return Tile.wallGrassBM;
+        if (tiles[x + y * width] == Tile.col_wallGrassBR)
+            return Tile.wallGrassBR;
 
-        if (tiles[x + y * width] == Tile.col_spawn_wallWaterTL)
-            return Tile.spawn_wallWaterTL;
-        if (tiles[x + y * width] == Tile.col_spawn_wallWaterTM)
-            return Tile.spawn_wallWaterTM;
-        if (tiles[x + y * width] == Tile.col_spawn_wallWaterTR)
-            return Tile.spawn_wallWaterTR;
-        if (tiles[x + y * width] == Tile.col_spawn_wallWaterLM)
-            return Tile.spawn_wallWaterLM;
-        if (tiles[x + y * width] == Tile.col_spawn_wallWaterRM)
-            return Tile.spawn_wallWaterRM;
-        if (tiles[x + y * width] == Tile.col_spawn_wallWaterBL)
-            return Tile.spawn_wallWaterBL;
-        if (tiles[x + y * width] == Tile.col_spawn_wallWaterBM)
-            return Tile.spawn_wallWaterBM;
-        if (tiles[x + y * width] == Tile.col_spawn_wallWaterBR)
-            return Tile.spawn_wallWaterBR;
-        return Tile.spawn_water;
+        if (tiles[x + y * width] == Tile.col_wallWaterTL)
+            return Tile.wallWaterTL;
+        if (tiles[x + y * width] == Tile.col_wallWaterTM)
+            return Tile.wallWaterTM;
+        if (tiles[x + y * width] == Tile.col_wallWaterTR)
+            return Tile.wallWaterTR;
+        if (tiles[x + y * width] == Tile.col_wallWaterLM)
+            return Tile.wallWaterLM;
+        if (tiles[x + y * width] == Tile.col_wallWaterRM)
+            return Tile.wallWaterRM;
+        if (tiles[x + y * width] == Tile.col_wallWaterBL)
+            return Tile.wallWaterBL;
+        if (tiles[x + y * width] == Tile.col_wallWaterBM)
+            return Tile.wallWaterBM;
+        if (tiles[x + y * width] == Tile.col_wallWaterBR)
+            return Tile.wallWaterBR;
+        return Tile.water;
     }
 
 }

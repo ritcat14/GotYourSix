@@ -14,7 +14,6 @@ public class SpriteSheet {
     public int[]              pixels;
 
     public static SpriteSheet tiles                 = new SpriteSheet("/textures/sheets/spritesheet.png", 256);
-    public static SpriteSheet spawn_level           = new SpriteSheet("/textures/sheets/spawn_level.png", 128, 64);
     public static SpriteSheet projectile_test       = new SpriteSheet("/textures/sheets/projectiles/test.png", 48);
 
     public static SpriteSheet fireKing              = new SpriteSheet("/textures/sheets/mob/player/fireKingSprite.png", 128, 64);
