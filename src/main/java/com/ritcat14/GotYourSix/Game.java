@@ -23,9 +23,10 @@ import com.ritcat14.GotYourSix.input.Keyboard;
 import com.ritcat14.GotYourSix.input.Mouse;
 import com.ritcat14.GotYourSix.level.Level;
 import com.ritcat14.GotYourSix.level.TileCoordinate;
+import com.ritcat14.GotYourSix.sfx.SoundManager;
+import com.ritcat14.GotYourSix.sfx.Sound;
 import com.ritcat14.GotYourSix.util.Console;
 import com.ritcat14.GotYourSix.util.ImageUtil;
-//import com.ritcat14.GotYourSix.util.Sound;
 import com.ritcat14.GotYourSix.util.Vector2i;
 
 public class Game extends Canvas implements Runnable {
@@ -61,7 +62,24 @@ public class Game extends Canvas implements Runnable {
     public static boolean    loaded      = false;
     private boolean          loadedGame  = false;
     private static  boolean paused = false;
-    //private Sound sound;
+    public static SoundManager s = new SoundManager() {
+        public void initSounds() {
+            /*sounds.add(new Sound("INTRO", Sound.getURL("Intro.wav")));
+            sounds.add(new Sound("WALK", Sound.getURL("Footstep.wav")));
+            sounds.add(new Sound("FIRESHOOT", Sound.getURL("SpellFire.wav")));
+            sounds.add(new Sound("ICESHOOT", Sound.getURL("SpellIce.wav")));
+            sounds.add(new Sound("ACHIEVE", Sound.getURL("Achievement.wav")));
+            sounds.add(new Sound("DOORCLOSE", Sound.getURL("DoorClose.wav")));
+            sounds.add(new Sound("ENEMY1", Sound.getURL("Goblin1.wav")));
+            sounds.add(new Sound("ENEMY2", Sound.getURL("Goblin2.wav")));
+            sounds.add(new Sound("ENEMY3", Sound.getURL("Goblin3.wav")));
+            sounds.add(new Sound("ENEMY4", Sound.getURL("Goblin4.wav")));
+            sounds.add(new Sound("ENEMY5", Sound.getURL("Goblin5.wav")));
+            sounds.add(new Sound("LOSE", Sound.getURL("Lose.wav")));
+            sounds.add(new Sound("SELECT", Sound.getURL("Select.wav")));
+            sounds.add(new Sound("WIN", Sound.getURL("Win.wav")));*/
+        }
+      };
 
     //start menu items
     private boolean          loadedStart = false;
@@ -72,6 +90,7 @@ public class Game extends Canvas implements Runnable {
                                       public void perform() {
                                           STATE = State.GAME;
                                           Player.type = Player.Type.FIRE;
+                                          //s.stopSound("INTRO");
                                       }
                                   });
     private UIButton         startIceButton = new UIButton(new Vector2i((getWindowWidth() + (60 * scale)) / 2, (getWindowHeight() / 2) + 40).add(new Vector2i(2, 136)),
@@ -79,6 +98,7 @@ public class Game extends Canvas implements Runnable {
                                       public void perform() {
                                           STATE = State.GAME;
                                           Player.type = Player.Type.ICE;
+                                          //s.stopSound("INTRO");
                                       }
                                   });
   
@@ -108,9 +128,7 @@ public class Game extends Canvas implements Runnable {
         uiManager = new UIManager();
         frame = new JFrame();
         key = new Keyboard();
-        if (STATE == State.GAME) {
-            init(STATE);
-        } else if (STATE == State.START) {
+        if (STATE == State.START) {
             init(STATE);
         }
 
@@ -138,7 +156,7 @@ public class Game extends Canvas implements Runnable {
             startIceButton.setText("ICE");
             startIceButton.label.setColor(0XFF2A7BCC);
             startPanel.addComponent(startIceButton);
-            //sound = new Sound("/music/Intro.wav");
+            //s.playSound("INTRO");
             loadedStart = true;
             loadedGame = false;
             paused = false;
@@ -288,10 +306,6 @@ public class Game extends Canvas implements Runnable {
         uiManager.render(g);
         g.dispose();
         bs.show();
-    }
-
-    public Graphics getGraphics() {
-        return getBufferStrategy().getDrawGraphics();
     }
   
     public BufferedImage getMapImage(){

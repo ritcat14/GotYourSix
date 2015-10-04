@@ -23,6 +23,7 @@ public class Level {
     protected int[]          tiles;
     protected int            tile_size;
     private boolean          createdDoors = false;
+    private int xScroll, yScroll;
 
     private List<Entity>     entities     = new ArrayList<Entity>();
     private List<Projectile> projectiles  = new ArrayList<Projectile>();
@@ -141,6 +142,26 @@ public class Level {
     public Player getClientPlayer() {
         return players.get(0);
     }
+  
+    public int[] getTiles(){
+        return tiles;
+    }
+  
+    public int getWidth(){
+        return width;
+    }
+  
+    public int getHeight(){
+        return height;
+    }
+  
+    public int xScroll(){
+       return xScroll;
+    }
+  
+    public int yScroll(){
+        return yScroll;
+    }
 
     public List<Node> findPath(Vector2i start, Vector2i goal) {
         List<Node> openList = new ArrayList<Node>();
@@ -254,6 +275,8 @@ public class Level {
     }
 
     public void render(int xScroll, int yScroll, Screen screen) {
+        this.xScroll = xScroll;
+        this.yScroll = yScroll;
         screen.setOffset(xScroll, yScroll);
         int x0 = xScroll >> 4;
         int x1 = (xScroll + screen.width + 16) >> 4;
@@ -265,7 +288,12 @@ public class Level {
                 getTile(x, y).render(x, y, screen);
             }
         }
-        for (int i = 0; i < entities.size(); i++) {
+        renderEntities(screen);
+        Game.loaded = true;
+    }
+  
+   public void renderEntities(Screen screen){
+       for (int i = 0; i < entities.size(); i++) {
             entities.get(i).render(screen);
         }
         for (int i = 0; i < projectiles.size(); i++) {
@@ -283,8 +311,7 @@ public class Level {
         for (int i = 0; i < doors.size(); i++) {
             doors.get(i).render(screen);
         }
-        Game.loaded = true;
-    }
+   }
 
     public void add(Entity e) {
         e.init(this);

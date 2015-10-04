@@ -69,6 +69,7 @@ public class Player extends Mob {
    private UIButton button;
    private UIButton face;
    private BufferedImage image;
+   private Minimap map;
    private Game game = Game.getGame();
   
    public static enum Type {
@@ -122,7 +123,7 @@ public class Player extends Mob {
       }
       UIPanel panel = (UIPanel) new UIPanel(new Vector2i(Game.getWindowWidth(), 0), new Vector2i(60 * 5, Game.getWindowHeight())).setColor(0x363636);
       ui.addPanel(panel);
-      Minimap map = new Minimap(new Vector2i(Game.getWindowWidth(), 0));
+      map = new Minimap(new Vector2i(Game.getWindowWidth(), 0));
       ui.addPanel(map);
       panel.addComponent(((UILabel)new UILabel(new Vector2i(250, 330), name).setColor(0xB3B3B3)).setFont(new Font("Veranda", Font.BOLD, 24)));
      
@@ -212,13 +213,13 @@ public class Player extends Mob {
   
    private static int time = 0;
 	public void update() {
+      if (level != null) map.setLevel(level);
       checkSprite();
       sprite = animSprite.getSprite();
       time++;
       if (time % 180 == 0 && thirst < 100 && hunger < 100){
           thirst += 2;
           hunger ++;
-          //Game.loadBar.stop();
       }
       if (time % 180 == 0 && thirst>= 100) loseHealth(2);
       else if(time % 180 == 0 && hunger >= 100) loseHealth(1);
@@ -231,8 +232,13 @@ public class Player extends Mob {
       UIStaminaBar.setProgress(stamina / 100.0);
       xpLabel.setText("LVL "+XPLevel);
      
-		if (walking) animSprite.update();
-		else animSprite.setFrame(0);
+		if (walking){
+        animSprite.update();
+        //if (!Game.s.isActive("WALK")) Game.s.loopSound("WALK");
+      } else {
+        animSprite.setFrame(0);
+        //if (Game.s.isActive("WALK")) Game.s.stopSound("WALK");
+      }
 		if (fireRate > 0) fireRate --;
 		double xa = 0, ya = 0;
       if (input.sprint && time % 100 == 0 && stamina > staminaDec && walking) stamina -= staminaDec;
