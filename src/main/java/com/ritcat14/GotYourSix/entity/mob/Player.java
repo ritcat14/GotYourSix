@@ -13,6 +13,7 @@ import com.ritcat14.GotYourSix.graphics.AnimatedObject;
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.Sprite;
 import com.ritcat14.GotYourSix.graphics.UI.Inventory;
+import com.ritcat14.GotYourSix.graphics.UI.Weapons;
 import com.ritcat14.GotYourSix.graphics.UI.Minimap;
 import com.ritcat14.GotYourSix.graphics.UI.UIActionListener;
 import com.ritcat14.GotYourSix.graphics.UI.UIButton;
@@ -22,6 +23,8 @@ import com.ritcat14.GotYourSix.graphics.UI.UIPanel;
 import com.ritcat14.GotYourSix.graphics.UI.UIProgressBar;
 import com.ritcat14.GotYourSix.input.Keyboard;
 import com.ritcat14.GotYourSix.input.Mouse;
+import com.ritcat14.GotYourSix.items.FireBall;
+import com.ritcat14.GotYourSix.items.Item;
 import com.ritcat14.GotYourSix.level.Level;
 import com.ritcat14.GotYourSix.util.ImageUtil;
 import com.ritcat14.GotYourSix.util.Vector2i;
@@ -59,12 +62,15 @@ public class Player extends Mob {
    private int staminaInc = 3;
   
    private UIManager ui;
+   private UIManager mui;
    private UIProgressBar UIHealthBar;
    private UIProgressBar UILevelBar;
    private UIProgressBar UIHungerBar;
    private UIProgressBar UIThirstBar;
    private UIProgressBar UIStaminaBar;
+   private UIPanel weapons;
    private Inventory invent;
+   private Weapons w;
    private UILabel xpLabel;
    private UIButton button;
    private UIButton face;
@@ -72,8 +78,11 @@ public class Player extends Mob {
    private Minimap map;
    private Game game = Game.getGame();
   
+   private static boolean madeItem = false;
+   private boolean changePlayer = true;
+  
    public static enum Type {
-     FIRE, FIREKING, ICE, ICEKING, NULL
+     FIRE, FIREKING, ICE, ICEKING
    }
   
    public static Type type;
@@ -111,6 +120,7 @@ public class Player extends Mob {
       staminaInc = 3;
       
       ui = Game.getUIManager();
+      mui = Game.getMapManager();
       BufferedImage back = ImageUtil.getImage("/ui/bars/back.png");
       int fontCol = 0xFFE7EF;
       Font font = new Font("Serif", Font.BOLD + Font.ITALIC, 24);
@@ -124,7 +134,7 @@ public class Player extends Mob {
       UIPanel panel = (UIPanel) new UIPanel(new Vector2i(Game.getWindowWidth(), 0), new Vector2i(60 * 5, Game.getWindowHeight())).setColor(0x363636);
       ui.addPanel(panel);
       map = new Minimap(new Vector2i(Game.getWindowWidth(), 0));
-      ui.addPanel(map);
+      mui.addPanel(map);
       panel.addComponent(((UILabel)new UILabel(new Vector2i(250, 330), name).setColor(0xB3B3B3)).setFont(new Font("Veranda", Font.BOLD, 24)));
      
       UIHealthBar = new UIProgressBar(new Vector2i(20, 345), back, ImageUtil.getImage("/ui/bars/healthFront.png"));
@@ -181,8 +191,10 @@ public class Player extends Mob {
       });
      panel.addComponent(face);
       }
-      /*invent = new Inventory(new Vector2i((Game.getWindowWidth() + (60 * 5)) - 275, Game.getWindowHeight() - 400));
-      ui.addPanel(invent);*/
+      invent = new Inventory(new Vector2i((Game.getWindowWidth() + (60 * 5)) - 275, Game.getWindowHeight() - 200), "inventoryBack.png");
+      ui.addPanel(invent);
+      w = new Weapons();
+      ui.addPanel(w);
 	}
   
    public String getName(){
@@ -213,6 +225,7 @@ public class Player extends Mob {
   
    private static int time = 0;
 	public void update() {
+      makeItem("FireBall");
       if (level != null) map.setLevel(level);
       checkSprite();
       sprite = animSprite.getSprite();
@@ -223,29 +236,28 @@ public class Player extends Mob {
       }
       if (time % 180 == 0 && thirst>= 100) loseHealth(2);
       else if(time % 180 == 0 && hunger >= 100) loseHealth(1);
-      if (time % 360 == 0) XPLevel ++;
       if (time % 60 == 0 && health < 100) health += 1;
+      
       UIHealthBar.setProgress(health / 100.0);
       UILevelBar.setProgress(XP / 100.0);
       UIHungerBar.setProgress(hunger / 100.0);
       UIThirstBar.setProgress(thirst / 100.0);
       UIStaminaBar.setProgress(stamina / 100.0);
       xpLabel.setText("LVL "+XPLevel);
-     
-		if (walking){
-        animSprite.update();
-        //if (!Game.s.isActive("WALK")) Game.s.loopSound("WALK");
-      } else {
-        animSprite.setFrame(0);
-        //if (Game.s.isActive("WALK")) Game.s.stopSound("WALK");
-      }
+      
+		if (walking) animSprite.update(); 
+      else animSprite.setFrame(0);
+      
 		if (fireRate > 0) fireRate --;
+      
 		double xa = 0, ya = 0;
       if (input.sprint && time % 100 == 0 && stamina > staminaDec && walking) stamina -= staminaDec;
       else if (input.sprint && stamina > staminaDec && walking) speed = 2.5;
       else speed = 1.5;
+      
       if (stamina < 100 && !input.sprint && time % 60 == 0) stamina += staminaInc;
       if (stamina > 100 - staminaInc) stamina = 100;
+      
 		if(input.up) {
 			ya -= speed;
          if (swimming) animSprite = upSwim;
@@ -274,6 +286,13 @@ public class Player extends Mob {
 		clear();
 		updateShooting();
       enemyCollision();
+      if(XPLevel >= 100){
+          if (type == Type.FIRE) type = Type.FIREKING;
+          else if (type == Type.ICE) type = Type.ICEKING;
+      }
+      if (XPLevel >= 5){
+          
+      }
 	}
 	
 	private void clear() {
@@ -314,7 +333,7 @@ public class Player extends Mob {
    }
    
    private void checkSprite(){
-     if (!(type == Type.NULL)){
+     if(changePlayer){
        if (type == Type.FIREKING){
            up = AnimatedObject.fireKingUp;
            down = AnimatedObject.fireKingDown;
@@ -356,12 +375,29 @@ public class Player extends Mob {
            rightSwim = AnimatedObject.fireSpriteRightSwim;
            image = ImageUtil.getImage("/ui/buttons/playerFire.png");
      }
-       type = Type.NULL;
-     }
+       changePlayer = false;
+   }
+   }
+  
+   public Inventory getInvent(){
+       return invent;
+   }
+  
+   public Weapons getWepInvent(){
+       return w;
+   }
+  
+   public static void makeItem(String item){
+      if(!madeItem){
+          if (item == "FireBall"){
+            FireBall f = new FireBall(new Vector2i(5 * 16, 5 * 16));
+            if (level != null) level.add(f);
+          }
+          madeItem = true;
+      }
    }
 
 	public void render(Screen screen) {
 		screen.renderMob((int)(x - 16), (int)(y - 16), sprite);
-      //invent.render(game.getGraphics());
 	}
 }

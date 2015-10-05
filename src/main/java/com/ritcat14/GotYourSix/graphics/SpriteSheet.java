@@ -12,9 +12,10 @@ public class SpriteSheet {
     public final int          SPRITE_WIDTH, SPRITE_HEIGHT;
     private int               width, height;
     public int[]              pixels;
+    private BufferedImage image;
 
     public static SpriteSheet tiles                 = new SpriteSheet("/textures/sheets/spritesheet.png", 256);
-    public static SpriteSheet projectile_test       = new SpriteSheet("/textures/sheets/projectiles/test.png", 48);
+    public static SpriteSheet projectiles       = new SpriteSheet("/textures/sheets/projectiles/test.png", 48, 64);
 
     public static SpriteSheet fireKing              = new SpriteSheet("/textures/sheets/mob/player/fireKingSprite.png", 128, 64);
     //walking
@@ -194,7 +195,7 @@ public class SpriteSheet {
     private void load() {
         try {
             System.out.print("Trying to load " + path + "...");
-            BufferedImage image = ImageIO.read(SpriteSheet.class.getResource(path));
+            image = ImageIO.read(SpriteSheet.class.getResource(path));
             System.out.println("Success!");
             this.width = image.getWidth();
             this.height = image.getHeight();

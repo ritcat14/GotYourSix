@@ -1,5 +1,6 @@
 package com.ritcat14.GotYourSix.entity;
 
+import java.awt.Rectangle;
 import java.util.Random;
 
 import com.ritcat14.GotYourSix.graphics.Screen;
@@ -10,7 +11,7 @@ public class Entity{
 	protected double x, y;
 	protected Sprite sprite;
 	private boolean removed = false;
-	protected Level level;
+	protected static Level level;
 	protected final Random random = new Random();
 	
 	public Entity(){}
@@ -46,6 +47,11 @@ public class Entity{
 	public boolean isRemoved() {
 		return removed;
 	}
+  
+    public Rectangle getBounds(){
+      Rectangle r = new Rectangle((int)(x-16), (int)(y-16), sprite.getWidth(), sprite.getHeight());
+      return r;
+    }
 	
 	public void init(Level level){
 		this.level = level;

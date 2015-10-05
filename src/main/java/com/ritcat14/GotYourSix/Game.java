@@ -53,6 +53,7 @@ public class Game extends Canvas implements Runnable {
     private boolean          running     = false;
 
     private static UIManager uiManager;
+    private static UIManager minimapManager;
 
     private Screen           screen;
     private BufferedImage    image       = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -126,6 +127,7 @@ public class Game extends Canvas implements Runnable {
 
         screen = new Screen(width, height);
         uiManager = new UIManager();
+        minimapManager = new UIManager();
         frame = new JFrame();
         key = new Keyboard();
         if (STATE == State.START) {
@@ -174,6 +176,10 @@ public class Game extends Canvas implements Runnable {
     public static UIManager getUIManager() {
         return uiManager;
     }
+  
+    public static UIManager getMapManager(){
+        return minimapManager;
+    }
 
     public static int getWindowWidth() {
         return (width * scale);
@@ -181,6 +187,10 @@ public class Game extends Canvas implements Runnable {
 
     public static int getWindowHeight() {
         return (height * scale);
+    }
+  
+    public static int getScale(){
+       return scale;
     }
 
     public synchronized static Game getGame() {
@@ -261,6 +271,7 @@ public class Game extends Canvas implements Runnable {
         }
         key.update();
         uiManager.update();
+        minimapManager.update();
     }
 
     public void render() {
@@ -304,6 +315,7 @@ public class Game extends Canvas implements Runnable {
 
         g.drawImage(image, 0, 0, getWindowWidth(), getWindowHeight(), null);
         uiManager.render(g);
+        minimapManager.render(g);
         g.dispose();
         bs.show();
     }

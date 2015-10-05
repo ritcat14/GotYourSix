@@ -13,6 +13,7 @@ import com.ritcat14.GotYourSix.entity.mob.Player;
 import com.ritcat14.GotYourSix.entity.particle.Particle;
 import com.ritcat14.GotYourSix.entity.projectile.Projectile;
 import com.ritcat14.GotYourSix.graphics.Screen;
+import com.ritcat14.GotYourSix.items.Item;
 import com.ritcat14.GotYourSix.level.tile.Tile;
 import com.ritcat14.GotYourSix.util.Vector2i;
 
@@ -31,6 +32,7 @@ public class Level {
     private List<Player>     players      = new ArrayList<Player>();
     private List<Enemy>      enemies      = new ArrayList<Enemy>();
     private List<Door>       doors        = new ArrayList<Door>();
+    private List<Item>		  items			= new ArrayList<Item>();
 
     private Comparator<Node> nodeSorter   = new Comparator<Node>() {
                                               public int compare(Node n0, Node n1) {
@@ -69,17 +71,15 @@ public class Level {
             for (int i = 0; i < entities.size(); i++) {
                 entities.get(i).update();
             }
-        }
-        for (int i = 0; i < projectiles.size(); i++) {
+        }for(int i = 0; i < items.size(); i++){
+            items.get(i).update();
+        }for (int i = 0; i < projectiles.size(); i++) {
             projectiles.get(i).update();
-        }
-        for (int i = 0; i < particles.size(); i++) {
+        }for (int i = 0; i < particles.size(); i++) {
             particles.get(i).update();
-        }
-        for (int i = 0; i < players.size(); i++) {
+        }for (int i = 0; i < players.size(); i++) {
             players.get(i).update();
-        }
-        for (int i = 0; i < enemies.size(); i++) {
+        }for (int i = 0; i < enemies.size(); i++) {
             enemies.get(i).update();
             enemies.get(i).checkLocation();
         }
@@ -104,20 +104,19 @@ public class Level {
         for (int i = 0; i < entities.size(); i++) {
             if (entities.get(i).isRemoved())
                 entities.remove(i);
-        }
-        for (int i = 0; i < projectiles.size(); i++) {
+        }for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).isRemoved())
+                items.remove(i);
+        }for (int i = 0; i < projectiles.size(); i++) {
             if (projectiles.get(i).isRemoved())
                 projectiles.remove(i);
-        }
-        for (int i = 0; i < particles.size(); i++) {
+        }for (int i = 0; i < particles.size(); i++) {
             if (particles.get(i).isRemoved())
                 particles.remove(i);
-        }
-        for (int i = 0; i < players.size(); i++) {
+        }for (int i = 0; i < players.size(); i++) {
             if (players.get(i).isRemoved())
                 players.remove(i);
-        }
-        for (int i = 0; i < enemies.size(); i++) {
+        }for (int i = 0; i < enemies.size(); i++) {
             if (enemies.get(i).isRemoved())
                 enemies.remove(i);
         }
@@ -295,26 +294,23 @@ public class Level {
    public void renderEntities(Screen screen){
        for (int i = 0; i < entities.size(); i++) {
             entities.get(i).render(screen);
-        }
-        for (int i = 0; i < projectiles.size(); i++) {
+        }for (int i = 0; i < items.size(); i++) {
+            items.get(i).render(screen);
+        }for (int i = 0; i < projectiles.size(); i++) {
             projectiles.get(i).render(screen);
-        }
-        for (int i = 0; i < particles.size(); i++) {
+        }for (int i = 0; i < particles.size(); i++) {
             particles.get(i).render(screen);
-        }
-        for (int i = 0; i < players.size(); i++) {
+        }for (int i = 0; i < players.size(); i++) {
             players.get(i).render(screen);
-        }
-        for (int i = 0; i < enemies.size(); i++) {
+        }for (int i = 0; i < enemies.size(); i++) {
             enemies.get(i).render(screen);
-        }
-        for (int i = 0; i < doors.size(); i++) {
+        }for (int i = 0; i < doors.size(); i++) {
             doors.get(i).render(screen);
         }
    }
 
-    public void add(Entity e) {
-        e.init(this);
+    public void add(Object e) {
+        if (e instanceof Entity) ((Entity) e).init(this);
         if (e instanceof Particle) {
             particles.add((Particle)e);
         } else if (e instanceof Projectile) {
@@ -325,8 +321,10 @@ public class Level {
             enemies.add((Enemy)e);
         } else if (e instanceof Door) {
             doors.add((Door)e);
+        } else if (e instanceof Item) {
+            items.add((Item)e);
         } else {
-            entities.add(e);
+            entities.add((Entity)e);
         }
     }
 
