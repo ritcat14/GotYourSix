@@ -24,7 +24,7 @@ public abstract class Enemy extends Mob {
         health -= damage;
         if (health <= 0) {
             remove();
-            player.inXP((int)Math.ceil(XPBonus / Player.getLevel()));
+            player.inXP((int)Math.ceil(XPBonus / (Player.getLevel() * 2)));
         }
     }
 

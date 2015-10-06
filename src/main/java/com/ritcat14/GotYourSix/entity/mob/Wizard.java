@@ -15,7 +15,7 @@ import com.ritcat14.GotYourSix.Game;
 public class Wizard extends Enemy {
 
     private int            time       = 0;
-    private double         speed      = 1;
+    private double         speed      = 0.8;
     private AnimatedObject down       = new AnimatedObject(SpriteSheet.wizard_down, 32, 32, 3);
     private AnimatedObject up         = new AnimatedObject(SpriteSheet.wizard_up, 32, 32, 3);
     private AnimatedObject left       = new AnimatedObject(SpriteSheet.wizard_left, 32, 32, 3);
@@ -31,7 +31,7 @@ public class Wizard extends Enemy {
         this.y = y << 4;
         sprite = animSprite.getSprite();
         health = 20;
-        XPBonus = 1;
+        XPBonus = health;
         collidable = true;
     }
 

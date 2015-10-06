@@ -38,6 +38,10 @@ public class UIPanel extends UIComponent{
         components.add(component);
     }
   
+    public UIComponent getComponent(int index){
+        return components.get(index);
+    }
+  
     public void update() {
         for (UIComponent component : components){
             component.setOffset(position);

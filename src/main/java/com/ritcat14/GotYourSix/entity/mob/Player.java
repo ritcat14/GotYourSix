@@ -246,8 +246,6 @@ public class Player extends Mob {
       UIThirstBar.setProgress(thirst / 100.0);
       UIStaminaBar.setProgress(stamina / 100.0);
       xpLabel.setText("LVL "+XPLevel);
-     
-      if (time % 30 == 0) XPLevel ++;
       
 		if (walking) animSprite.update(); 
       else animSprite.setFrame(0);
@@ -296,44 +294,32 @@ public class Player extends Mob {
           checkSprite();
       }
       if (type == Type.FIRE || type == Type.FIREKING){
-        if (XPLevel == 50){
+        if (XPLevel >= 50){
           TestProjectile.weapon = TestProjectile.Weapon.FIREWALL;
-          w.changeWeapon(6);
-        } else if (XPLevel == 40){
+        } else if (XPLevel >= 40){
           TestProjectile.weapon = TestProjectile.Weapon.FIREBALL;
-          w.changeWeapon(5);
-        } else if (XPLevel == 30){
+        } else if (XPLevel >= 30){
           TestProjectile.weapon = TestProjectile.Weapon.FIREDCANNON;
-          w.changeWeapon(4);
-        } else if (XPLevel == 20){
+        } else if (XPLevel >= 20){
           TestProjectile.weapon = TestProjectile.Weapon.FIREDARROW;
-          w.changeWeapon(3);
-        } else if (XPLevel == 10){
+        } else if (XPLevel >= 10){
           TestProjectile.weapon = TestProjectile.Weapon.CANNON;
-          w.changeWeapon(2);
-        } else if (XPLevel == 1){
+        } else if (XPLevel >= 1){
           TestProjectile.weapon = TestProjectile.Weapon.ARROW;
-          w.changeWeapon(1);
         }
       } else if (type == Type.ICE || type == Type.ICEKING){
-        if (XPLevel == 50){ 
+        if (XPLevel >= 50){ 
           TestProjectile.weapon = TestProjectile.Weapon.ICEWALL;
-          w.changeWeapon(6);
-        } else if (XPLevel == 40){ 
+        } else if (XPLevel >= 40){ 
           TestProjectile.weapon = TestProjectile.Weapon.ICEBALL;
-          w.changeWeapon(5);
-        } else if (XPLevel == 30){ 
+        } else if (XPLevel >= 30){ 
           TestProjectile.weapon = TestProjectile.Weapon.ICEDCANNON;
-          w.changeWeapon(4);
-        } else if (XPLevel == 20){ 
+        } else if (XPLevel >= 20){ 
           TestProjectile.weapon = TestProjectile.Weapon.ICEDARROW;
-          w.changeWeapon(3);
-        } else if (XPLevel == 10){ 
+        } else if (XPLevel >= 10){ 
           TestProjectile.weapon = TestProjectile.Weapon.CANNON;
-          w.changeWeapon(2);
-        } else if (XPLevel == 1){ 
+        } else if (XPLevel >= 1){ 
           TestProjectile.weapon = TestProjectile.Weapon.ARROW;
-          w.changeWeapon(1);
         }
       }
 	}

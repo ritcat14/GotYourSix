@@ -61,7 +61,7 @@ public class Game extends Canvas implements Runnable {
     public static LoadBar    loadBar;
     private static Game      game;
     public static boolean    loaded      = false;
-    private boolean          loadedGame  = false;
+    public static boolean          loadedGame  = false;
     private static  boolean paused = false;
     public static SoundManager s = new SoundManager() {
         public void initSounds() {

@@ -26,7 +26,7 @@ public class Chaser extends Enemy {
         this.y = y << 4;
         sprite = animSprite.getSprite();
         health = 10;
-        XPBonus = 1;
+        XPBonus = health;
         collidable = true;
     }
 

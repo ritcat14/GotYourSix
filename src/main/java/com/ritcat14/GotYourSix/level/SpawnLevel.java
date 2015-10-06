@@ -11,6 +11,7 @@ import com.ritcat14.GotYourSix.entity.mob.Zombie;
 import com.ritcat14.GotYourSix.entity.mob.Dummy;
 import com.ritcat14.GotYourSix.entity.mob.Shooter;
 import com.ritcat14.GotYourSix.entity.mob.SoulEater;
+import com.ritcat14.GotYourSix.entity.spawner.EnemySpawner;
 import com.ritcat14.GotYourSix.level.Level;
 import com.ritcat14.GotYourSix.util.Vector2i;
 
@@ -41,11 +42,11 @@ public class SpawnLevel extends Level {
    }
 	
 	protected void generateLevel(){
+			Random random = new Random();
       for (int i = 0; i < getPlayers().size(); i ++){
           getPlayers().get(i).setLocation(new Vector2i((18 * 16) * i, 5 * 16));
       }
 		for (int i = 0; i < 15; i++){
-			Random random = new Random();
 			add(new Dummy(random.nextInt(20) + 3, random.nextInt(60) + 3));
 		}
 	}
