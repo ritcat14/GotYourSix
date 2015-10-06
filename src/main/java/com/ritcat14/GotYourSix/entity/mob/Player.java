@@ -193,8 +193,10 @@ public class Player extends Mob {
       }
       invent = new Inventory(new Vector2i((Game.getWindowWidth() + (60 * 5)) - 275, Game.getWindowHeight() - 200), "inventoryBack.png");
       ui.addPanel(invent);
-      w = new Weapons();
-      ui.addPanel(w);
+      if (this != null){
+          w = new Weapons();
+          ui.addPanel(w);
+      }
 	}
   
    public String getName(){
@@ -291,21 +293,48 @@ public class Player extends Mob {
       if(XPLevel >= 100){
           if (type == Type.FIRE) type = Type.FIREKING;
           else if (type == Type.ICE) type = Type.ICEKING;
+          checkSprite();
       }
       if (type == Type.FIRE || type == Type.FIREKING){
-      if (XPLevel >= 50) TestProjectile.weapon = TestProjectile.Weapon.FIREWALL;
-      else if (XPLevel >= 40) TestProjectile.weapon = TestProjectile.Weapon.FIREBALL;
-      else if (XPLevel >= 30) TestProjectile.weapon = TestProjectile.Weapon.FIREDCANNON;
-      else if (XPLevel >= 20) TestProjectile.weapon = TestProjectile.Weapon.FIREDARROW;
-      else if (XPLevel >= 10) TestProjectile.weapon = TestProjectile.Weapon.CANNON;
-      else TestProjectile.weapon = TestProjectile.Weapon.ARROW;
+        if (XPLevel == 50){
+          TestProjectile.weapon = TestProjectile.Weapon.FIREWALL;
+          w.changeWeapon(6);
+        } else if (XPLevel == 40){
+          TestProjectile.weapon = TestProjectile.Weapon.FIREBALL;
+          w.changeWeapon(5);
+        } else if (XPLevel == 30){
+          TestProjectile.weapon = TestProjectile.Weapon.FIREDCANNON;
+          w.changeWeapon(4);
+        } else if (XPLevel == 20){
+          TestProjectile.weapon = TestProjectile.Weapon.FIREDARROW;
+          w.changeWeapon(3);
+        } else if (XPLevel == 10){
+          TestProjectile.weapon = TestProjectile.Weapon.CANNON;
+          w.changeWeapon(2);
+        } else if (XPLevel == 1){
+          TestProjectile.weapon = TestProjectile.Weapon.ARROW;
+          w.changeWeapon(1);
+        }
       } else if (type == Type.ICE || type == Type.ICEKING){
-      if (XPLevel >= 50) TestProjectile.weapon = TestProjectile.Weapon.ICEWALL;
-      else if (XPLevel >= 40) TestProjectile.weapon = TestProjectile.Weapon.ICEBALL;
-      else if (XPLevel >= 30) TestProjectile.weapon = TestProjectile.Weapon.ICEDCANNON;
-      else if (XPLevel >= 20) TestProjectile.weapon = TestProjectile.Weapon.ICEDARROW;
-      else if (XPLevel >= 10) TestProjectile.weapon = TestProjectile.Weapon.CANNON;
-      else TestProjectile.weapon = TestProjectile.Weapon.ARROW;
+        if (XPLevel == 50){ 
+          TestProjectile.weapon = TestProjectile.Weapon.ICEWALL;
+          w.changeWeapon(6);
+        } else if (XPLevel == 40){ 
+          TestProjectile.weapon = TestProjectile.Weapon.ICEBALL;
+          w.changeWeapon(5);
+        } else if (XPLevel == 30){ 
+          TestProjectile.weapon = TestProjectile.Weapon.ICEDCANNON;
+          w.changeWeapon(4);
+        } else if (XPLevel == 20){ 
+          TestProjectile.weapon = TestProjectile.Weapon.ICEDARROW;
+          w.changeWeapon(3);
+        } else if (XPLevel == 10){ 
+          TestProjectile.weapon = TestProjectile.Weapon.CANNON;
+          w.changeWeapon(2);
+        } else if (XPLevel == 1){ 
+          TestProjectile.weapon = TestProjectile.Weapon.ARROW;
+          w.changeWeapon(1);
+        }
       }
 	}
 	
