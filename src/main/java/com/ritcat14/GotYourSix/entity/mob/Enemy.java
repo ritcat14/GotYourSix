@@ -1,8 +1,10 @@
 package com.ritcat14.GotYourSix.entity.mob;
 
 import java.util.List;
+import java.util.Random;
 
 import com.ritcat14.GotYourSix.graphics.Screen;
+import com.ritcat14.GotYourSix.items.Item;
 import com.ritcat14.GotYourSix.level.tile.Tile;
 import com.ritcat14.GotYourSix.util.Vector2i;
 import com.ritcat14.GotYourSix.Game;
@@ -25,6 +27,13 @@ public abstract class Enemy extends Mob {
         if (health <= 0) {
             remove();
             player.inXP((int)Math.ceil(XPBonus / (Player.getLevel() * 2)));
+            Random ran = new Random();
+            int j = ran.nextInt(5);
+            for (int g = 0; g <= j; g++) {
+                Item e = Player.getItem();
+                e.setPosition(new Vector2i((int)getX() + ((ran.nextInt(40) - 20)), (int)getY() + ((ran.nextInt(40) - 20))));
+                level.add(e);
+            }
         }
     }
 

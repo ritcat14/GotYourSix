@@ -4,6 +4,10 @@ import com.ritcat14.GotYourSix.graphics.Sprite;
 import com.ritcat14.GotYourSix.util.Vector2i;
 
 public class CannonBall extends Weapon {
+  
+    public CannonBall(){
+        sprite = Sprite.cannon;
+    }
 
     public CannonBall(Vector2i position) {
         super(position);

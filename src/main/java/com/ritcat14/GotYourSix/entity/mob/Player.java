@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.Random;
 
 import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.entity.projectile.Projectile;
@@ -23,7 +24,7 @@ import com.ritcat14.GotYourSix.graphics.UI.UIPanel;
 import com.ritcat14.GotYourSix.graphics.UI.UIProgressBar;
 import com.ritcat14.GotYourSix.input.Keyboard;
 import com.ritcat14.GotYourSix.input.Mouse;
-import com.ritcat14.GotYourSix.items.FireBall;
+import com.ritcat14.GotYourSix.items.*;
 import com.ritcat14.GotYourSix.items.Item;
 import com.ritcat14.GotYourSix.level.Level;
 import com.ritcat14.GotYourSix.util.ImageUtil;
@@ -163,13 +164,13 @@ public class Player extends Mob {
       xpLabel = ((UILabel)new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(-5, 106)),"LVL " + XPLevel).setColor(fontCol)).setFont(font);
       panel.addComponent(xpLabel);
      
-      UILabel foodLabel = ((UILabel)new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(-5, 166)),"FOOD").setColor(fontCol)).setFont(font);
+      UILabel foodLabel = ((UILabel)new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(-5, 166)),"HUNGER").setColor(fontCol)).setFont(font);
       panel.addComponent(foodLabel);
      
-      UILabel waterLabel = ((UILabel)new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(-5, 226)),"WATER").setColor(fontCol)).setFont(font);
+      UILabel waterLabel = ((UILabel)new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(-5, 226)),"THIRST").setColor(fontCol)).setFont(font);
       panel.addComponent(waterLabel);
      
-      button= new UIButton(new Vector2i(UIHealthBar.position).add(new Vector2i(2, 600)), new Vector2i(100, 30), new UIActionListener(){
+      button= new UIButton(new Vector2i(UIThirstBar.position).add(new Vector2i(2, 60)), new Vector2i(100, 30), new UIActionListener(){
           public void perform() {
               //Change level
               if (changeLevel) Game.changeLevel(levelToGo);
@@ -191,8 +192,8 @@ public class Player extends Mob {
       });
      panel.addComponent(face);
       }
-      invent = new Inventory(new Vector2i((Game.getWindowWidth() + (60 * 5)) - 275, Game.getWindowHeight() - 200), "inventoryBack.png");
-      ui.addPanel(invent);
+      //invent = new Inventory(new Vector2i((Game.getWindowWidth() + (60 * 5)) - 275, Game.getWindowHeight() - 200), "inventoryBack.png");
+      //ui.addPanel(invent);
       if (this != null){
           w = new Weapons();
           ui.addPanel(w);
@@ -206,10 +207,15 @@ public class Player extends Mob {
    public void inXP(int xp){
        XP += xp;
        if (XP >= 100){
-           XPLevel += 1;
+           levelIn();
            XP = 0;
            health = 100;
        }
+   }
+  
+   private void levelIn(){
+       XPLevel ++;
+       checkWep();
    }
   
    public int getXP(){
@@ -293,36 +299,63 @@ public class Player extends Mob {
           else if (type == Type.ICE) type = Type.ICEKING;
           checkSprite();
       }
+	}
+  
+  private void checkWep(){
       if (type == Type.FIRE || type == Type.FIREKING){
-        if (XPLevel >= 50){
-          TestProjectile.weapon = TestProjectile.Weapon.FIREWALL;
-        } else if (XPLevel >= 40){
-          TestProjectile.weapon = TestProjectile.Weapon.FIREBALL;
-        } else if (XPLevel >= 30){
-          TestProjectile.weapon = TestProjectile.Weapon.FIREDCANNON;
-        } else if (XPLevel >= 20){
-          TestProjectile.weapon = TestProjectile.Weapon.FIREDARROW;
-        } else if (XPLevel >= 10){
-          TestProjectile.weapon = TestProjectile.Weapon.CANNON;
-        } else if (XPLevel >= 1){
-          TestProjectile.weapon = TestProjectile.Weapon.ARROW;
+        if (XPLevel == 50){
+          for (int i = 0; i < XPLevel / 5; i++){
+            FireWall ib = new FireWall();
+            w.add(ib);
+          }
+        } else if (XPLevel == 40){
+          for (int i = 0; i < XPLevel / 5; i++){
+            FireBall ib = new FireBall();
+            w.add(ib);
+          }
+        } else if (XPLevel == 30){
+          for (int i = 0; i < XPLevel / 5; i++){
+            FireCannon ib = new FireCannon();
+            w.add(ib);
+          }
+        } else if (XPLevel == 20){
+          for (int i = 0; i < XPLevel / 5; i++){
+            FireArrow ib = new FireArrow();
+            w.add(ib);
+          }
         }
       } else if (type == Type.ICE || type == Type.ICEKING){
-        if (XPLevel >= 50){ 
-          TestProjectile.weapon = TestProjectile.Weapon.ICEWALL;
-        } else if (XPLevel >= 40){ 
-          TestProjectile.weapon = TestProjectile.Weapon.ICEBALL;
-        } else if (XPLevel >= 30){ 
-          TestProjectile.weapon = TestProjectile.Weapon.ICEDCANNON;
-        } else if (XPLevel >= 20){ 
-          TestProjectile.weapon = TestProjectile.Weapon.ICEDARROW;
-        } else if (XPLevel >= 10){ 
-          TestProjectile.weapon = TestProjectile.Weapon.CANNON;
-        } else if (XPLevel >= 1){ 
-          TestProjectile.weapon = TestProjectile.Weapon.ARROW;
+        if (XPLevel == 50){
+          for (int i = 0; i < XPLevel / 5; i++){
+            IceWall ib = new IceWall();
+            w.add(ib);
+          }
+        } else if (XPLevel == 40){
+          for (int i = 0; i < XPLevel / 5; i++){
+            IceBall ib = new IceBall();
+            w.add(ib);
+          }
+        } else if (XPLevel == 30){
+          for (int i = 0; i < XPLevel / 5; i++){
+            IceCannon ib = new IceCannon();
+            w.add(ib);
+          }
+        } else if (XPLevel == 20){
+          for (int i = 0; i < XPLevel / 5; i++){
+            IceArrow ib = new IceArrow();
+            w.add(ib);
+          }
         }
       }
-	}
+      if (XPLevel == 10){
+          for (int i = 0; i < XPLevel / 5; i++){
+            CannonBall ib = new CannonBall();
+            w.add(ib);
+          }
+        } else if (XPLevel == 1){
+          TestProjectile.weapon = TestProjectile.Weapon.ARROW;
+        }
+  }
 	
 	private void clear() {
 		for(int i = 0; i < level.getProjectiles().size(); i++){
@@ -348,7 +381,10 @@ public class Player extends Mob {
 			double dx = Mouse.getX() - (Game.getWindowWidth()/2);
 			double dy = Mouse.getY() - (Game.getWindowHeight()/2);
 			double dir = Math.atan2(dy, dx);
-			shoot(x, y, dir);
+         if (w.canShoot()){
+           shoot(x, y, dir);
+           w.removeWep();
+         }
 			fireRate = TestProjectile.FIRERATE;
 		}
 	}
@@ -359,6 +395,49 @@ public class Player extends Mob {
             Game.changeLevel(Level.spawn);
             health = 1;
         }
+   }
+   public static Item getItem(){
+     Random ran = new Random();
+     int i;
+     if (type == Type.FIRE || type == Type.FIREKING){
+         i = ran.nextInt(4);
+         if (i == 0){
+           CannonBall cb = new CannonBall();
+           return cb;
+         } else if (i == 1){
+           FireArrow fa = new FireArrow();
+           return fa;
+         } else if (i == 2){
+           FireCannon fc = new FireCannon();
+           return fc;
+         } else if (i == 3){
+           FireBall fb = new FireBall();
+           return fb;
+         } else if (i == 4){
+           FireWall fw = new FireWall();
+           return fw;
+         }
+     } else if (type == Type.ICE || type == Type.FIREKING){
+         i = ran.nextInt(4);
+         if (i == 0){
+           CannonBall cb = new CannonBall();
+           return cb;
+         } else if (i == 1){
+           IceArrow ia = new IceArrow();
+           return ia;
+         } else if (i == 2){
+           IceCannon ic = new IceCannon();
+           return ic;
+         } else if (i == 3){
+           IceBall ib = new IceBall();
+           return ib;
+         } else if (i == 4){
+           IceWall iw = new IceWall();
+           return iw;
+         }
+     }
+     CannonBall c = new CannonBall();
+     return c;
    }
    
    private void checkSprite(){

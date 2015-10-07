@@ -28,6 +28,10 @@ public class UILabel extends UIComponent {
         this.text = text;
     }
   
+    public String getText(){
+        return text;
+    }
+  
     public void render(Graphics g) {
         g.setFont(font);
         g.setColor(Color.BLACK);

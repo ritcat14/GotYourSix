@@ -47,7 +47,7 @@ public class Game extends Canvas implements Runnable {
 
     private Thread           thread;
     private JFrame           frame;
-    private Keyboard         key;
+    private static Keyboard         key;
     private static Level     level;
     private static Player    player;
     private boolean          running     = false;
@@ -209,6 +209,10 @@ public class Game extends Canvas implements Runnable {
         level = lev;
         level.add(player);
         level.setPlayerLocation();
+    }
+  
+    public static Keyboard getKeyboard(){
+        return key;
     }
   
     public static boolean isPaused(){

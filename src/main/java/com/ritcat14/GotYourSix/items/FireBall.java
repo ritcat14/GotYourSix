@@ -5,6 +5,10 @@ import com.ritcat14.GotYourSix.util.Vector2i;
 
 public class FireBall extends Weapon {
   
+    public FireBall(){
+        sprite = Sprite.fireBall;
+    }
+  
     public FireBall(Vector2i position) {
         super(position);
         sprite = Sprite.fireBall;

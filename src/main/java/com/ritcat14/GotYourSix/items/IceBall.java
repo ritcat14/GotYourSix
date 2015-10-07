@@ -5,6 +5,10 @@ import com.ritcat14.GotYourSix.util.Vector2i;
 
 public class IceBall extends Weapon {
   
+    public IceBall(){
+        sprite = Sprite.iceBall;
+    }
+  
     public IceBall(Vector2i position) {
         super(position);
         sprite = Sprite.iceBall;

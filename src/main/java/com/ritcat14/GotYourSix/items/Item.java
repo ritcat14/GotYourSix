@@ -19,6 +19,10 @@ public class Item {
     private boolean removed = false;
     private Level level;
   
+    public Item(){
+        this.level = Game.getLevel();
+    }
+  
     public Item(Vector2i position){
         this.position = position;
         this.level = Game.getLevel();
@@ -26,6 +30,10 @@ public class Item {
   
    public Sprite getSprite(){
        return sprite;
+   }
+  
+   public void setPosition(Vector2i position){
+       this.position = position;
    }
   
    public void render(Screen screen){
