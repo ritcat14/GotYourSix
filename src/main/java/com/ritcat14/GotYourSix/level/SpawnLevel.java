@@ -49,6 +49,8 @@ public class SpawnLevel extends Level {
 		for (int i = 0; i < 15; i++){
 			add(new Dummy(random.nextInt(20) + 3, random.nextInt(60) + 3));
 		}
+         Zombie z = new Zombie(0,0);
+         add(new EnemySpawner(random.nextInt(397) + 100, random.nextInt(397) + 00, 10000, random.nextInt(20) + 200, this, z));
 	}
 
 }

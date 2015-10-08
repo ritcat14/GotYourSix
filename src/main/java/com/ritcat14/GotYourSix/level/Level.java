@@ -71,8 +71,6 @@ public class Level {
             for (int i = 0; i < entities.size(); i++) {
                 entities.get(i).update();
             }
-        }for(int i = 0; i < items.size(); i++){
-            items.get(i).update();
         }for (int i = 0; i < projectiles.size(); i++) {
             projectiles.get(i).update();
         }for (int i = 0; i < particles.size(); i++) {
@@ -132,6 +130,10 @@ public class Level {
 
     public List<Enemy> getEnemies() {
         return enemies;
+    }
+  
+    public List<Item> getItems(){
+      return items;
     }
 
     public Player getPlayerAt(int index) {

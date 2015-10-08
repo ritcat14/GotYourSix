@@ -8,9 +8,6 @@ import javax.imageio.ImageIO;
 
 import com.ritcat14.GotYourSix.entity.mob.Wizard;
 import com.ritcat14.GotYourSix.entity.mob.Zombie;
-import com.ritcat14.GotYourSix.entity.mob.Dummy;
-import com.ritcat14.GotYourSix.entity.mob.Shooter;
-import com.ritcat14.GotYourSix.entity.mob.SoulEater;
 import com.ritcat14.GotYourSix.entity.spawner.EnemySpawner;
 import com.ritcat14.GotYourSix.level.Level;
 import com.ritcat14.GotYourSix.util.Vector2i;

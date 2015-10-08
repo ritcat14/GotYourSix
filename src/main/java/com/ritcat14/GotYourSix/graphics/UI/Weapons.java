@@ -76,6 +76,7 @@ public class Weapons extends UIPanel {
         else if (wep instanceof IceBall) iceballs.add((IceBall)wep);
         else if (wep instanceof IceCannon) icecannons.add((IceCannon)wep);
         else if (wep instanceof IceWall) icewalls.add((IceWall)wep);
+        updateLabels();
     }
 
     public void changeWeapon(int index) {
@@ -127,23 +128,19 @@ public class Weapons extends UIPanel {
   
    public void removeWep(){
      try{
-       switch(selectedWep){
-           case 2: cannons.remove(cannons.size() - 1);
+       if(selectedWep == 2){
+           cannons.remove(cannons.size() - 1);
        }
          if (Player.type == Player.Type.FIRE || Player.type == Player.Type.FIREKING){
-           switch(selectedWep){
-             case 3: firearrows.remove(firearrows.size() - 1);
-             case 4: firecannons.remove(firecannons.size() - 1);
-             case 5: fireballs.remove(fireballs.size() - 1);
-             case 6: firewalls.remove(firewalls.size() - 1);
-           }
+             if(selectedWep == 3) firearrows.remove(firearrows.size() - 1);
+             if(selectedWep == 4) firecannons.remove(firecannons.size() - 1);
+             if(selectedWep == 5) fireballs.remove(fireballs.size() - 1);
+             if(selectedWep == 6) firewalls.remove(firewalls.size() - 1);
          } else if (Player.type == Player.Type.ICE || Player.type == Player.Type.ICEKING) {
-           switch(selectedWep){
-             case 3: icearrows.remove(icearrows.size() - 1);
-             case 4: icecannons.remove(icecannons.size() - 1);
-             case 5: iceballs.remove(iceballs.size() - 1);
-             case 6: icewalls.remove(icewalls.size() - 1);
-           }
+             if(selectedWep == 3)icearrows.remove(icearrows.size() - 1);
+             if(selectedWep == 4) icecannons.remove(icecannons.size() - 1);
+             if(selectedWep == 5) iceballs.remove(iceballs.size() - 1);
+             if(selectedWep == 6) icewalls.remove(icewalls.size() - 1);
          }
      }catch(Exception e){
        System.out.println("no weapons to remove");
@@ -189,11 +186,8 @@ public class Weapons extends UIPanel {
             weps.get(i).addComponent(amount);
         }
     }
-
-    public void update() {
-        super.update();
-        
-        if (!labelsCreated) createLabels();
+  
+    private void updateLabels(){
         for (int i = 0; i < labels.size(); i++){
             if (i == 0) labels.get(i).setText("" + cannons.size());
           if (Player.type == Player.Type.FIRE || Player.type == Player.Type.FIREKING){
@@ -208,6 +202,12 @@ public class Weapons extends UIPanel {
             if (i == 4) labels.get(i).setText("" + icewalls.size());
           }
         }
+    }
+
+    public void update() {
+        super.update();
+        
+        if (!labelsCreated) createLabels();
         if (key.sel1) changeWeapon(1);
         if (key.sel2) changeWeapon(2);
         if (key.sel3) changeWeapon(3);

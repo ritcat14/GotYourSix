@@ -81,6 +81,7 @@ public class Player extends Mob {
   
    private static boolean madeItem = false;
    private boolean changePlayer = true;
+   private List<Item> items;
   
    public static enum Type {
      FIRE, FIREKING, ICE, ICEKING
@@ -233,6 +234,7 @@ public class Player extends Mob {
   
    private static int time = 0;
 	public void update() {
+      items = level.getItems();
       makeItem("FireBall");
       if (level != null) map.setLevel(level);
       checkSprite();
@@ -294,6 +296,7 @@ public class Player extends Mob {
 		clear();
 		updateShooting();
       enemyCollision();
+      itemCollision();
       if(XPLevel >= 100){
           if (type == Type.FIRE) type = Type.FIREKING;
           else if (type == Type.ICE) type = Type.ICEKING;
@@ -493,6 +496,20 @@ public class Player extends Mob {
   
    public Weapons getWepInvent(){
        return w;
+   }
+  
+  
+   private void itemCollision(){
+       for (int i = 0; i < items.size(); i++){
+           if (time % 60 == 0) items.get(i).inLife();
+           Rectangle r = new Rectangle(items.get(i).position.x, items.get(i).position.y, items.get(i).sprite.getWidth(), items.get(i).sprite.getHeight());
+           if (r.x >= getBounds().x && r.x <= getBounds().x + getBounds().width
+               && r.y >= getBounds().y && r.y <= getBounds().y + getBounds().height){
+               if (items.get(i) instanceof Weapon) w.add((Weapon)items.get(i));
+               else invent.add(items.get(i));
+               items.get(i).remove();
+           }
+       }
    }
   
    public static void makeItem(String item){

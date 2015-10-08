@@ -17,12 +17,6 @@ public abstract class Mob extends Entity {
 
     protected int     health;
 
-    /*
-     * protected enum Type { DUMMY, PLAYER, SOULEATER, ZOMBIE }
-     * 
-     * protected Type type;
-     */
-
     protected enum Direction {
         UP,
         DOWN,
