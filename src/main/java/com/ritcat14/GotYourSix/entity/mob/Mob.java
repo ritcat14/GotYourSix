@@ -1,8 +1,11 @@
 package com.ritcat14.GotYourSix.entity.mob;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 import com.ritcat14.GotYourSix.entity.Entity;
-import com.ritcat14.GotYourSix.entity.projectile.Projectile;
-import com.ritcat14.GotYourSix.entity.projectile.TestProjectile;
+import com.ritcat14.GotYourSix.entity.projectile.*;
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.level.Level;
 import com.ritcat14.GotYourSix.level.tile.spawn_level.SpawnDoorTile;
@@ -12,6 +15,7 @@ import com.ritcat14.GotYourSix.level.tile.spawn_level.SpawnWaterTile;
 
 public abstract class Mob extends Entity {
 
+    protected List<Projectile> avShots = new ArrayList<Projectile>();
     protected boolean moving  = false;
     protected boolean walking = false;
 
@@ -81,8 +85,44 @@ public abstract class Mob extends Entity {
     public abstract void render(Screen screen);
 
     protected void shoot(double x, double y, double dir) {
-        Projectile p = new TestProjectile(x, y, dir, this);
-        level.add(p);
+        Projectile p;
+        if (this instanceof Player) {
+            if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof Arrow) {
+					p = new Arrow(x, y, dir, this);
+               level.add(p);
+            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof Cannon){
+              p = new Cannon(x, y, dir, this);
+              level.add(p);
+            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof  FirArrow){
+              p = new FirArrow(x, y, dir, this);
+              level.add(p);
+            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof FirCannon){
+              p = new FirCannon(x, y, dir, this);
+              level.add(p);
+            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof  FirBall){
+              p = new FirBall(x, y, dir, this);
+              level.add(p);
+            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof FirWall){
+              p = new FirWall(x, y, dir, this);
+              level.add(p);
+            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof IcArrow){
+              p = new IcArrow(x, y, dir, this);
+              level.add(p);
+            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof IcCannon){
+              p = new IcCannon(x, y, dir, this);
+              level.add(p);
+            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof IcBall){
+              p = new IcBall(x, y, dir, this);
+              level.add(p);
+            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof IcWall){
+              p = new IcWall(x, y, dir, this);
+              level.add(p);
+            }
+        }
+        else{
+          p = new Arrow(x, y, dir, this);
+          level.add(p);
+        }
     }
 
     protected boolean entityCollided(Entity e) {
@@ -117,8 +157,10 @@ public abstract class Mob extends Entity {
                 ix = (int)Math.floor(xt);
             if (c / 2 == 0)
                 iy = (int)Math.floor(yt);
-            if (level.getTile(ix, iy) instanceof SpawnDoorTile && Door.doorOpen == false) return false;
-            else if (level.getTile(ix, iy) instanceof SpawnDoorTile && Door.doorOpen == true) return false;
+            if (level.getTile(ix, iy) instanceof SpawnDoorTile && Door.doorOpen == false)
+                return false;
+            else if (level.getTile(ix, iy) instanceof SpawnDoorTile && Door.doorOpen == true)
+                return false;
             if (this instanceof Enemy && level.getTile(ix, iy) instanceof SpawnEdgeTile)
                 return true;
             if (this instanceof Player) {
@@ -129,11 +171,13 @@ public abstract class Mob extends Entity {
                     Player.swimming = false;
                     Player.canShoot = true;
                 }
-                if (level.getTile(ix, iy) instanceof SpawnPortalTile){
+                if (level.getTile(ix, iy) instanceof SpawnPortalTile) {
                     Player.changeLevel = true;
-                    if (level == Level.test) Player.levelToGo = Level.spawn;
-                    else if (level == Level.spawn) Player.levelToGo = Level.level1;
-                } else{
+                    if (level == Level.test)
+                        Player.levelToGo = Level.spawn;
+                    else if (level == Level.spawn)
+                        Player.levelToGo = Level.level1;
+                } else {
                     Player.changeLevel = false;
                 }
             }

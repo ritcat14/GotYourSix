@@ -9,11 +9,24 @@ import com.ritcat14.GotYourSix.entity.Entity;
 import com.ritcat14.GotYourSix.entity.mob.Enemy;
 import com.ritcat14.GotYourSix.entity.mob.Mob;
 import com.ritcat14.GotYourSix.entity.mob.Player;
+import com.ritcat14.GotYourSix.entity.spawner.ParticleSpawner;
+import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.Sprite;
 
 public abstract class Projectile extends Entity {
+  
+    public static enum Weapon{
+      ARROW,
+      CANNON,
+      ICEDARROW, FIREDARROW,
+      ICEDCANNON, FIREDCANNON,
+      ICEBALL, FIREBALL,
+      ICEWALL, FIREWALL
+    }
+  
+    public static Weapon weapon = Weapon.ARROW;
 
-    public static final int FIRERATE = 5;           //Higher is slower
+    public static int FIRERATE;           //Higher is slower
 
     protected final double  xOrigin, yOrigin;
     protected double        angle;
@@ -26,6 +39,11 @@ public abstract class Projectile extends Entity {
     protected boolean collided = false;
 
     protected final Random  random   = new Random();
+  
+    public Projectile(){
+      xOrigin = 0;
+      yOrigin = 0;
+    }
 
     public Projectile(double x, double y, double dir, Mob m) {
         xOrigin = x;
@@ -48,7 +66,32 @@ public abstract class Projectile extends Entity {
         return mob;
     }
 
-    protected void move() {
+    protected void move(double nx, double ny, int range) {
+        x += nx;
+        y += ny;
+        if (distance() > range)
+            remove();
+    }
+  
+    public void update(){
+        super.update();
+        if (level.tileCollision((int)(x + nx), (int)(y + ny), 8, 4, 4)) {
+            level.add(new ParticleSpawner((int)x, (int)y, 100, 3, level, Sprite.particle_normal));
+            remove();
+        }
+        if (projectileCollision((int)(x + nx), (int)(y + ny))) {
+            level.add(new ParticleSpawner((int)x, (int)y, 50, 6, level, Sprite.particle_blood));
+            level.add(new ParticleSpawner((int)x, (int)y, 100, 3, level, Sprite.particle_normal));
+            remove();
+            collided = false;
+        }
+        damage = Player.getLevel();
+        move(nx, ny, range);
+    }
+
+    protected double distance() {
+        double dist = Math.sqrt(Math.abs(((xOrigin - x) * (xOrigin - x)) + ((yOrigin - y) * (yOrigin - y))));
+        return dist;
     }
 
     public boolean projectileCollision(int x, int y) {
@@ -72,5 +115,9 @@ public abstract class Projectile extends Entity {
             }
         }
       return collided;
+    }
+
+    public void render(Screen screen) {
+        screen.renderProjectile((int)x - 7, (int)y - 2, this);
     }
 }

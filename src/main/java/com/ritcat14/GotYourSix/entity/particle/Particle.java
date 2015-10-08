@@ -4,7 +4,7 @@ import java.util.Random;
 
 import com.ritcat14.GotYourSix.entity.Entity;
 import com.ritcat14.GotYourSix.entity.mob.Player;
-import com.ritcat14.GotYourSix.entity.projectile.TestProjectile;
+import com.ritcat14.GotYourSix.entity.projectile.Projectile;
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.Sprite;
 
@@ -31,7 +31,7 @@ public class Particle extends Entity {
         this.zz = random.nextFloat() + 2.0;
         int col = ran.nextInt(4);
         if (sprite != Sprite.particle_blood) {
-            if (TestProjectile.weapon == TestProjectile.Weapon.FIREDCANNON || TestProjectile.weapon == TestProjectile.Weapon.FIREDARROW) {
+            if (Projectile.weapon == Projectile.Weapon.FIREDCANNON || Projectile.weapon == Projectile.Weapon.FIREDARROW) {
                 if (col == 0)
                     this.sprite = new Sprite(2, 0xff000000);
                 if (col == 1)
@@ -40,7 +40,7 @@ public class Particle extends Entity {
                     this.sprite = new Sprite(2, 0xffF8F8C8);
                 if (col == 3)
                     this.sprite = new Sprite(2, 0xffF8A800);
-            } else if (TestProjectile.weapon == TestProjectile.Weapon.FIREBALL || TestProjectile.weapon == TestProjectile.Weapon.FIREWALL) {
+            } else if (Projectile.weapon == Projectile.Weapon.FIREBALL || Projectile.weapon == Projectile.Weapon.FIREWALL) {
                 if (col == 0)
                     this.sprite = new Sprite(2, 0xffF86800);
                 if (col == 1)
@@ -49,7 +49,7 @@ public class Particle extends Entity {
                     this.sprite = new Sprite(2, 0xffF8F8C8);
                 if (col == 3)
                     this.sprite = new Sprite(2, 0xffF8D840);
-            } else if (TestProjectile.weapon == TestProjectile.Weapon.ICEDCANNON || TestProjectile.weapon == TestProjectile.Weapon.ICEDARROW) {
+            } else if (Projectile.weapon == Projectile.Weapon.ICEDCANNON || Projectile.weapon == Projectile.Weapon.ICEDARROW) {
                 if (col == 0)
                     this.sprite = new Sprite(2, 0xff427AFF);
                 if (col == 1)
@@ -58,7 +58,7 @@ public class Particle extends Entity {
                     this.sprite = new Sprite(2, 0xff7C9BFF);
                 if (col == 3)
                     this.sprite = new Sprite(2, 0xff000000);
-            } else if (TestProjectile.weapon == TestProjectile.Weapon.ICEBALL || TestProjectile.weapon == TestProjectile.Weapon.ICEWALL) {
+            } else if (Projectile.weapon == Projectile.Weapon.ICEBALL || Projectile.weapon == Projectile.Weapon.ICEWALL) {
                 if (col == 0)
                     this.sprite = new Sprite(2, 0xff427AFF);
                 if (col == 1)

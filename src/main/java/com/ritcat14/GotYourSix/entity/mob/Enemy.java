@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.ritcat14.GotYourSix.graphics.Screen;
-import com.ritcat14.GotYourSix.items.Item;
+import com.ritcat14.GotYourSix.items.*;
 import com.ritcat14.GotYourSix.level.tile.Tile;
 import com.ritcat14.GotYourSix.util.Vector2i;
 import com.ritcat14.GotYourSix.Game;
@@ -22,6 +22,48 @@ public abstract class Enemy extends Mob {
 
     public abstract void render(Screen screen);
 
+    public static Item getItem() {
+        Random ran = new Random();
+        int i = ran.nextInt(4);
+        if (Player.type == Player.Type.FIRE || Player.type == Player.Type.FIREKING) {
+            if (i == 0) {
+                CannonBall cb = new CannonBall();
+                return cb;
+            } else if (i == 1) {
+                FireArrow fa = new FireArrow();
+                return fa;
+            } else if (i == 2) {
+                FireCannon fc = new FireCannon();
+                return fc;
+            } else if (i == 3) {
+                FireBall fb = new FireBall();
+                return fb;
+            } else if (i == 4) {
+                FireWall fw = new FireWall();
+                return fw;
+            }
+        } else if (Player.type == Player.Type.ICE || Player.type == Player.Type.FIREKING) {
+            if (i == 0) {
+                CannonBall cb = new CannonBall();
+                return cb;
+            } else if (i == 1) {
+                IceArrow ia = new IceArrow();
+                return ia;
+            } else if (i == 2) {
+                IceCannon ic = new IceCannon();
+                return ic;
+            } else if (i == 3) {
+                IceBall ib = new IceBall();
+                return ib;
+            } else if (i == 4) {
+                IceWall iw = new IceWall();
+                return iw;
+            }
+        }
+        CannonBall c = new CannonBall();
+        return c;
+    }
+
     public void loseHealth(int damage, Player player) {
         health -= damage;
         if (health <= 0) {
@@ -30,7 +72,7 @@ public abstract class Enemy extends Mob {
             Random ran = new Random();
             int j = ran.nextInt(5);
             for (int g = 0; g <= j; g++) {
-                Item e = Player.getItem();
+                Item e = getItem();
                 e.setPosition(new Vector2i((int)getX() + ((ran.nextInt(40) - 20)), (int)getY() + ((ran.nextInt(40) - 20))));
                 level.add(e);
             }

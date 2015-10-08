@@ -62,7 +62,7 @@ public class Game extends Canvas implements Runnable {
     private static Game      game;
     public static boolean    loaded      = false;
     public static boolean          loadedGame  = false;
-    private static  boolean paused = false;
+    public static  boolean paused = false;
     public static SoundManager s = new SoundManager() {
         public void initSounds() {
             /*sounds.add(new Sound("INTRO", Sound.getURL("Intro.wav")));

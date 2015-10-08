@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.awt.Font;
 
 import com.ritcat14.GotYourSix.Game;
-import com.ritcat14.GotYourSix.entity.projectile.TestProjectile;
+import com.ritcat14.GotYourSix.entity.projectile.Projectile;
 import com.ritcat14.GotYourSix.entity.mob.Player;
 import com.ritcat14.GotYourSix.input.Keyboard;
 import com.ritcat14.GotYourSix.items.CannonBall;
@@ -42,16 +42,17 @@ public class Weapons extends UIPanel {
     private ArrayList<UIPanel>    weps        = new ArrayList<UIPanel>();
     private UIPanel               weapon;
     private UILabel               amount;
+    private UIManager				 ui;
     private BufferedImage         weaponImg;
     private Keyboard key = Game.getKeyboard();
-    private boolean labelsCreated = false;
-
 
     public Weapons() {
         super(new Vector2i((Game.getWindowWidth()-180), Game.getWindowHeight() - 80), new Vector2i(6 * 80, 80),
               ImageUtil.getImage("/ui/weaponBarBack.png"));
         this.x = (Game.getWindowWidth()-180);
         this.y = Game.getWindowHeight() - 80;
+        ui = new UIManager();
+        ui.addPanel(this);
         for (int i = 0; i < 6; i++) {
             int num = (i + 1);
             if (Player.type == Player.Type.FIRE || Player.type == Player.Type.FIREKING) {
@@ -61,6 +62,22 @@ public class Weapons extends UIPanel {
             }
             weapon = new UIPanel(new Vector2i(x + (i * 80), y), new Vector2i(weaponImg.getWidth(), weaponImg.getHeight()), weaponImg);
             addComponent(weapon);
+            if (num == 1) amount = new UILabel(weapon.position, "∞");
+            else if (num == 2) amount = new UILabel(weapon.position, "" + cannons.size());
+            if (Player.type == Player.Type.FIRE || Player.type == Player.Type.FIREKING) {
+                if (num == 3) amount = new UILabel(weapon.position, "" + firearrows.size());
+                else if (num == 4) amount = new UILabel(weapon.position, "" + firecannons.size());
+                else if (num == 5) amount = new UILabel(weapon.position, "" + fireballs.size());
+                else if (num == 6) amount = new UILabel(weapon.position, "" + firewalls.size());
+            } else if (Player.type == Player.Type.ICE || Player.type == Player.Type.ICEKING) {
+                if (num == 3) amount = new UILabel(weapon.position, "" + icearrows.size());
+                else if (num == 4) amount = new UILabel(weapon.position, "" + icecannons.size());
+                else if (num == 5) amount = new UILabel(weapon.position, "" + iceballs.size());
+                else if (num == 6) amount = new UILabel(weapon.position, "" + icewalls.size());
+            }
+            labels.add(amount);
+            weapon.addComponent(amount);
+            amount.setFont(new Font("Helvetica", Font.BOLD, 15)).setColor(0xff7F7F7F);
             weps.add(weapon);
         }
         changeWeapon(1);
@@ -80,22 +97,22 @@ public class Weapons extends UIPanel {
     }
 
     public void changeWeapon(int index) {
-        if (index == 1) TestProjectile.weapon = TestProjectile.Weapon.ARROW;
-        else if (index == 2) TestProjectile.weapon = TestProjectile.Weapon.CANNON;
+        if (index == 1) Projectile.weapon = Projectile.Weapon.ARROW;
+        else if (index == 2) Projectile.weapon = Projectile.Weapon.CANNON;
         if (Player.type == Player.Type.FIRE || Player.type == Player.Type.FIREKING) {
             weps.get(selectedWep - 1).setBackgroundImage(ImageUtil.getImage("/ui/panels/weapons/fire/fireWeapon" + selectedWep + ".png"));
             weps.get(index - 1).setBackgroundImage(ImageUtil.getImage("/ui/panels/weapons/fire/fireWeaponSelected" + index + ".png"));
-            if (index == 3) TestProjectile.weapon = TestProjectile.Weapon.FIREDARROW;
-            if (index == 4) TestProjectile.weapon = TestProjectile.Weapon.FIREDCANNON;
-            if (index == 5) TestProjectile.weapon = TestProjectile.Weapon.FIREBALL;
-            if (index == 6) TestProjectile.weapon = TestProjectile.Weapon.FIREWALL;
+            if (index == 3) Projectile.weapon = Projectile.Weapon.FIREDARROW;
+            if (index == 4) Projectile.weapon = Projectile.Weapon.FIREDCANNON;
+            if (index == 5) Projectile.weapon = Projectile.Weapon.FIREBALL;
+            if (index == 6) Projectile.weapon = Projectile.Weapon.FIREWALL;
         } else if (Player.type == Player.Type.ICE || Player.type == Player.Type.ICEKING) {
             weps.get(selectedWep - 1).setBackgroundImage(ImageUtil.getImage("/ui/panels/weapons/ice/iceWeapon" + selectedWep + ".png"));
             weps.get(index - 1).setBackgroundImage(ImageUtil.getImage("/ui/panels/weapons/ice/iceWeaponSelected" + index + ".png"));
-            if (index == 3) TestProjectile.weapon = TestProjectile.Weapon.ICEDARROW;
-            if (index == 4) TestProjectile.weapon = TestProjectile.Weapon.ICEDCANNON;
-            if (index == 5) TestProjectile.weapon = TestProjectile.Weapon.ICEBALL;
-            if (index == 6) TestProjectile.weapon = TestProjectile.Weapon.ICEWALL;
+            if (index == 3) Projectile.weapon = Projectile.Weapon.ICEDARROW;
+            if (index == 4) Projectile.weapon = Projectile.Weapon.ICEDCANNON;
+            if (index == 5) Projectile.weapon = Projectile.Weapon.ICEBALL;
+            if (index == 6) Projectile.weapon = Projectile.Weapon.ICEWALL;
         }
         selectedWep = index;
     }
@@ -145,6 +162,7 @@ public class Weapons extends UIPanel {
      }catch(Exception e){
        System.out.println("no weapons to remove");
      }
+     updateLabels();
    }
   
    public boolean canShoot(){
@@ -152,62 +170,25 @@ public class Weapons extends UIPanel {
        return false;
    }
   
-    private void createLabels(){
-        for (int i = 0; i < weps.size(); i++){
-            int num = i + 1;
-            if (num == 1)
-                amount = new UILabel(weps.get(i).position, "∞");
-            else if (num == 2) {
-              amount = new UILabel(weps.get(i).position, "" + cannons.size());
-              labels.add(amount);
-            }
-            if (Player.type == Player.Type.FIRE || Player.type == Player.Type.FIREKING) {
-                if (num == 3)
-                    amount = new UILabel(weps.get(i).position, "" + firearrows.size());
-                else if (num == 4)
-                    amount = new UILabel(weps.get(i).position, "" + firecannons.size());
-                else if (num == 5)
-                    amount = new UILabel(weps.get(i).position, "" + fireballs.size());
-                else if (num == 6)
-                    amount = new UILabel(weps.get(i).position, "" + firewalls.size());
-                labels.add(amount);
-            } else if (Player.type == Player.Type.ICE || Player.type == Player.Type.ICEKING) {
-                if (num == 3)
-                    amount = new UILabel(weps.get(i).position, "" + icearrows.size());
-                else if (num == 4)
-                    amount = new UILabel(weps.get(i).position, "" + icecannons.size());
-                else if (num == 5)
-                    amount = new UILabel(weps.get(i).position, "" + iceballs.size());
-                else if (num == 6)
-                    amount = new UILabel(weps.get(i).position, "" + icewalls.size());
-                    labels.add(amount);
-            }
-            amount.setFont(new Font("Helvetica", Font.BOLD, 15)).setColor(0xff7F7F7F);
-            weps.get(i).addComponent(amount);
-        }
-    }
-  
     private void updateLabels(){
         for (int i = 0; i < labels.size(); i++){
-            if (i == 0) labels.get(i).setText("" + cannons.size());
+          if (i == 0) continue;
+          if (i == 1) labels.get(i).setText("" + cannons.size());
           if (Player.type == Player.Type.FIRE || Player.type == Player.Type.FIREKING){
-            if (i == 1) labels.get(i).setText("" + firearrows.size());
-            if (i == 2) labels.get(i).setText("" + firecannons.size());
-            if (i == 3) labels.get(i).setText("" + fireballs.size());
-            if (i == 4) labels.get(i).setText("" + firewalls.size());
+            if (i == 2) labels.get(i).setText("" + firearrows.size());
+            if (i == 3) labels.get(i).setText("" + firecannons.size());
+            if (i == 4) labels.get(i).setText("" + fireballs.size());
+            if (i == 5) labels.get(i).setText("" + firewalls.size());
           } else if (Player.type == Player.Type.ICE || Player.type == Player.Type.ICEKING) {
-            if (i == 1) labels.get(i).setText("" + icearrows.size());
-            if (i == 2) labels.get(i).setText("" + icecannons.size());
-            if (i == 3) labels.get(i).setText("" + iceballs.size());
-            if (i == 4) labels.get(i).setText("" + icewalls.size());
+            if (i == 2) labels.get(i).setText("" + icearrows.size());
+            if (i == 3) labels.get(i).setText("" + icecannons.size());
+            if (i == 4) labels.get(i).setText("" + iceballs.size());
+            if (i == 5) labels.get(i).setText("" + icewalls.size());
           }
         }
     }
 
     public void update() {
-        super.update();
-        
-        if (!labelsCreated) createLabels();
         if (key.sel1) changeWeapon(1);
         if (key.sel2) changeWeapon(2);
         if (key.sel3) changeWeapon(3);

@@ -8,24 +8,11 @@ import java.util.List;
 import java.util.Random;
 
 import com.ritcat14.GotYourSix.Game;
-import com.ritcat14.GotYourSix.entity.projectile.Projectile;
-import com.ritcat14.GotYourSix.entity.projectile.TestProjectile;
-import com.ritcat14.GotYourSix.graphics.AnimatedObject;
-import com.ritcat14.GotYourSix.graphics.Screen;
-import com.ritcat14.GotYourSix.graphics.Sprite;
-import com.ritcat14.GotYourSix.graphics.UI.Inventory;
-import com.ritcat14.GotYourSix.graphics.UI.Weapons;
-import com.ritcat14.GotYourSix.graphics.UI.Minimap;
-import com.ritcat14.GotYourSix.graphics.UI.UIActionListener;
-import com.ritcat14.GotYourSix.graphics.UI.UIButton;
-import com.ritcat14.GotYourSix.graphics.UI.UILabel;
-import com.ritcat14.GotYourSix.graphics.UI.UIManager;
-import com.ritcat14.GotYourSix.graphics.UI.UIPanel;
-import com.ritcat14.GotYourSix.graphics.UI.UIProgressBar;
-import com.ritcat14.GotYourSix.input.Keyboard;
-import com.ritcat14.GotYourSix.input.Mouse;
+import com.ritcat14.GotYourSix.entity.projectile.*;
+import com.ritcat14.GotYourSix.graphics.*;
+import com.ritcat14.GotYourSix.graphics.UI.*;
+import com.ritcat14.GotYourSix.input.*;
 import com.ritcat14.GotYourSix.items.*;
-import com.ritcat14.GotYourSix.items.Item;
 import com.ritcat14.GotYourSix.level.Level;
 import com.ritcat14.GotYourSix.util.ImageUtil;
 import com.ritcat14.GotYourSix.util.Vector2i;
@@ -61,6 +48,9 @@ public class Player extends Mob {
    private int stamina = 100;
    private int staminaDec = 15;
    private int staminaInc = 3;
+   private int invin = 3;
+   private boolean hit = false;
+   private boolean dying = false;
   
    private UIManager ui;
    private UIManager mui;
@@ -71,7 +61,7 @@ public class Player extends Mob {
    private UIProgressBar UIStaminaBar;
    private UIPanel weapons;
    private Inventory invent;
-   private Weapons w;
+   private static Weapons w;
    private UILabel xpLabel;
    private UIButton button;
    private UIButton face;
@@ -82,6 +72,7 @@ public class Player extends Mob {
    private static boolean madeItem = false;
    private boolean changePlayer = true;
    private List<Item> items;
+   private List<Projectile> shots;
   
    public static enum Type {
      FIRE, FIREKING, ICE, ICEKING
@@ -120,6 +111,30 @@ public class Player extends Mob {
       stamina = 100;
       staminaDec = 15;
       staminaInc = 3;
+     
+      Arrow a = new Arrow();
+      avShots.add(a);
+      Cannon c = new Cannon();
+      avShots.add(c);
+      if (type == Type.FIRE || type == Type.FIREKING){
+        FirArrow fa = new FirArrow();
+        avShots.add(fa);
+        FirCannon fc = new FirCannon();
+        avShots.add(fc);
+        FirBall fb = new FirBall();
+        avShots.add(fb);
+        FirWall fw = new FirWall();
+        avShots.add(fw);
+      } else if (type == Type.ICE || type == Type.ICEKING){
+        IcArrow ia = new IcArrow();
+        avShots.add(ia);
+        IcCannon ic = new IcCannon();
+        avShots.add(ic);
+        IcBall ib = new IcBall();
+        avShots.add(ib);
+        IcWall iw = new IcWall();
+        avShots.add(iw);
+      }
       
       ui = Game.getUIManager();
       mui = Game.getMapManager();
@@ -183,7 +198,6 @@ public class Player extends Mob {
       checkSprite();
 		animSprite = down;
       sprite = animSprite.getSprite();
-		fireRate = TestProjectile.FIRERATE;
      
       if (image != null){
       face = new UIButton(new Vector2i(200, 330 - 20),image, new UIActionListener() {
@@ -199,6 +213,7 @@ public class Player extends Mob {
           w = new Weapons();
           ui.addPanel(w);
       }
+		if (w != null) fireRate = avShots.get(w.getSelected() - 1).FIRERATE;
 	}
   
    public String getName(){
@@ -234,19 +249,31 @@ public class Player extends Mob {
   
    private static int time = 0;
 	public void update() {
+      if (hit && time % 60 == 0){
+        invin--;
+       if (invin <= 0){
+         invin = 3;
+         hit = false;
+       }
+      }
+      if (level != null) shots = level.getProjectiles();
       items = level.getItems();
-      makeItem("FireBall");
       if (level != null) map.setLevel(level);
       checkSprite();
       sprite = animSprite.getSprite();
       time++;
-      if (time % 180 == 0 && thirst < 100 && hunger < 100){
-          thirst += 2;
-          hunger ++;
+      if (time % 180 == 0 && thirst < 100) thirst += 2;
+      if (time % 180 == 0 && hunger < 100) hunger += 1;
+      if (time % 180 == 0 && thirst>= 100){
+        loseHealth(4);
+        dying = true;
+      } else if(time % 180 == 0 && hunger >= 100){
+        loseHealth(2);
+        dying = true;
+      } else {
+        dying = false;
       }
-      if (time % 180 == 0 && thirst>= 100) loseHealth(2);
-      else if(time % 180 == 0 && hunger >= 100) loseHealth(1);
-      if (time % 60 == 0 && health < 100) health += 1;
+      if (time % 60 == 0 && health < 100 && !hit && !dying) health ++;
       
       UIHealthBar.setProgress(health / 100.0);
       UILevelBar.setProgress(XP / 100.0);
@@ -356,7 +383,7 @@ public class Player extends Mob {
             w.add(ib);
           }
         } else if (XPLevel == 1){
-          TestProjectile.weapon = TestProjectile.Weapon.ARROW;
+          Projectile.weapon = Projectile.Weapon.ARROW;
         }
   }
 	
@@ -374,7 +401,10 @@ public class Player extends Mob {
             for (int i = 0; i < enemies.size(); i++) {
                 Rectangle en = new Rectangle((int)(enemies.get(i).getX()) - 10, (int)(enemies.get(i).getY()) - 16, enemies.get(i).getSprite().getWidth() - 12, enemies.get(i).getSprite().getHeight());
                 Rectangle pl = new Rectangle((int)(players.get(j).getX()) - 10, (int)(players.get(j).getY()) - 16, players.get(j).getSprite().getWidth() - 12, players.get(j).getSprite().getHeight());
-                if (pl.intersects(en)) players.get(j).loseHealth(3);
+                if (pl.intersects(en) &&!hit){
+                  players.get(j).loseHealth(3);
+                  hit = true;
+                }
             }
         }
    }
@@ -388,59 +418,16 @@ public class Player extends Mob {
            shoot(x, y, dir);
            w.removeWep();
          }
-			fireRate = TestProjectile.FIRERATE;
+		  if (w != null) fireRate = avShots.get(w.getSelected() - 1).FIRERATE;
 		}
 	}
   
    public void loseHealth(int damage){
         health -= damage;
         if (health <= 0){
-            Game.changeLevel(Level.spawn);
+            Game.STATE = Game.State.PAUSE;
             health = 1;
         }
-   }
-   public static Item getItem(){
-     Random ran = new Random();
-     int i;
-     if (type == Type.FIRE || type == Type.FIREKING){
-         i = ran.nextInt(4);
-         if (i == 0){
-           CannonBall cb = new CannonBall();
-           return cb;
-         } else if (i == 1){
-           FireArrow fa = new FireArrow();
-           return fa;
-         } else if (i == 2){
-           FireCannon fc = new FireCannon();
-           return fc;
-         } else if (i == 3){
-           FireBall fb = new FireBall();
-           return fb;
-         } else if (i == 4){
-           FireWall fw = new FireWall();
-           return fw;
-         }
-     } else if (type == Type.ICE || type == Type.FIREKING){
-         i = ran.nextInt(4);
-         if (i == 0){
-           CannonBall cb = new CannonBall();
-           return cb;
-         } else if (i == 1){
-           IceArrow ia = new IceArrow();
-           return ia;
-         } else if (i == 2){
-           IceCannon ic = new IceCannon();
-           return ic;
-         } else if (i == 3){
-           IceBall ib = new IceBall();
-           return ib;
-         } else if (i == 4){
-           IceWall iw = new IceWall();
-           return iw;
-         }
-     }
-     CannonBall c = new CannonBall();
-     return c;
    }
    
    private void checkSprite(){
@@ -494,7 +481,7 @@ public class Player extends Mob {
        return invent;
    }
   
-   public Weapons getWepInvent(){
+   public static Weapons getWepInvent(){
        return w;
    }
   
