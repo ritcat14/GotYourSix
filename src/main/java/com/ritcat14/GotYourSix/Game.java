@@ -332,7 +332,7 @@ public class Game extends Canvas implements Runnable {
         new Console();
         game = new Game();
         game.frame.setResizable(false);
-        game.frame.setUndecorated(true); //Enable for full screen
+        //game.frame.setUndecorated(true); //Enable for full screen
         game.frame.add(game);
         game.frame.pack();
         game.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

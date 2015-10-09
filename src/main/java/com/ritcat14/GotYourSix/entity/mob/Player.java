@@ -36,6 +36,11 @@ public class Player extends Mob {
 	private AnimatedObject downSwim;
 	private AnimatedObject leftSwim;
 	private AnimatedObject rightSwim;
+  
+	private AnimatedObject upShoot;
+	private AnimatedObject downShoot;
+	private AnimatedObject leftShoot;
+	private AnimatedObject rightShoot;
    private Sprite weapon;
 	
 	private AnimatedObject animSprite;
@@ -49,8 +54,10 @@ public class Player extends Mob {
    private int staminaDec = 15;
    private int staminaInc = 3;
    private int invin = 3;
+   private double shootAngle = 0;
    private boolean hit = false;
    private boolean dying = false;
+   private boolean shooting = false;
   
    private UIManager ui;
    private UIManager mui;
@@ -294,7 +301,13 @@ public class Player extends Mob {
       
       if (stamina < 100 && !input.sprint && time % 60 == 0) stamina += staminaInc;
       if (stamina > 100 - staminaInc) stamina = 100;
-      
+      if (shooting){
+      if (shootAngle > ((Math.PI * 7)/4) || shootAngle < (Math.PI / 4)){
+        animSprite = rightShoot;
+      } else if (shootAngle >= (Math.PI / 4) && shootAngle <= ((Math.PI * 3)/4)){
+        animSprite = downShoot;
+      }
+      }
 		if(input.up) {
 			ya -= speed;
          if (swimming) animSprite = upSwim;
@@ -414,10 +427,12 @@ public class Player extends Mob {
 			double dx = Mouse.getX() - (Game.getWindowWidth()/2);
 			double dy = Mouse.getY() - (Game.getWindowHeight()/2);
 			double dir = Math.atan2(dy, dx);
+         shootAngle = dir;
          if (w.canShoot()){
            shoot(x, y, dir);
+           shooting = true;
            w.removeWep();
-         }
+         } else shooting = false;
 		  if (w != null) fireRate = avShots.get(w.getSelected() - 1).FIRERATE;
 		}
 	}
@@ -471,6 +486,10 @@ public class Player extends Mob {
            downSwim = AnimatedObject.fireSpriteDownSwim;
            leftSwim = AnimatedObject.fireSpriteLeftSwim;
            rightSwim = AnimatedObject.fireSpriteRightSwim;
+           upShoot = AnimatedObject.fireSpriteUpShoot;
+           downShoot = AnimatedObject.fireSpriteDownShoot;
+           leftShoot = AnimatedObject.fireSpriteLeftShoot;
+           rightShoot = AnimatedObject.fireSpriteRightShoot;
            image = ImageUtil.getImage("/ui/buttons/playerFire.png");
      }
        changePlayer = false;
