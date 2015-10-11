@@ -54,7 +54,6 @@ public class Player extends Mob {
    private int staminaDec = 15;
    private int staminaInc = 3;
    private int invin = 3;
-   private double shootAngle = 0;
    private boolean hit = false;
    private boolean dying = false;
    private boolean shooting = false;
@@ -254,8 +253,7 @@ public class Player extends Mob {
        this.y = p.y;
    }
   
-   private static int time = 0;
-	public void update() {
+   private void updateStats(int time){
       if (hit && time % 60 == 0){
         invin--;
        if (invin <= 0){
@@ -263,12 +261,6 @@ public class Player extends Mob {
          hit = false;
        }
       }
-      if (level != null) shots = level.getProjectiles();
-      items = level.getItems();
-      if (level != null) map.setLevel(level);
-      checkSprite();
-      sprite = animSprite.getSprite();
-      time++;
       if (time % 180 == 0 && thirst < 100) thirst += 2;
       if (time % 180 == 0 && hunger < 100) hunger += 1;
       if (time % 180 == 0 && thirst>= 100){
@@ -289,42 +281,42 @@ public class Player extends Mob {
       UIStaminaBar.setProgress(stamina / 100.0);
       xpLabel.setText("LVL "+XPLevel);
       
-		if (walking) animSprite.update(); 
-      else animSprite.setFrame(0);
-      
-		if (fireRate > 0) fireRate --;
-      
-		double xa = 0, ya = 0;
       if (input.sprint && time % 100 == 0 && stamina > staminaDec && walking) stamina -= staminaDec;
       else if (input.sprint && stamina > staminaDec && walking) speed = 2.5;
       else speed = 1.5;
       
       if (stamina < 100 && !input.sprint && time % 60 == 0) stamina += staminaInc;
       if (stamina > 100 - staminaInc) stamina = 100;
-      if (shooting){
-      if (shootAngle > ((Math.PI * 7)/4) || shootAngle < (Math.PI / 4)){
-        animSprite = rightShoot;
-      } else if (shootAngle >= (Math.PI / 4) && shootAngle <= ((Math.PI * 3)/4)){
-        animSprite = downShoot;
-      }
-      }
+   }
+  
+   private static int time = 0;
+	public void update() {
+      if (level != null) shots = level.getProjectiles();
+      items = level.getItems();
+      if (level != null) map.setLevel(level);
+      
+      checkSprite();
+      sprite = animSprite.getSprite();
+      time++;
+     
+      updateStats(time);
+      
+		if (walking || shooting) animSprite.update(); 
+      else animSprite.setFrame(0);
+      
+		if (fireRate > 0) fireRate --;
+      
+		double xa = 0, ya = 0;
+     
 		if(input.up) {
 			ya -= speed;
-         if (swimming) animSprite = upSwim;
-			else animSprite = up;
 		}else if(input.down) {
 			ya += speed;
-         if (swimming) animSprite = downSwim;
-			else animSprite = down;
 		}
 		if(input.left) {
 			xa -= speed;
-         if (swimming) animSprite = leftSwim;
-			else animSprite = left;
 		} else if(input.right){
 			xa += speed;
-         if (swimming) animSprite = rightSwim;
-			else animSprite = right;
 		}
 		
 		if(xa != 0 || ya != 0){
@@ -423,18 +415,21 @@ public class Player extends Mob {
    }
 
 	private void updateShooting() {
-		if(Mouse.getButton() == 1 && fireRate <= 0 && canShoot){
+		if(Mouse.getButton() == 1 && fireRate <= 0 && canShoot && w.canShoot()){
 			double dx = Mouse.getX() - (Game.getWindowWidth()/2);
 			double dy = Mouse.getY() - (Game.getWindowHeight()/2);
 			double dir = Math.atan2(dy, dx);
-         shootAngle = dir;
-         if (w.canShoot()){
+           if (dir > ((Math.PI * 7)/4) || dir < (Math.PI / 4)){
+             animSprite = rightShoot;
+           } else if (dir >= (Math.PI / 4) && dir <= ((Math.PI * 3)/4)){
+             animSprite = downShoot;
+           }
            shoot(x, y, dir);
            shooting = true;
            w.removeWep();
-         } else shooting = false;
 		  if (w != null) fireRate = avShots.get(w.getSelected() - 1).FIRERATE;
-		}
+		} else shooting = false;
+     System.out.println(shooting);
 	}
   
    public void loseHealth(int damage){
