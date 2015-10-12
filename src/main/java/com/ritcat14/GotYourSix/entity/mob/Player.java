@@ -53,7 +53,7 @@ public class Player extends Mob {
    private int stamina = 100;
    private int staminaDec = 15;
    private int staminaInc = 3;
-   private int invin = 3;
+   private double invin = 1.5;
    private boolean hit = false;
    private boolean dying = false;
    private boolean shooting = false;
@@ -254,8 +254,8 @@ public class Player extends Mob {
    }
   
    private void updateStats(int time){
-      if (hit && time % 60 == 0){
-        invin--;
+      if (hit && time % 30 == 0){
+        invin-= 0.5;
        if (invin <= 0){
          invin = 3;
          hit = false;
@@ -307,7 +307,12 @@ public class Player extends Mob {
 		if (fireRate > 0) fireRate --;
       
 		double xa = 0, ya = 0;
-     
+      if (walking && !shooting){
+        if (input.up) animSprite = up;
+        if (input.down) animSprite = down;
+        if (input.left) animSprite = left;
+        if (input.right) animSprite = right;
+      }
 		if(input.up) {
 			ya -= speed;
 		}else if(input.down) {
@@ -415,21 +420,27 @@ public class Player extends Mob {
    }
 
 	private void updateShooting() {
-		if(Mouse.getButton() == 1 && fireRate <= 0 && canShoot && w.canShoot()){
+		if(Mouse.getButton() == 1 && canShoot && w.canShoot()){
+           shooting = true;
 			double dx = Mouse.getX() - (Game.getWindowWidth()/2);
 			double dy = Mouse.getY() - (Game.getWindowHeight()/2);
 			double dir = Math.atan2(dy, dx);
-           if (dir > ((Math.PI * 7)/4) || dir < (Math.PI / 4)){
+         System.out.println(dir);
+           if (dir >= -2.35619449 && dir <= -0.7853981634){
+             animSprite = upShoot;
+           } else if (dir <= 2.35619449 && dir <= 0.7853981634){
+             animSprite = leftShoot;//
+           } else if (dir <= 2.35619449 && dir >= -2.35619449){
+             animSprite = downShoot;//
+           } else if (dir >= -0.7853981634 && dir <= 0.7853981634){
              animSprite = rightShoot;
-           } else if (dir >= (Math.PI / 4) && dir <= ((Math.PI * 3)/4)){
-             animSprite = downShoot;
            }
-           shoot(x, y, dir);
-           shooting = true;
-           w.removeWep();
-		  if (w != null) fireRate = avShots.get(w.getSelected() - 1).FIRERATE;
+           if (fireRate <= 0){
+           		shoot(x, y, dir);
+           		w.removeWep();
+               if (w != null) fireRate = avShots.get(w.getSelected() - 1).FIRERATE;
+           }
 		} else shooting = false;
-     System.out.println(shooting);
 	}
   
    public void loseHealth(int damage){
