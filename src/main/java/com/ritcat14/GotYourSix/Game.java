@@ -14,20 +14,16 @@ import javax.swing.JFrame;
 
 import com.ritcat14.GotYourSix.entity.mob.Player;
 import com.ritcat14.GotYourSix.graphics.Screen;
-import com.ritcat14.GotYourSix.graphics.UI.LoadBar;
 import com.ritcat14.GotYourSix.graphics.UI.UIManager;
 import com.ritcat14.GotYourSix.graphics.UI.UIPanel;
-import com.ritcat14.GotYourSix.graphics.UI.UIActionListener;
-import com.ritcat14.GotYourSix.graphics.UI.UIButton;
+import com.ritcat14.GotYourSix.graphics.UI.menus.Maintenance;
+import com.ritcat14.GotYourSix.graphics.UI.menus.StartScreen;
 import com.ritcat14.GotYourSix.input.Keyboard;
 import com.ritcat14.GotYourSix.input.Mouse;
 import com.ritcat14.GotYourSix.level.Level;
 import com.ritcat14.GotYourSix.level.TileCoordinate;
-import com.ritcat14.GotYourSix.sfx.SoundManager;
-import com.ritcat14.GotYourSix.sfx.Sound;
 import com.ritcat14.GotYourSix.util.Console;
-import com.ritcat14.GotYourSix.util.ImageUtil;
-import com.ritcat14.GotYourSix.util.Vector2i;
+import com.ritcat14.GotYourSix.util.FileHandler;
 
 public class Game extends Canvas implements Runnable {
     private static final long serialVersionUID = 1L;
@@ -38,8 +34,9 @@ public class Game extends Canvas implements Runnable {
 
     public static enum State {
         START,
-        LOAD,
         GAME,
+        MAINTENANCE,
+        WAITING,
         PAUSE
     }
 
@@ -58,68 +55,13 @@ public class Game extends Canvas implements Runnable {
     private Screen           screen;
     private BufferedImage    image       = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     private int[]            pixels      = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
-    public static LoadBar    loadBar;
     private static Game      game;
     public static boolean    loaded      = false;
-    public static boolean          loadedGame  = false;
+    private boolean gameLoaded = false;
     public static  boolean paused = false;
-    public static SoundManager s = new SoundManager() {
-        public void initSounds() {
-            /*sounds.add(new Sound("INTRO", Sound.getURL("Intro.wav")));
-            sounds.add(new Sound("WALK", Sound.getURL("Footstep.wav")));
-            sounds.add(new Sound("FIRESHOOT", Sound.getURL("SpellFire.wav")));
-            sounds.add(new Sound("ICESHOOT", Sound.getURL("SpellIce.wav")));
-            sounds.add(new Sound("ACHIEVE", Sound.getURL("Achievement.wav")));
-            sounds.add(new Sound("DOORCLOSE", Sound.getURL("DoorClose.wav")));
-            sounds.add(new Sound("ENEMY1", Sound.getURL("Goblin1.wav")));
-            sounds.add(new Sound("ENEMY2", Sound.getURL("Goblin2.wav")));
-            sounds.add(new Sound("ENEMY3", Sound.getURL("Goblin3.wav")));
-            sounds.add(new Sound("ENEMY4", Sound.getURL("Goblin4.wav")));
-            sounds.add(new Sound("ENEMY5", Sound.getURL("Goblin5.wav")));
-            sounds.add(new Sound("LOSE", Sound.getURL("Lose.wav")));
-            sounds.add(new Sound("SELECT", Sound.getURL("Select.wav")));
-            sounds.add(new Sound("WIN", Sound.getURL("Win.wav")));*/
-        }
-      };
-
-    //start menu items
-    private boolean          loadedStart = false;
-    private UIPanel          startPanel = (UIPanel)new UIPanel(new Vector2i(0, 0),
-                                              new Vector2i(Game.getWindowWidth() + (60 * scale), Game.getWindowHeight()), ImageUtil.getImage("/textures/sheets/buttons/background.png")).setColor(0x363636);
-    private UIButton         startFireButton = new UIButton(new Vector2i((getWindowWidth() + (60 * scale)) / 2, getWindowHeight() / 2).add(new Vector2i(2, 136)),
-                                  new Vector2i(100, 30), new UIActionListener() {
-                                      public void perform() {
-                                          STATE = State.GAME;
-                                          Player.type = Player.Type.FIRE;
-                                          //s.stopSound("INTRO");
-                                      }
-                                  });
-    private UIButton         startIceButton = new UIButton(new Vector2i((getWindowWidth() + (60 * scale)) / 2, (getWindowHeight() / 2) + 40).add(new Vector2i(2, 136)),
-                                  new Vector2i(100, 30), new UIActionListener() {
-                                      public void perform() {
-                                          STATE = State.GAME;
-                                          Player.type = Player.Type.ICE;
-                                          //s.stopSound("INTRO");
-                                      }
-                                  });
-  
-    //pause menu items
-    private UIPanel          pausePanel =
-                         (UIPanel)new UIPanel(new Vector2i(((getWindowWidth() + (60 * scale))/2) - (40 * scale), (getWindowHeight()/2) - (40 * scale)),
-                                              new Vector2i((80 * scale), (80 * scale))).setColor(0x363636);
-    private UIButton         pauseButton = new UIButton(new Vector2i(130, 0),
-                                  new Vector2i(140, 30), new UIActionListener() {
-                                      public void perform() {
-                                          paused = false;
-                                          STATE = State.GAME;
-                                      }
-                                  });
-    private UIButton         exitButton = new UIButton(new Vector2i(130, 40),
-                                  new Vector2i(100, 30), new UIActionListener() {
-                                      public void perform() {
-                                        System.exit(0);
-                                      }
-                                  });
+    
+    private StartScreen startScreen;
+    private Maintenance maintenance;
 
     public Game() {
         Dimension size = new Dimension((width * scale) + (60 * 5), height * scale);
@@ -130,47 +72,30 @@ public class Game extends Canvas implements Runnable {
         minimapManager = new UIManager();
         frame = new JFrame();
         key = new Keyboard();
-        if (STATE == State.START) {
-            init(STATE);
-        }
+        FileHandler.setupGameFiles();
+        init(STATE);
 
-        addKeyListener(key); //Add our key detector
+        addKeyListener(key);
 
-        Mouse mouse = new Mouse(); //Create and instantiate our mouse detector
-        addMouseListener(mouse); //Add the mouse detector
+        Mouse mouse = new Mouse();
+        addMouseListener(mouse);
         addMouseMotionListener(mouse);
     }
 
     private void init(State state) {
         if (state == State.GAME) {
             TileCoordinate playerSpawn = new TileCoordinate(15, 60);
-            player = new Player("Kris", playerSpawn.x(), playerSpawn.y(), key); //Initialise the player
+            player = new Player(FileHandler.getPlayerName(), playerSpawn.x(), playerSpawn.y(), key);
             changeLevel(Level.spawn);
-            loadedGame = true;
-            loadedStart = false;
-            paused = false;
+            gameLoaded = true;
         } else if (state == State.START) {
-            //initiate start menu items here
-            uiManager.addPanel(startPanel);            
-            startFireButton.setText("FIRE");
-            startFireButton.label.setColor(0XFFB44720);
-            startPanel.addComponent(startFireButton);
-            startIceButton.setText("ICE");
-            startIceButton.label.setColor(0XFF2A7BCC);
-            startPanel.addComponent(startIceButton);
-            //s.playSound("INTRO");
-            loadedStart = true;
-            loadedGame = false;
-            paused = false;
-        } else if (state == State.PAUSE){
-            uiManager.addPanel(pausePanel);
-            pauseButton.setText("CONTINUE");
-            pausePanel.addComponent(pauseButton);
-            exitButton.setText("EXIT");
-            pausePanel.addComponent(exitButton);
-            loadedStart = false;
-            paused = true;
+            startScreen = new StartScreen();
+            uiManager.addPanel(startScreen);
+        } else if (state == State.MAINTENANCE){
+            maintenance = new Maintenance();
+            uiManager.addPanel(maintenance);
         }
+        STATE = State.WAITING;
     }
 
     public static UIManager getUIManager() {
@@ -265,14 +190,8 @@ public class Game extends Canvas implements Runnable {
     }
 
     public void update() {
-        if (STATE == State.GAME) {
-            if (!loadedGame)
-                init(State.GAME);
-            level.update();
-        } else if (STATE == State.START) {
-            if (!loadedStart)
-                init(State.START);
-        }
+        init(STATE);
+        if (gameLoaded) level.update();
         key.update();
         uiManager.update();
         minimapManager.update();
@@ -288,23 +207,13 @@ public class Game extends Canvas implements Runnable {
         screen.clear();
 
         Graphics g = bs.getDrawGraphics();
-        if (!loadedGame && STATE == State.GAME) {
+        if (STATE != State.WAITING) {
             List<UIPanel> panels = uiManager.getPanels();
             for (int i = 0; i < panels.size(); i++) {
                 uiManager.removePanel(panels.get(i));
             }
-            init(STATE);
-        } else if (loadedGame && STATE == State.GAME && !paused){
-            uiManager.removePanel(pausePanel);
-        } else if (!loadedStart && STATE == State.START) {
-            List<UIPanel> panels = uiManager.getPanels();
-            for (int i = 0; i < panels.size(); i++) {
-                uiManager.removePanel(panels.get(i));
-            }
-            init(STATE);
-        } else if (!paused && STATE == State.PAUSE){
-            init(STATE);
         }
+        init(STATE);
         if (player != null) {
             double xScroll = player.getX() - screen.width / 2;
             double yScroll = player.getY() - screen.height / 2;
@@ -332,7 +241,7 @@ public class Game extends Canvas implements Runnable {
         new Console();
         game = new Game();
         game.frame.setResizable(false);
-        //game.frame.setUndecorated(true); //Enable for full screen
+        game.frame.setUndecorated(true); //Enable for full screen
         game.frame.add(game);
         game.frame.pack();
         game.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

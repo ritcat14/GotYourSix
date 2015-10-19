@@ -2,13 +2,6 @@ package com.ritcat14.GotYourSix.level.tile;
 
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.Sprite;
-import com.ritcat14.GotYourSix.level.tile.spawn_level.SpawnEdgeTile;
-import com.ritcat14.GotYourSix.level.tile.spawn_level.SpawnFloorTile;
-import com.ritcat14.GotYourSix.level.tile.spawn_level.SpawnGrassTile;
-import com.ritcat14.GotYourSix.level.tile.spawn_level.SpawnPortalTile;
-import com.ritcat14.GotYourSix.level.tile.spawn_level.SpawnWallTile;
-import com.ritcat14.GotYourSix.level.tile.spawn_level.SpawnWaterTile;
-import com.ritcat14.GotYourSix.level.tile.spawn_level.SpawnDoorTile;
 
 public class Tile {
     

@@ -1,4 +1,4 @@
-package com.ritcat14.GotYourSix.level.tile.spawn_level;
+package com.ritcat14.GotYourSix.level.tile;
 
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.Sprite;

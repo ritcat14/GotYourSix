@@ -1,4 +1,4 @@
-package com.ritcat14.GotYourSix.graphics.UI;
+package com.ritcat14.GotYourSix.graphics.UI.menus;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -22,6 +22,7 @@ import com.ritcat14.GotYourSix.util.ImageUtil;
 import com.ritcat14.GotYourSix.util.Vector2i;
 import com.ritcat14.GotYourSix.graphics.UI.UIPanel;
 import com.ritcat14.GotYourSix.graphics.UI.UILabel;
+import com.ritcat14.GotYourSix.graphics.UI.UIManager;
 
 public class Weapons extends UIPanel {
 

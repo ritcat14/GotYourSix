@@ -15,6 +15,7 @@ import com.ritcat14.GotYourSix.entity.projectile.Projectile;
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.items.Item;
 import com.ritcat14.GotYourSix.level.tile.Tile;
+import com.ritcat14.GotYourSix.level.worlds.SpawnLevel;
 import com.ritcat14.GotYourSix.util.Vector2i;
 
 public class Level {
@@ -45,8 +46,6 @@ public class Level {
                                           };
 
     public static Level      spawn        = new SpawnLevel("/levels/spawn.png");
-    public static Level      test         = new TestLevel("/levels/testLevel.png");
-    public static Level      level1       = new Level1("/levels/level1.png");
 
     public Level(int width, int height) {
         this.width = width;

@@ -11,6 +11,9 @@ import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.entity.projectile.*;
 import com.ritcat14.GotYourSix.graphics.*;
 import com.ritcat14.GotYourSix.graphics.UI.*;
+import com.ritcat14.GotYourSix.graphics.UI.menus.Inventory;
+import com.ritcat14.GotYourSix.graphics.UI.menus.Minimap;
+import com.ritcat14.GotYourSix.graphics.UI.menus.Weapons;
 import com.ritcat14.GotYourSix.input.*;
 import com.ritcat14.GotYourSix.items.*;
 import com.ritcat14.GotYourSix.level.Level;
@@ -154,11 +157,11 @@ public class Player extends Mob {
           back = ImageUtil.getImage("/ui/bars/back.png");
           fontCol = 0x417FEA;
       }
-      UIPanel panel = (UIPanel) new UIPanel(new Vector2i(Game.getWindowWidth(), 0), new Vector2i(60 * 5, Game.getWindowHeight())).setColor(0x363636);
+      UIPanel panel = (UIPanel) new UIPanel(new Vector2i(Game.getWindowWidth(), 0), new Vector2i(60 * 5, Game.getWindowHeight())).setColor(0xff464646);
       ui.addPanel(panel);
       map = new Minimap(new Vector2i(Game.getWindowWidth(), 0));
       mui.addPanel(map);
-      panel.addComponent(((UILabel)new UILabel(new Vector2i(250, 330), name).setColor(0xB3B3B3)).setFont(new Font("Veranda", Font.BOLD, 24)));
+      panel.addComponent(((UILabel)new UILabel(new Vector2i(250, 330), name).setColor(0xff464646)).setFont(new Font("Veranda", Font.BOLD, 24)));
      
       UIHealthBar = new UIProgressBar(new Vector2i(20, 345), back, ImageUtil.getImage("/ui/bars/healthFront.png"));
       panel.addComponent(UIHealthBar);
@@ -197,8 +200,7 @@ public class Player extends Mob {
               //Change level
               if (changeLevel) Game.changeLevel(levelToGo);
           }
-      });
-      button.setText("Enter");
+      }, "ENTER");
       panel.addComponent(button);     
      
       checkSprite();
@@ -210,7 +212,7 @@ public class Player extends Mob {
           public void perform() {
               Game.STATE = Game.State.PAUSE;
           }
-      });
+      },"");
      panel.addComponent(face);
       }
       //invent = new Inventory(new Vector2i((Game.getWindowWidth() + (60 * 5)) - 275, Game.getWindowHeight() - 200), "inventoryBack.png");

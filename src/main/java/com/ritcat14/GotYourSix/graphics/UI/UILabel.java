@@ -1,16 +1,18 @@
 package com.ritcat14.GotYourSix.graphics.UI;
 
+import com.ritcat14.GotYourSix.util.Vector2i;
+
 import java.awt.Graphics;
 
 import java.awt.Color;
 import java.awt.Font;
-import com.ritcat14.GotYourSix.graphics.UI.UIComponent;
-import com.ritcat14.GotYourSix.util.Vector2i;
+import java.awt.FontMetrics;
 
 public class UILabel extends UIComponent {
   
     public String text;
     private Font font;
+    private FontMetrics fm;
   
     public UILabel(Vector2i position, String text) {
         super(position);
@@ -24,15 +26,24 @@ public class UILabel extends UIComponent {
         return this;
     }
   
-    public void setText(String text){
-        this.text = text;
+    public FontMetrics getFontMetrics(){
+        return fm;
+    }
+  
+    public void setPosition(Vector2i position){
+      this.position = position;
     }
   
     public String getText(){
         return text;
     }
   
+    public void setText(String text){
+      this.text = text;
+    }
+  
     public void render(Graphics g) {
+        fm = g.getFontMetrics();
         g.setFont(font);
         g.setColor(Color.BLACK);
         g.drawString(text, position.x + offset.x + 1, position.y + offset.y + 2);

@@ -1,4 +1,4 @@
-package com.ritcat14.GotYourSix.graphics.UI;
+package com.ritcat14.GotYourSix.graphics.UI.menus;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -9,6 +9,7 @@ import java.awt.image.DataBufferInt;
 import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.entity.mob.Player;
 import com.ritcat14.GotYourSix.graphics.Screen;
+import com.ritcat14.GotYourSix.graphics.UI.UIPanel;
 import com.ritcat14.GotYourSix.level.Level;
 import com.ritcat14.GotYourSix.util.ImageUtil;
 import com.ritcat14.GotYourSix.util.Vector2i;

@@ -1,9 +1,9 @@
 package com.ritcat14.GotYourSix.graphics.UI;
 
+import com.ritcat14.GotYourSix.util.Vector2i;
+
 import java.awt.Color;
 import java.awt.Graphics;
-
-import com.ritcat14.GotYourSix.util.Vector2i;
 
 public class UIComponent {
   
@@ -34,6 +34,10 @@ public class UIComponent {
         return this;
     }
   
+    public void setSize(Vector2i size){
+        this.size = size;
+    }
+  
     public void update() {
       
     }
@@ -51,3 +55,4 @@ public class UIComponent {
     }
    
 }
+

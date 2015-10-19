@@ -1,5 +1,8 @@
 package com.ritcat14.GotYourSix.graphics.UI;
 
+import com.ritcat14.GotYourSix.util.Vector2i;
+import com.ritcat14.GotYourSix.input.Mouse;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -7,11 +10,6 @@ import java.awt.Rectangle;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-
-import com.ritcat14.GotYourSix.graphics.UI.UIButtonListener;
-import com.ritcat14.GotYourSix.graphics.UI.UIComponent;
-import com.ritcat14.GotYourSix.util.Vector2i;
-import com.ritcat14.GotYourSix.input.Mouse;
 
 public class UIButton extends UIComponent {
 
@@ -24,23 +22,26 @@ public class UIButton extends UIComponent {
     private boolean          inside        = false;
     private boolean          pressed       = false;
     private boolean          ignorePressed = false;
+    private String text = "";
 
-    public UIButton(Vector2i position, Vector2i size, UIActionListener actionListener) {
+    public UIButton(Vector2i position, Vector2i size, UIActionListener actionListener, String text) {
         super(position, size);
         this.actionListener = actionListener;
         Vector2i lp = new Vector2i(position);
+        this.text = text;
         lp.x += 4;
         lp.y += size.y - 5;
-        label = new UILabel(lp, "");
+        label = new UILabel(lp, text);
         label.setColor(0x444444);
         label.active = false;
         init();
     }
 
-    public UIButton(Vector2i position, BufferedImage image, UIActionListener actionListener) {
+    public UIButton(Vector2i position, BufferedImage image, UIActionListener actionListener, String text) {
         super(position, new Vector2i(image.getWidth(), image.getHeight()));
         this.actionListener = actionListener;
         setImage(image);
+        this.text = text;
         init();
     }
   
@@ -63,6 +64,7 @@ public class UIButton extends UIComponent {
     }
 
     public void setText(String text) {
+        this.text = text;
         if (text == "")
             label.active = false;
         else
@@ -103,6 +105,7 @@ public class UIButton extends UIComponent {
     }
 
     public void render(Graphics g) {
+        //if (label != null) label.setOffset(new Vector2i((size.x / 2) - (label.getFontMetrics().stringWidth(text) / 2), 0));
         int x = position.x + offset.x;
         int y = position.y + offset.y;
         if (image != null) {
@@ -116,3 +119,4 @@ public class UIButton extends UIComponent {
     }
 
 }
+

@@ -1,8 +1,11 @@
-package com.ritcat14.GotYourSix.graphics.UI;
+package com.ritcat14.GotYourSix.graphics.UI.menus;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ritcat14.GotYourSix.graphics.UI.UIActionListener;
+import com.ritcat14.GotYourSix.graphics.UI.UIButton;
+import com.ritcat14.GotYourSix.graphics.UI.UIPanel;
 import com.ritcat14.GotYourSix.input.Mouse;
 import com.ritcat14.GotYourSix.items.Item;
 import com.ritcat14.GotYourSix.util.ImageUtil;
@@ -29,7 +32,7 @@ public class Inventory extends UIPanel{
                     
                 }
             }
-        });
+        },"");
         addComponent(itemButton);
     }
   

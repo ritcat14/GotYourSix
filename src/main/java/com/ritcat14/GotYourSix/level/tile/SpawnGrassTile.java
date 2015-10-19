@@ -1,12 +1,12 @@
-package com.ritcat14.GotYourSix.level.tile.spawn_level;
+package com.ritcat14.GotYourSix.level.tile;
 
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.Sprite;
 import com.ritcat14.GotYourSix.level.tile.Tile;
 
-public class SpawnPortalTile extends Tile{
+public class SpawnGrassTile extends Tile{
 
-	public SpawnPortalTile(Sprite sprite) {
+	public SpawnGrassTile(Sprite sprite) {
 		super(sprite);
 	}
     

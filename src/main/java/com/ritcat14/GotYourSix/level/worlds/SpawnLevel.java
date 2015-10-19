@@ -1,4 +1,4 @@
-package com.ritcat14.GotYourSix.level;
+package com.ritcat14.GotYourSix.level.worlds;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

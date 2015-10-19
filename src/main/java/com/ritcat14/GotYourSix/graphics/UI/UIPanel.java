@@ -1,9 +1,8 @@
 package com.ritcat14.GotYourSix.graphics.UI;
-
-import com.ritcat14.GotYourSix.graphics.UI.UIComponent;
 import com.ritcat14.GotYourSix.util.Vector2i;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
 import java.util.List;
@@ -21,6 +20,12 @@ public class UIPanel extends UIComponent{
         this.size = size;
         colour = new Color(0xff00ff);
     }
+    public UIPanel(Vector2i position, Vector2i size, int colour){
+        super(position);
+        this.position = position;
+        this.size = size;
+        this.colour = new Color(colour);
+    }
   
     public UIPanel(Vector2i position, Vector2i size, BufferedImage image){
         super(position);
@@ -31,6 +36,10 @@ public class UIPanel extends UIComponent{
   
     public void setBackgroundImage(BufferedImage image){
         this.image = image;
+    }
+  
+    public void removeComponent(UIComponent component){
+      components.remove(component);
     }
 
     public void addComponent(UIComponent component) {
@@ -47,6 +56,10 @@ public class UIPanel extends UIComponent{
             component.setOffset(position);
             component.update();
         }
+    }
+  
+    public Rectangle getBounds(){
+      return new Rectangle(getAbsolutePosition().x, getAbsolutePosition().y, size.x, size.y);
     }
   
     public void render(Graphics g) {
