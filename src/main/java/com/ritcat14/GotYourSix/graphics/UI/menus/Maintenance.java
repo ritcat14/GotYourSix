@@ -19,7 +19,7 @@ public class Maintenance extends UIPanel {
     private UIButton         saveButton = new UIButton(new Vector2i(0, Game.getWindowHeight() - 30).add(new Vector2i(300, 0)),
                                   new Vector2i(100, 30), new UIActionListener() {
                                       public void perform() {
-                                        FileHandler.openFile("FANG", "FANG.txt");
+                                        System.out.println("saved");
                                       }
                                   }, "SAVE");
   
@@ -28,5 +28,4 @@ public class Maintenance extends UIPanel {
       addComponent(saveButton);
       addComponent(exitButton);
     }
-
 }

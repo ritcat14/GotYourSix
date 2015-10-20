@@ -22,7 +22,7 @@ import com.ritcat14.GotYourSix.util.Vector2i;
 
 public class Player extends Mob {
 	
-   private String name;
+   private static String name;
 	private Keyboard input;
 	private double speed = 1.5;
    public static boolean swimming = false;
@@ -111,6 +111,7 @@ public class Player extends Mob {
 		this.x = x;
 		this.y = y;
 		this.input = input;
+      this.name = name;
      
       // Player default attributes
       health = 100;
@@ -224,8 +225,16 @@ public class Player extends Mob {
 		if (w != null) fireRate = avShots.get(w.getSelected() - 1).FIRERATE;
 	}
   
-   public String getName(){
+   public static String getName(){
        return name;
+   }
+  
+   public static String getGroup(){
+     return "Clan";
+   }
+  
+   public static String getStats(){
+     return "";
    }
   
    public void inXP(int xp){

@@ -37,7 +37,7 @@ public class StartScreen extends UIPanel {
         startFireButton.label.setColor(0XFFB44720);
         addComponent(startFireButton);
       
-        startIceButton.label.setColor(0XFF2A7BCC);
+        startIceButton.label.setColor(0XFF34EDEF);
         addComponent(startIceButton);
       
         maintenanceButton.label.setColor(0xff33CCCC);
@@ -46,10 +46,10 @@ public class StartScreen extends UIPanel {
   
     public void update(){
       super.update();
-      if (FileHandler.UserExists() && setup != null){
+      if (FileHandler.userExists() && setup != null){
         removeComponent(setup);
       }
-      if (!FileHandler.UserExists() && !setupCreated){
+      if (!FileHandler.userExists() && !setupCreated){
         setup = new UserSetup();
         addComponent(setup);
         setupCreated = true;

@@ -12,7 +12,7 @@ import com.ritcat14.GotYourSix.level.tile.SpawnWaterTile;
 
 public abstract class Mob extends Entity {
 
-    protected List<Projectile> avShots = new ArrayList<Projectile>();
+    public List<Projectile> avShots = new ArrayList<Projectile>();
     protected boolean moving  = false;
     protected boolean walking = false;
 

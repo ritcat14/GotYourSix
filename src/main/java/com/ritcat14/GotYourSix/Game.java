@@ -5,12 +5,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import com.ritcat14.GotYourSix.entity.mob.Player;
 import com.ritcat14.GotYourSix.graphics.Screen;
@@ -40,28 +44,29 @@ public class Game extends Canvas implements Runnable {
         PAUSE
     }
 
-    public static State      STATE       = State.START;
+    public static State      STATE         = State.START;
 
     private Thread           thread;
     private JFrame           frame;
-    private static Keyboard         key;
+    private static Keyboard  key;
     private static Level     level;
     private static Player    player;
-    private boolean          running     = false;
+    private boolean          running       = false;
 
     private static UIManager uiManager;
     private static UIManager minimapManager;
 
     private Screen           screen;
-    private BufferedImage    image       = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-    private int[]            pixels      = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
+    private BufferedImage    image         = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    private int[]            pixels        = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
     private static Game      game;
-    public static boolean    loaded      = false;
-    private boolean gameLoaded = false;
-    public static  boolean paused = false;
-    
-    private StartScreen startScreen;
-    private Maintenance maintenance;
+    public static boolean    loaded        = false;
+    private boolean          gameLoaded    = false;
+    public static boolean    paused        = false;
+    public static boolean    playerCreated = false;
+
+    private StartScreen      startScreen;
+    private Maintenance      maintenance;
 
     public Game() {
         Dimension size = new Dimension((width * scale) + (60 * 5), height * scale);
@@ -72,7 +77,6 @@ public class Game extends Canvas implements Runnable {
         minimapManager = new UIManager();
         frame = new JFrame();
         key = new Keyboard();
-        FileHandler.setupGameFiles();
         init(STATE);
 
         addKeyListener(key);
@@ -86,12 +90,13 @@ public class Game extends Canvas implements Runnable {
         if (state == State.GAME) {
             TileCoordinate playerSpawn = new TileCoordinate(15, 60);
             player = new Player(FileHandler.getPlayerName(), playerSpawn.x(), playerSpawn.y(), key);
+            playerCreated = true;
             changeLevel(Level.spawn);
             gameLoaded = true;
         } else if (state == State.START) {
             startScreen = new StartScreen();
             uiManager.addPanel(startScreen);
-        } else if (state == State.MAINTENANCE){
+        } else if (state == State.MAINTENANCE) {
             maintenance = new Maintenance();
             uiManager.addPanel(maintenance);
         }
@@ -101,8 +106,8 @@ public class Game extends Canvas implements Runnable {
     public static UIManager getUIManager() {
         return uiManager;
     }
-  
-    public static UIManager getMapManager(){
+
+    public static UIManager getMapManager() {
         return minimapManager;
     }
 
@@ -113,9 +118,9 @@ public class Game extends Canvas implements Runnable {
     public static int getWindowHeight() {
         return (height * scale);
     }
-  
-    public static int getScale(){
-       return scale;
+
+    public static int getScale() {
+        return scale;
     }
 
     public synchronized static Game getGame() {
@@ -135,13 +140,13 @@ public class Game extends Canvas implements Runnable {
         level.add(player);
         level.setPlayerLocation();
     }
-  
-    public static Keyboard getKeyboard(){
+
+    public static Keyboard getKeyboard() {
         return key;
     }
-  
-    public static boolean isPaused(){
-      return paused;
+
+    public static boolean isPaused() {
+        return paused;
     }
 
     public synchronized void start() { //Starts the Thread running
@@ -191,7 +196,8 @@ public class Game extends Canvas implements Runnable {
 
     public void update() {
         init(STATE);
-        if (gameLoaded) level.update();
+        if (gameLoaded)
+            level.update();
         key.update();
         uiManager.update();
         minimapManager.update();
@@ -232,8 +238,8 @@ public class Game extends Canvas implements Runnable {
         g.dispose();
         bs.show();
     }
-  
-    public BufferedImage getMapImage(){
+
+    public BufferedImage getMapImage() {
         return image;
     }
 
@@ -244,7 +250,22 @@ public class Game extends Canvas implements Runnable {
         game.frame.setUndecorated(true); //Enable for full screen
         game.frame.add(game);
         game.frame.pack();
-        game.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        game.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        WindowListener exitListener = new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                FileHandler.save();
+                int confirm =
+                              JOptionPane.showOptionDialog(null, "Are You Sure to Close Application?", "Exit Confirmation",
+                                                           JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                if (confirm == 0) {
+                    System.exit(0);
+                }
+            }
+        };
+        game.frame.addWindowListener(exitListener);
         game.frame.setLocationRelativeTo(null);
         game.frame.setVisible(true);
         game.frame.requestFocus();
