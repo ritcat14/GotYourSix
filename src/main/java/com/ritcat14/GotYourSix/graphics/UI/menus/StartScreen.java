@@ -46,13 +46,13 @@ public class StartScreen extends UIPanel {
   
     public void update(){
       super.update();
-      if (FileHandler.userExists() && setup != null){
+      /*if (FileHandler.userExists() && setup != null){
         removeComponent(setup);
       }
       if (!FileHandler.userExists() && !setupCreated){
         setup = new UserSetup();
         addComponent(setup);
         setupCreated = true;
-      }
+      }*/
     }  
 }

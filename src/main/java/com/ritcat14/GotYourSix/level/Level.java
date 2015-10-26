@@ -12,18 +12,21 @@ import com.ritcat14.GotYourSix.entity.mob.Enemy;
 import com.ritcat14.GotYourSix.entity.mob.Player;
 import com.ritcat14.GotYourSix.entity.particle.Particle;
 import com.ritcat14.GotYourSix.entity.projectile.Projectile;
+import com.ritcat14.GotYourSix.events.Event;
 import com.ritcat14.GotYourSix.graphics.Screen;
+import com.ritcat14.GotYourSix.graphics.layers.Layer;
 import com.ritcat14.GotYourSix.items.Item;
 import com.ritcat14.GotYourSix.level.tile.Tile;
 import com.ritcat14.GotYourSix.level.worlds.SpawnLevel;
 import com.ritcat14.GotYourSix.util.Vector2i;
 
-public class Level {
+public class Level extends Layer {
 
     protected int            width, height;
     protected int[]          tilesInt;
     protected int[]          tiles;
     protected int            tile_size;
+    protected TileCoordinate playerPos;
     private boolean          createdDoors = false;
     private int xScroll, yScroll;
 
@@ -96,6 +99,10 @@ public class Level {
         }
         remove();
     }
+  
+    public void onEvent(Event event){
+         getClientPlayer().onEvent(event);
+    }
 
     private void remove() {
         for (int i = 0; i < entities.size(); i++) {
@@ -161,6 +168,10 @@ public class Level {
   
     public int yScroll(){
         return yScroll;
+    }
+  
+    public TileCoordinate getPlayerPos(){
+      return playerPos;
     }
 
     public List<Node> findPath(Vector2i start, Vector2i goal) {
@@ -273,10 +284,13 @@ public class Level {
         }
         return solid;
     }
-
-    public void render(int xScroll, int yScroll, Screen screen) {
+  
+    public void setScroll(int xScroll, int yScroll) {
         this.xScroll = xScroll;
         this.yScroll = yScroll;
+    }
+
+    public void render(Screen screen) {
         screen.setOffset(xScroll, yScroll);
         int x0 = xScroll >> 4;
         int x1 = (xScroll + screen.width + 16) >> 4;

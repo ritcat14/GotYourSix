@@ -11,25 +11,27 @@ import java.awt.event.WindowListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import com.ritcat14.GotYourSix.entity.mob.Player;
+import com.ritcat14.GotYourSix.events.Event;
+import com.ritcat14.GotYourSix.events.EventListener;
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.UI.UIManager;
 import com.ritcat14.GotYourSix.graphics.UI.UIPanel;
-import com.ritcat14.GotYourSix.graphics.UI.menus.Maintenance;
 import com.ritcat14.GotYourSix.graphics.UI.menus.StartScreen;
+import com.ritcat14.GotYourSix.graphics.layers.Layer;
 import com.ritcat14.GotYourSix.input.Keyboard;
 import com.ritcat14.GotYourSix.input.Mouse;
 import com.ritcat14.GotYourSix.level.Level;
 import com.ritcat14.GotYourSix.level.TileCoordinate;
 import com.ritcat14.GotYourSix.util.Console;
-import com.ritcat14.GotYourSix.util.FileHandler;
 
-public class Game extends Canvas implements Runnable {
+public class Game extends Canvas implements Runnable, EventListener {
     private static final long serialVersionUID = 1L;
     private static int        scale            = 5;
 
@@ -44,29 +46,27 @@ public class Game extends Canvas implements Runnable {
         PAUSE
     }
 
-    public static State      STATE         = State.START;
+    public static State      STATE      = State.START;
 
     private Thread           thread;
     private JFrame           frame;
     private static Keyboard  key;
     private static Level     level;
     private static Player    player;
-    private boolean          running       = false;
+    private boolean          running    = false;
 
     private static UIManager uiManager;
     private static UIManager minimapManager;
+    private StartScreen      sc;
 
     private Screen           screen;
-    private BufferedImage    image         = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-    private int[]            pixels        = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
-    private static Game      game;
-    public static boolean    loaded        = false;
-    private boolean          gameLoaded    = false;
-    public static boolean    paused        = false;
-    public static boolean    playerCreated = false;
+    private BufferedImage    image      = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    private int[]            pixels     = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
 
-    private StartScreen      startScreen;
-    private Maintenance      maintenance;
+    private List<Layer>      layerStack = new ArrayList<Layer>();
+
+    private static Game      game;
+    public static boolean    loaded     = false;
 
     public Game() {
         Dimension size = new Dimension((width * scale) + (60 * 5), height * scale);
@@ -81,26 +81,29 @@ public class Game extends Canvas implements Runnable {
 
         addKeyListener(key);
 
-        Mouse mouse = new Mouse();
+        Mouse mouse = new Mouse(this);
         addMouseListener(mouse);
         addMouseMotionListener(mouse);
     }
 
     private void init(State state) {
         if (state == State.GAME) {
+            level = Level.spawn;
             TileCoordinate playerSpawn = new TileCoordinate(15, 60);
-            player = new Player(FileHandler.getPlayerName(), playerSpawn.x(), playerSpawn.y(), key);
-            playerCreated = true;
+            player = new Player("Kris", playerSpawn.x(), playerSpawn.y(), key);
             changeLevel(Level.spawn);
-            gameLoaded = true;
         } else if (state == State.START) {
-            startScreen = new StartScreen();
-            uiManager.addPanel(startScreen);
-        } else if (state == State.MAINTENANCE) {
-            maintenance = new Maintenance();
-            uiManager.addPanel(maintenance);
+            sc = new StartScreen();
+            uiManager.addPanel(sc);
         }
         STATE = State.WAITING;
+    }
+
+    public void changeLevel(Level lev) {
+        level = lev;
+        level.add(player);
+        level.setPlayerLocation();
+        addLayer(level);
     }
 
     public static UIManager getUIManager() {
@@ -135,18 +138,12 @@ public class Game extends Canvas implements Runnable {
         return level;
     }
 
-    public static void changeLevel(Level lev) {
-        level = lev;
-        level.add(player);
-        level.setPlayerLocation();
-    }
-
     public static Keyboard getKeyboard() {
         return key;
     }
 
-    public static boolean isPaused() {
-        return paused;
+    public void addLayer(Layer layer) {
+        layerStack.add(layer);
     }
 
     public synchronized void start() { //Starts the Thread running
@@ -194,13 +191,21 @@ public class Game extends Canvas implements Runnable {
         stop();
     }
 
+    public void onEvent(Event event) {
+        for (int i = layerStack.size() - 1; i >= 0; i--) {
+            layerStack.get(i).onEvent(event);
+        }
+    }
+
     public void update() {
         init(STATE);
-        if (gameLoaded)
-            level.update();
         key.update();
         uiManager.update();
-        minimapManager.update();
+
+        //Update layers
+        for (int i = 0; i < layerStack.size(); i++) {
+            layerStack.get(i).update();
+        }
     }
 
     public void render() {
@@ -223,7 +228,12 @@ public class Game extends Canvas implements Runnable {
         if (player != null) {
             double xScroll = player.getX() - screen.width / 2;
             double yScroll = player.getY() - screen.height / 2;
-            level.render((int)xScroll, (int)yScroll, screen);
+            level.setScroll((int)xScroll, (int)yScroll);
+        }
+
+        //Render layers
+        for (int i = 0; i < layerStack.size(); i++) {
+            layerStack.get(i).render(screen);
         }
 
         for (int i = 0; i < pixels.length; i++) {
@@ -234,13 +244,8 @@ public class Game extends Canvas implements Runnable {
 
         g.drawImage(image, 0, 0, getWindowWidth(), getWindowHeight(), null);
         uiManager.render(g);
-        minimapManager.render(g);
         g.dispose();
         bs.show();
-    }
-
-    public BufferedImage getMapImage() {
-        return image;
     }
 
     public static void main(String[] args) {
@@ -256,7 +261,7 @@ public class Game extends Canvas implements Runnable {
 
             @Override
             public void windowClosing(WindowEvent e) {
-                FileHandler.save();
+                //save game
                 int confirm =
                               JOptionPane.showOptionDialog(null, "Are You Sure to Close Application?", "Exit Confirmation",
                                                            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
@@ -271,5 +276,4 @@ public class Game extends Canvas implements Runnable {
         game.frame.requestFocus();
         game.start();
     }
-
 }

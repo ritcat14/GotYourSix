@@ -6,13 +6,21 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Random;
+import java.awt.event.MouseEvent;
 
 import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.entity.projectile.*;
+import com.ritcat14.GotYourSix.events.Event;
+import com.ritcat14.GotYourSix.events.EventDispatcher;
+import com.ritcat14.GotYourSix.events.EventListener;
+import com.ritcat14.GotYourSix.events.EventHandler;
+import com.ritcat14.GotYourSix.events.types.MousePressedEvent;
+import com.ritcat14.GotYourSix.events.types.MouseReleasedEvent;
 import com.ritcat14.GotYourSix.graphics.*;
 import com.ritcat14.GotYourSix.graphics.UI.*;
 import com.ritcat14.GotYourSix.graphics.UI.menus.Inventory;
 import com.ritcat14.GotYourSix.graphics.UI.menus.Minimap;
+import com.ritcat14.GotYourSix.graphics.UI.menus.UserPanel;
 import com.ritcat14.GotYourSix.graphics.UI.menus.Weapons;
 import com.ritcat14.GotYourSix.input.*;
 import com.ritcat14.GotYourSix.items.*;
@@ -20,7 +28,7 @@ import com.ritcat14.GotYourSix.level.Level;
 import com.ritcat14.GotYourSix.util.ImageUtil;
 import com.ritcat14.GotYourSix.util.Vector2i;
 
-public class Player extends Mob {
+public class Player extends Mob implements EventListener {
 	
    private static String name;
 	private Keyboard input;
@@ -48,34 +56,17 @@ public class Player extends Mob {
 	
 	private AnimatedObject animSprite;
 	
-	private int fireRate = 0;
-   private static int XPLevel = 1;
-   private int XP = 0;
-   private int hunger = 0;
-   private int thirst = 0;
-   private int stamina = 100;
+   public static int XPLevel = 1;
+   public int XP = 0, hunger = 0, thirst = 0, fireRate = 0;
+   public int stamina = 100;
    private int staminaDec = 15;
    private int staminaInc = 3;
    private double invin = 1.5;
    private boolean hit = false;
    private boolean dying = false;
    private boolean shooting = false;
-  
-   private UIManager ui;
-   private UIManager mui;
-   private UIProgressBar UIHealthBar;
-   private UIProgressBar UILevelBar;
-   private UIProgressBar UIHungerBar;
-   private UIProgressBar UIThirstBar;
-   private UIProgressBar UIStaminaBar;
-   private UIPanel weapons;
-   private Inventory invent;
-   private static Weapons w;
-   private UILabel xpLabel;
-   private UIButton button;
-   private UIButton face;
    private BufferedImage image;
-   private Minimap map;
+   private static UserPanel panel;
    private Game game = Game.getGame();
   
    private static boolean madeItem = false;
@@ -93,6 +84,7 @@ public class Player extends Mob {
 	public Player(String name, Keyboard input) {
       this.name = name;
 		this.input = input;
+      type = Type.FIRE;
       checkSprite();
 		animSprite = down;
       sprite = animSprite.getSprite();
@@ -112,6 +104,7 @@ public class Player extends Mob {
 		this.y = y;
 		this.input = input;
       this.name = name;
+      type = Type.FIRE;
      
       // Player default attributes
       health = 100;
@@ -145,85 +138,22 @@ public class Player extends Mob {
         IcWall iw = new IcWall();
         avShots.add(iw);
       }
-      
-      ui = Game.getUIManager();
-      mui = Game.getMapManager();
-      BufferedImage back = ImageUtil.getImage("/ui/bars/back.png");
-      int fontCol = 0xFFE7EF;
-      Font font = new Font("Serif", Font.BOLD + Font.ITALIC, 24);
-      if (type == Type.FIRE || type == Type.FIREKING){
-          back = ImageUtil.getImage("/ui/bars/back.png");
-          fontCol = 0xE83E44;
-      }else if (type == Type.ICE || type == Type.ICEKING){
-          back = ImageUtil.getImage("/ui/bars/back.png");
-          fontCol = 0x417FEA;
-      }
-      UIPanel panel = (UIPanel) new UIPanel(new Vector2i(Game.getWindowWidth(), 0), new Vector2i(60 * 5, Game.getWindowHeight())).setColor(0xff464646);
-      ui.addPanel(panel);
-      map = new Minimap(new Vector2i(Game.getWindowWidth(), 0));
-      mui.addPanel(map);
-      panel.addComponent(((UILabel)new UILabel(new Vector2i(250, 330), name).setColor(0xff464646)).setFont(new Font("Veranda", Font.BOLD, 24)));
      
-      UIHealthBar = new UIProgressBar(new Vector2i(20, 345), back, ImageUtil.getImage("/ui/bars/healthFront.png"));
-      panel.addComponent(UIHealthBar);
-      
-      UIStaminaBar = new UIProgressBar(new Vector2i(20, 405), back, ImageUtil.getImage("/ui/bars/staminaFront.png"));
-      panel.addComponent(UIStaminaBar);
-      
-      UILevelBar = new UIProgressBar(new Vector2i(20, 465), back, ImageUtil.getImage("/ui/bars/xpFront.png"));
-      panel.addComponent(UILevelBar);
-      
-      UIHungerBar = new UIProgressBar(new Vector2i(20, 525), back, ImageUtil.getImage("/ui/bars/foodFront.png"));
-      panel.addComponent(UIHungerBar);
-      
-      UIThirstBar = new UIProgressBar(new Vector2i(20, 585), back, ImageUtil.getImage("/ui/bars/waterFront.png"));
-      UIThirstBar.setColor(0x545454);
-      UIThirstBar.setForegroundColour(0x0094FF);
-      panel.addComponent(UIThirstBar);
-      
-      UILabel hpLabel = ((UILabel)new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(-5, -16)),"HP").setColor(fontCol)).setFont(font);
-      panel.addComponent(hpLabel);
-     
-      UILabel staminaLabel = ((UILabel)new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(-5, 46)),"STAMINA").setColor(fontCol)).setFont(font);
-      panel.addComponent(staminaLabel);
-     
-      xpLabel = ((UILabel)new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(-5, 106)),"LVL " + XPLevel).setColor(fontCol)).setFont(font);
-      panel.addComponent(xpLabel);
-     
-      UILabel foodLabel = ((UILabel)new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(-5, 166)),"HUNGER").setColor(fontCol)).setFont(font);
-      panel.addComponent(foodLabel);
-     
-      UILabel waterLabel = ((UILabel)new UILabel(new Vector2i(UIHealthBar.position).add(new Vector2i(-5, 226)),"THIRST").setColor(fontCol)).setFont(font);
-      panel.addComponent(waterLabel);
-     
-      button= new UIButton(new Vector2i(UIThirstBar.position).add(new Vector2i(2, 60)), new Vector2i(100, 30), new UIActionListener(){
-          public void perform() {
-              //Change level
-              if (changeLevel) Game.changeLevel(levelToGo);
-          }
-      }, "ENTER");
-      panel.addComponent(button);     
+      panel = new UserPanel(this);
      
       checkSprite();
 		animSprite = down;
       sprite = animSprite.getSprite();
      
-      if (image != null){
-      face = new UIButton(new Vector2i(200, 330 - 20),image, new UIActionListener() {
-          public void perform() {
-              Game.STATE = Game.State.PAUSE;
-          }
-      },"");
-     panel.addComponent(face);
-      }
-      //invent = new Inventory(new Vector2i((Game.getWindowWidth() + (60 * 5)) - 275, Game.getWindowHeight() - 200), "inventoryBack.png");
-      //ui.addPanel(invent);
-      if (this != null){
-          w = new Weapons();
-          ui.addPanel(w);
-      }
-		if (w != null) fireRate = avShots.get(w.getSelected() - 1).FIRERATE;
 	}
+  
+   public List<Projectile> getShots(){
+     return avShots;
+   }
+  
+   public BufferedImage getFace(){
+       return image;
+   }
   
    public static String getName(){
        return name;
@@ -264,6 +194,20 @@ public class Player extends Mob {
        this.y = p.y;
    }
   
+   public void onEvent(Event event) {
+       EventDispatcher dispatcher = new EventDispatcher(event);
+       dispatcher.dispatch(Event.Type.MOUSE_PRESSED, new EventHandler() {
+           public boolean onEvent(Event event) {
+             return onMousePressed((MousePressedEvent) event);
+           }
+       });
+       dispatcher.dispatch(Event.Type.MOUSE_RELEASED, new EventHandler() {
+           public boolean onEvent(Event event) {
+             return onMouseReleased((MouseReleasedEvent) event);
+           }
+       });
+   }
+  
    private void updateStats(int time){
       if (hit && time % 30 == 0){
         invin-= 0.5;
@@ -284,13 +228,8 @@ public class Player extends Mob {
         dying = false;
       }
       if (time % 60 == 0 && health < 100 && !hit && !dying) health ++;
-      
-      UIHealthBar.setProgress(health / 100.0);
-      UILevelBar.setProgress(XP / 100.0);
-      UIHungerBar.setProgress(hunger / 100.0);
-      UIThirstBar.setProgress(thirst / 100.0);
-      UIStaminaBar.setProgress(stamina / 100.0);
-      xpLabel.setText("LVL "+XPLevel);
+     
+      panel.update();
       
       if (input.sprint && time % 100 == 0 && stamina > staminaDec && walking) stamina -= staminaDec;
       else if (input.sprint && stamina > staminaDec && walking) speed = 2.5;
@@ -304,7 +243,7 @@ public class Player extends Mob {
 	public void update() {
       if (level != null) shots = level.getProjectiles();
       items = level.getItems();
-      if (level != null) map.setLevel(level);
+      //if (level != null) map.setLevel(level);
       
       checkSprite();
       sprite = animSprite.getSprite();
@@ -342,7 +281,7 @@ public class Player extends Mob {
 			walking = false;
 		}
 		clear();
-		updateShooting();
+      updateShooting();
       enemyCollision();
       itemCollision();
       if(XPLevel >= 100){
@@ -352,56 +291,80 @@ public class Player extends Mob {
       }
 	}
   
+   private void updateShooting(){
+       if (!shooting || fireRate > 0) return;
+       double dx = Mouse.getX() - (Game.getWindowWidth()/2);
+       double dy = Mouse.getY() - (Game.getWindowHeight()/2);
+       double dir = Math.atan2(dy, dx);
+       shoot(x, y, dir);
+       panel.getWeapon().removeWep();
+       if (panel.getWeapon() != null) fireRate = avShots.get(panel.getWeapon().getSelected() - 1).FIRERATE;
+   }
+  
+   public boolean onMousePressed(MousePressedEvent e) {
+		if(e.getButton() == MouseEvent.BUTTON1 && canShoot && panel.getWeapon().canShoot()){
+           shooting = true;
+           return true;
+		} else return false;
+   }
+  
+   public boolean onMouseReleased(MouseReleasedEvent e) {
+       if (e.getButton() == MouseEvent.BUTTON1) {
+         shooting = false;
+         return true;
+       } else return false;
+   }
+  
   private void checkWep(){
       if (type == Type.FIRE || type == Type.FIREKING){
         if (XPLevel == 50){
           for (int i = 0; i < XPLevel / 5; i++){
             FireWall ib = new FireWall();
-            w.add(ib);
+            panel.getWeapon().add(ib);
           }
         } else if (XPLevel == 40){
           for (int i = 0; i < XPLevel / 5; i++){
             FireBall ib = new FireBall();
-            w.add(ib);
+            panel.getWeapon().add(ib);
           }
         } else if (XPLevel == 30){
           for (int i = 0; i < XPLevel / 5; i++){
             FireCannon ib = new FireCannon();
-            w.add(ib);
+            panel.getWeapon().add(ib);
           }
         } else if (XPLevel == 20){
           for (int i = 0; i < XPLevel / 5; i++){
             FireArrow ib = new FireArrow();
-            w.add(ib);
+            panel.getWeapon().add(ib);
           }
         }
       } else if (type == Type.ICE || type == Type.ICEKING){
         if (XPLevel == 50){
           for (int i = 0; i < XPLevel / 5; i++){
             IceWall ib = new IceWall();
-            w.add(ib);
+            panel.getWeapon().add(ib);
           }
         } else if (XPLevel == 40){
           for (int i = 0; i < XPLevel / 5; i++){
             IceBall ib = new IceBall();
-            w.add(ib);
+            panel.getWeapon().add(ib);
           }
         } else if (XPLevel == 30){
           for (int i = 0; i < XPLevel / 5; i++){
             IceCannon ib = new IceCannon();
-            w.add(ib);
+            panel.getWeapon().add(ib);
           }
         } else if (XPLevel == 20){
           for (int i = 0; i < XPLevel / 5; i++){
             IceArrow ib = new IceArrow();
-            w.add(ib);
+            panel.getWeapon().add(ib);
           }
         }
       }
       if (XPLevel == 10){
           for (int i = 0; i < XPLevel / 5; i++){
             CannonBall ib = new CannonBall();
-            w.add(ib);
+            panel.getWeapon().add(ib);
           }
         } else if (XPLevel == 1){
           Projectile.weapon = Projectile.Weapon.ARROW;
@@ -429,30 +392,6 @@ public class Player extends Mob {
             }
         }
    }
-
-	private void updateShooting() {
-		if(Mouse.getButton() == 1 && canShoot && w.canShoot()){
-           shooting = true;
-			double dx = Mouse.getX() - (Game.getWindowWidth()/2);
-			double dy = Mouse.getY() - (Game.getWindowHeight()/2);
-			double dir = Math.atan2(dy, dx);
-         System.out.println(dir);
-           if (dir >= -2.35619449 && dir <= -0.7853981634){
-             animSprite = upShoot;
-           } else if (dir <= 2.35619449 && dir <= 0.7853981634){
-             animSprite = leftShoot;//
-           } else if (dir <= 2.35619449 && dir >= -2.35619449){
-             animSprite = downShoot;//
-           } else if (dir >= -0.7853981634 && dir <= 0.7853981634){
-             animSprite = rightShoot;
-           }
-           if (fireRate <= 0){
-           		shoot(x, y, dir);
-           		w.removeWep();
-               if (w != null) fireRate = avShots.get(w.getSelected() - 1).FIRERATE;
-           }
-		} else shooting = false;
-	}
   
    public void loseHealth(int damage){
         health -= damage;
@@ -514,11 +453,11 @@ public class Player extends Mob {
    }
   
    public Inventory getInvent(){
-       return invent;
+       return panel.getInvent();
    }
   
    public static Weapons getWepInvent(){
-       return w;
+       return panel.getWeapon();
    }
   
   
@@ -528,8 +467,8 @@ public class Player extends Mob {
            Rectangle r = new Rectangle(items.get(i).position.x, items.get(i).position.y, items.get(i).sprite.getWidth(), items.get(i).sprite.getHeight());
            if (r.x >= getBounds().x && r.x <= getBounds().x + getBounds().width
                && r.y >= getBounds().y && r.y <= getBounds().y + getBounds().height){
-               if (items.get(i) instanceof Weapon) w.add((Weapon)items.get(i));
-               else invent.add(items.get(i));
+               if (items.get(i) instanceof Weapon) panel.getWeapon().add((Weapon)items.get(i));
+               else panel.getInvent().add(items.get(i));
                items.get(i).remove();
            }
        }

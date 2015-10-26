@@ -19,14 +19,14 @@ public class UserSetup extends UIPanel {
     private UIButton         saveButton = new UIButton(new Vector2i((Game.getWindowWidth() + (60 * 5)) / 2 - 100, ((Game.getWindowHeight() / 2) - 100) + 170),
                                   new Vector2i(100, 30), new UIActionListener() {
                                       public void perform() {
-                                        FileHandler.save();
+                                        //FileHandler.save();
                                       }
                                   }, "SAVE");
   
     private UIDropDown         selectGroup = new UIDropDown(new Vector2i((Game.getWindowWidth() + (60 * 5)) / 2 - 100, ((Game.getWindowHeight() / 2) - 100) + 170),
                                   new Vector2i(100, 30), new UIActionListener() {
                                       public void perform() {
-                                        FileHandler.save();
+                                        //FileHandler.save();
                                       }
                                   }, "SAVE");
   

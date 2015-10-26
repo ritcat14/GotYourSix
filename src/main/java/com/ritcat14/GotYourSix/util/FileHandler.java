@@ -15,7 +15,7 @@ import java.io.Writer;
 
 
 public class FileHandler {
-
+/*
     private static final String netDir  = "Q:" + File.separator + "Teaching and Learning" + File.separator + "Kris Rice" + File.separator;
     private static final String groupDir = netDir + File.separator + "Groups" + File.separator;
     private static final String homeDir = "N:" + File.separator + "GotYourSix" + File.separator;
@@ -40,7 +40,7 @@ public class FileHandler {
         } finally {
             try {
                 writer.close();
-            } catch (Exception ex) {/*ignore*/
+            } catch (Exception ex) {ignore
             }
         }
       
@@ -56,7 +56,7 @@ public class FileHandler {
         } finally {
             try {
                 writer.close();
-            } catch (Exception ex) {/*ignore*/
+            } catch (Exception ex) {ignore
             }
         }
         }      
@@ -93,5 +93,5 @@ public class FileHandler {
         File file = new File(userDir);
         return file.exists();
     }
-
+*/
 }
