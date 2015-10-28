@@ -9,3 +9,8 @@ From 23/09/2015
  Arrows indicate health, food, water etc. bars, explaing what they're for.
  
  Buttons toggle levels. Player can be shot and take damage on collision, and can kill enemies. Weapon upgrade at level 2.
+ 
+26/10 - UPDATE:
+ weapon bar added, minimap removed until layers have been fully implemented, and all events handled by corresponding layer. Player has
+ shooting and swimming animations that need to be implemented. Need to add in player doing rendom things if left alone for a certain 
+ amount of time. Start menu added and file handling begun. Need to implement 

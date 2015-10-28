@@ -14,6 +14,7 @@ import com.ritcat14.GotYourSix.events.Event;
 import com.ritcat14.GotYourSix.events.EventDispatcher;
 import com.ritcat14.GotYourSix.events.EventListener;
 import com.ritcat14.GotYourSix.events.EventHandler;
+import com.ritcat14.GotYourSix.events.types.MouseMovedEvent;
 import com.ritcat14.GotYourSix.events.types.MousePressedEvent;
 import com.ritcat14.GotYourSix.events.types.MouseReleasedEvent;
 import com.ritcat14.GotYourSix.graphics.*;
@@ -206,6 +207,11 @@ public class Player extends Mob implements EventListener {
              return onMouseReleased((MouseReleasedEvent) event);
            }
        });
+       dispatcher.dispatch(Event.Type.MOUSE_MOVED, new EventHandler() {
+         public boolean onEvent(Event event){
+           return onMouseMoved((MouseMovedEvent) event);
+         }
+       });
    }
   
    private void updateStats(int time){
@@ -302,10 +308,11 @@ public class Player extends Mob implements EventListener {
    }
   
    public boolean onMousePressed(MousePressedEvent e) {
+      if (Mouse.getX() > Game.getWindowWidth()) return false;
 		if(e.getButton() == MouseEvent.BUTTON1 && canShoot && panel.getWeapon().canShoot()){
            shooting = true;
            return true;
-		} else return false;
+		} else return true;
    }
   
    public boolean onMouseReleased(MouseReleasedEvent e) {
@@ -313,6 +320,19 @@ public class Player extends Mob implements EventListener {
          shooting = false;
          return true;
        } else return false;
+   }
+  
+   public boolean onMouseMoved(MouseMovedEvent e) {
+     if (Mouse.getX() > Game.getWindowWidth()) {
+       shooting = false;
+       return true;
+     } else {
+       if (e.getDragged()) {
+         shooting = true;
+         return true;
+       }
+       return false;
+     }
    }
   
   private void checkWep(){

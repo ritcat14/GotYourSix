@@ -1,11 +1,13 @@
 package com.ritcat14.GotYourSix.graphics.UI;
 
+import com.ritcat14.GotYourSix.events.Event;
+import com.ritcat14.GotYourSix.events.EventListener;
 import com.ritcat14.GotYourSix.util.Vector2i;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class UIComponent {
+public class UIComponent implements EventListener {
   
     public Vector2i position, size;
     protected Vector2i offset;
@@ -53,6 +55,8 @@ public class UIComponent {
     void setOffset(Vector2i offset){
         this.offset = offset;
     }
+    
+    public void onEvent(Event event) {}
    
 }
 
