@@ -32,7 +32,6 @@ public class UIButton extends UIComponent {
         lp.x += 4;
         lp.y += size.y - 5;
         label = new UILabel(lp, text);
-        label.setColor(0x444444);
         label.active = false;
         init();
     }

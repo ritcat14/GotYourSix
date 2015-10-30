@@ -2,7 +2,6 @@ package com.ritcat14.GotYourSix.util;
 
 import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.entity.mob.Player;
-import com.ritcat14.GotYourSix.graphics.UI.menus.UserSetup;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

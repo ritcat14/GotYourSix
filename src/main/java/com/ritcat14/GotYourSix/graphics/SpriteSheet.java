@@ -123,6 +123,41 @@ public class SpriteSheet {
 
     private Sprite[]          sprites;
 
+    public SpriteSheet(SpriteSheet sheet, int x, int y, int width, int height, int spriteWidth, int spriteHeight) {
+        int xx = x * spriteWidth;
+        int yy = y * spriteHeight;
+        int w = width * spriteWidth;
+        int h = height * spriteHeight;
+        SPRITE_WIDTH = w;
+        SPRITE_HEIGHT = h;
+        if (width == height)
+            SIZE = width;
+        else
+            SIZE = -1;
+        pixels = new int[w * h];
+        for (int y0 = 0; y0 < h; y0++) {
+            int yp = yy + y0;
+            for (int x0 = 0; x0 < w; x0++) {
+                int xp = xx + x0;
+                pixels[x0 + y0 * w] = sheet.pixels[xp + yp * sheet.SPRITE_WIDTH];
+            }
+        }
+        int frame = 0;
+        sprites = new Sprite[width * height];
+        for (int ya = 0; ya < height; ya++) {
+            for (int xa = 0; xa < width; xa++) {
+                int[] spritePixels = new int[spriteWidth * spriteHeight];
+                for (int y0 = 0; y0 < spriteHeight; y0++) {
+                    for (int x0 = 0; x0 < spriteWidth; x0++) {
+                        spritePixels[x0 + y0 * spriteWidth] = pixels[(x0 + xa * spriteWidth) + (y0 + ya * spriteHeight) * SPRITE_WIDTH];
+                    }
+                }
+                Sprite sprite = new Sprite(spritePixels, spriteWidth, spriteHeight);
+                sprites[frame++] = sprite;
+            }
+        }
+    }
+
     public SpriteSheet(SpriteSheet sheet, int x, int y, int width, int height, int spriteSize) {
         int xx = x * spriteSize;
         int yy = y * spriteSize;

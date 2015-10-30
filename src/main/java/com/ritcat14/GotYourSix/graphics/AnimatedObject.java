@@ -105,5 +105,9 @@ public class AnimatedObject extends Sprite {
         }
         sprite = sheet.getSprites()[index];
     }
+  
+    public int getFrame(){
+      return frame;
+    }
 
 }

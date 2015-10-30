@@ -37,6 +37,8 @@ public class Game extends Canvas implements Runnable, EventListener {
 
     private static int        width            = (Toolkit.getDefaultToolkit().getScreenSize().width / scale) - 60;
     private static int        height           = Toolkit.getDefaultToolkit().getScreenSize().height / scale;
+    private static int absoluteWidth = width + 60;
+    private static int absoluteHeight = height;
 
     public static enum State {
         START,
@@ -120,6 +122,14 @@ public class Game extends Canvas implements Runnable, EventListener {
 
     public static int getWindowHeight() {
         return (height * scale);
+    }
+  
+    public static int getAbsoluteWidth() {
+      return (absoluteWidth * scale);
+    }
+  
+    public static int getAbsoluteHeight() {
+      return (absoluteHeight * scale);
     }
 
     public static int getScale() {

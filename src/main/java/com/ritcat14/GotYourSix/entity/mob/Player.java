@@ -85,7 +85,6 @@ public class Player extends Mob implements EventListener {
 	public Player(String name, Keyboard input) {
       this.name = name;
 		this.input = input;
-      type = Type.FIRE;
       checkSprite();
 		animSprite = down;
       sprite = animSprite.getSprite();
@@ -105,7 +104,6 @@ public class Player extends Mob implements EventListener {
 		this.y = y;
 		this.input = input;
       this.name = name;
-      type = Type.FIRE;
      
       // Player default attributes
       health = 100;

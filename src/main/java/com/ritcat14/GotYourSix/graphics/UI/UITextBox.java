@@ -62,8 +62,9 @@ public class UITextBox extends UILabel implements KeyListener {
     public String getTypedText(){
       return keyString;
     }
-  
-    private void addText(KeyEvent e){
+
+    public void keyPressed(KeyEvent e) {
+        keys[e.getKeyCode()] = true;
         if (selected) {
             if (text.length() > 0 && text.charAt(text.length() - 1) == '|') {
                 text = text.substring(0, text.length() - 1);
@@ -84,11 +85,6 @@ public class UITextBox extends UILabel implements KeyListener {
                 keyString = "";
           text = text + keyString;
         }
-    }
-
-    public void keyPressed(KeyEvent e) {
-        keys[e.getKeyCode()] = true;
-        addText(e);
     }
 
     public void keyReleased(KeyEvent e) {

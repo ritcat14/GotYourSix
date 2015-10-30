@@ -34,6 +34,12 @@ public class UIPanel extends UIComponent{
         this.image = image;
     }
   
+    public UIPanel(Vector2i position, BufferedImage image){
+        super(position);
+        this.position = position;
+        this.image = image;
+    }
+  
     public void setBackgroundImage(BufferedImage image){
         this.image = image;
     }
@@ -63,9 +69,18 @@ public class UIPanel extends UIComponent{
     }
   
     public void render(Graphics g) {
-        if (colour != null) g.setColor(colour);
-        g.fillRect(position.x, position.y, size.x, size.y);
-        if (image != null) g.drawImage(image, position.x,position.y,size.x, size.y, null);
+        if (image != null) {
+          if (size != null) {
+              g.drawImage(image, position.x, position.y, size.x, size.y, null);
+          } else {
+              System.out.println("Creating size");
+              this.size = new Vector2i(image.getWidth(), image.getHeight());
+              g.drawImage(image, position.x, position.y, size.x, size.y, null);
+          }
+        } else {
+          g.setColor(colour);
+          g.fillRect(position.x, position.y, size.x, size.y);
+        }
         for (UIComponent component : components){
             component.render(g);
         }

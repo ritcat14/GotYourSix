@@ -1,5 +1,7 @@
 package com.ritcat14.GotYourSix.graphics;
 
+import java.awt.image.BufferedImage;
+
 import com.ritcat14.GotYourSix.graphics.SpriteSheet;
 
 public class Sprite {
@@ -186,6 +188,16 @@ public class Sprite {
         SIZE = width = height = size;
         this.pixels = pixels;
     }
+  
+   public BufferedImage getImage(){
+     BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+     for (int x = 0; x < width; x++){
+       for (int y = 0; y < height; y++){
+         bufferedImage.setRGB(x, y, pixels[x + y * width]);
+       }
+     }
+     return bufferedImage;
+   }
 
 
     public void setColour(int colour) {
