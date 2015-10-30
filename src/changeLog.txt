@@ -14,3 +14,8 @@ From 23/09/2015
  weapon bar added, minimap removed until layers have been fully implemented, and all events handled by corresponding layer. Player has
  shooting and swimming animations that need to be implemented. Need to add in player doing rendom things if left alone for a certain 
  amount of time. Start menu added and file handling begun. Need to implement 
+ 
+30/10 - UPDATE:
+ Started implementing new GUI design for start screen and menu's. Also started implementing player variations (male/female, fire/ice). 
+ Plan to change player state to playerViewState, making playerViewState plublic and static, to be accessed even after start screen is
+ removed. Use state.toString() method as spritesheet file name
