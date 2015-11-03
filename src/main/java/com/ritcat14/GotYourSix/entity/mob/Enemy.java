@@ -12,7 +12,7 @@ import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.entity.Entity;
 import com.ritcat14.GotYourSix.entity.mob.Player;
 
-public abstract class Enemy extends Mob {
+public abstract class Enemy extends Mob { //yea
 
     public double     XPBonus    = 1;
     public int        time       = 0;
