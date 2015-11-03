@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 
 import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.entity.projectile.*;
+import com.ritcat14.GotYourSix.entity.spawner.LightSpawner;
 import com.ritcat14.GotYourSix.events.Event;
 import com.ritcat14.GotYourSix.events.EventDispatcher;
 import com.ritcat14.GotYourSix.events.EventListener;
@@ -23,6 +24,7 @@ import com.ritcat14.GotYourSix.graphics.UI.menus.Inventory;
 import com.ritcat14.GotYourSix.graphics.UI.menus.Minimap;
 import com.ritcat14.GotYourSix.graphics.UI.menus.UserPanel;
 import com.ritcat14.GotYourSix.graphics.UI.menus.Weapons;
+import com.ritcat14.GotYourSix.graphics.UI.menus.StartScreen;
 import com.ritcat14.GotYourSix.input.*;
 import com.ritcat14.GotYourSix.items.*;
 import com.ritcat14.GotYourSix.level.Level;
@@ -31,31 +33,21 @@ import com.ritcat14.GotYourSix.util.Vector2i;
 
 public class Player extends Mob implements EventListener {
 	
-   private static String name;
-	private Keyboard input;
+   private static String name = null;
+	private Keyboard input = null;
 	private double speed = 1.5;
    public static boolean swimming = false;
    public static boolean canShoot = true;
    public static boolean changeLevel = false;
-   public static Level levelToGo;
+   public static Level levelToGo = null;
    
-	private AnimatedObject down;
-	private AnimatedObject up;
-	private AnimatedObject left;
-	private AnimatedObject right;
-  
-	private AnimatedObject upSwim;
-	private AnimatedObject downSwim;
-	private AnimatedObject leftSwim;
-	private AnimatedObject rightSwim;
-  
-	private AnimatedObject upShoot;
-	private AnimatedObject downShoot;
-	private AnimatedObject leftShoot;
-	private AnimatedObject rightShoot;
-   private Sprite weapon;
+	private AnimatedObject down = null;
+	private AnimatedObject up = null;
+	private AnimatedObject left = null;
+	private AnimatedObject right = null;
+   private Sprite weapon = null;
 	
-	private AnimatedObject animSprite;
+	private AnimatedObject animSprite = null;
 	
    public static int XPLevel = 1;
    public int XP = 0, hunger = 0, thirst = 0, fireRate = 0;
@@ -66,26 +58,19 @@ public class Player extends Mob implements EventListener {
    private boolean hit = false;
    private boolean dying = false;
    private boolean shooting = false;
-   private BufferedImage image;
-   private static UserPanel panel;
+   private BufferedImage image = null;
+   private static UserPanel panel = null;
    private Game game = Game.getGame();
   
    private static boolean madeItem = false;
    private boolean changePlayer = true;
-   private List<Item> items;
-   private List<Projectile> shots;
-  
-   public static enum Type {
-     FIRE, FIREKING, ICE, ICEKING
-   }
-  
-   public static Type type;
+   private List<Item> items = null;
+   private List<Projectile> shots = null;
 	
   @Deprecated
 	public Player(String name, Keyboard input) {
       this.name = name;
 		this.input = input;
-      checkSprite();
 		animSprite = down;
       sprite = animSprite.getSprite();
      
@@ -104,6 +89,7 @@ public class Player extends Mob implements EventListener {
 		this.y = y;
 		this.input = input;
       this.name = name;
+      AnimatedObject.init();
      
       // Player default attributes
       health = 100;
@@ -118,7 +104,7 @@ public class Player extends Mob implements EventListener {
       avShots.add(a);
       Cannon c = new Cannon();
       avShots.add(c);
-      if (type == Type.FIRE || type == Type.FIREKING){
+      if (StartScreen.state == StartScreen.playerViewState.MF || StartScreen.state == StartScreen.playerViewState.FF){
         FirArrow fa = new FirArrow();
         avShots.add(fa);
         FirCannon fc = new FirCannon();
@@ -127,7 +113,7 @@ public class Player extends Mob implements EventListener {
         avShots.add(fb);
         FirWall fw = new FirWall();
         avShots.add(fw);
-      } else if (type == Type.ICE || type == Type.ICEKING){
+      } else if (StartScreen.state == StartScreen.playerViewState.MI || StartScreen.state == StartScreen.playerViewState.FI){
         IcArrow ia = new IcArrow();
         avShots.add(ia);
         IcCannon ic = new IcCannon();
@@ -139,11 +125,12 @@ public class Player extends Mob implements EventListener {
       }
      
       panel = new UserPanel(this);
-     
-      checkSprite();
+      up = AnimatedObject.up;
+      down = AnimatedObject.down;
+      left = AnimatedObject.left;
+      right = AnimatedObject.right;
 		animSprite = down;
       sprite = animSprite.getSprite();
-     
 	}
   
    public List<Projectile> getShots(){
@@ -245,11 +232,11 @@ public class Player extends Mob implements EventListener {
   
    private static int time = 0;
 	public void update() {
+     level.add(new LightSpawner((int) x, (int) y, 50, 50, level));
       if (level != null) shots = level.getProjectiles();
       items = level.getItems();
       //if (level != null) map.setLevel(level);
       
-      checkSprite();
       sprite = animSprite.getSprite();
       time++;
      
@@ -288,11 +275,6 @@ public class Player extends Mob implements EventListener {
       updateShooting();
       enemyCollision();
       itemCollision();
-      if(XPLevel >= 100){
-          if (type == Type.FIRE) type = Type.FIREKING;
-          else if (type == Type.ICE) type = Type.ICEKING;
-          checkSprite();
-      }
 	}
   
    private void updateShooting(){
@@ -334,8 +316,8 @@ public class Player extends Mob implements EventListener {
    }
   
   private void checkWep(){
-      if (type == Type.FIRE || type == Type.FIREKING){
-        if (XPLevel == 50){
+      if (StartScreen.state == StartScreen.playerViewState.MF || StartScreen.state == StartScreen.playerViewState.FF){
+        if (XPLevel == 25){
           for (int i = 0; i < XPLevel / 5; i++){
             FireWall ib = new FireWall();
             panel.getWeapon().add(ib);
@@ -356,7 +338,7 @@ public class Player extends Mob implements EventListener {
             panel.getWeapon().add(ib);
           }
         }
-      } else if (type == Type.ICE || type == Type.ICEKING){
+      } else if (StartScreen.state == StartScreen.playerViewState.MI || StartScreen.state == StartScreen.playerViewState.FI){
         if (XPLevel == 50){
           for (int i = 0; i < XPLevel / 5; i++){
             IceWall ib = new IceWall();
@@ -418,57 +400,6 @@ public class Player extends Mob implements EventListener {
             health = 1;
         }
    }
-   
-   private void checkSprite(){
-     if(changePlayer){
-       if (type == Type.FIREKING){
-           up = AnimatedObject.fireKingUp;
-           down = AnimatedObject.fireKingDown;
-           left = AnimatedObject.fireKingLeft;
-           right = AnimatedObject.fireKingRight;
-           upSwim = AnimatedObject.fireKingUpSwim;
-           downSwim = AnimatedObject.fireKingDownSwim;
-           leftSwim = AnimatedObject.fireKingLeftSwim;
-           rightSwim = AnimatedObject.fireKingRightSwim;
-           image = ImageUtil.getImage("/ui/buttons/playerFireKing.png");
-       } else if (type == Type.ICEKING){
-           up = AnimatedObject.iceKingUp;
-           down = AnimatedObject.iceKingDown;
-           left = AnimatedObject.iceKingLeft;
-           right = AnimatedObject.iceKingRight;
-           upSwim = AnimatedObject.iceKingUpSwim;
-           downSwim = AnimatedObject.iceKingDownSwim;
-           leftSwim = AnimatedObject.iceKingLeftSwim;
-           rightSwim = AnimatedObject.iceKingRightSwim;
-           image = ImageUtil.getImage("/ui/buttons/playerIceKing.png");
-     } else if (type == Type.ICE){
-           up = AnimatedObject.iceSpriteUp;
-           down = AnimatedObject.iceSpriteDown;
-           left = AnimatedObject.iceSpriteLeft;
-           right = AnimatedObject.iceSpriteRight;
-           upSwim = AnimatedObject.iceSpriteUpSwim;
-           downSwim = AnimatedObject.iceSpriteDownSwim;
-           leftSwim = AnimatedObject.iceSpriteLeftSwim;
-           rightSwim = AnimatedObject.iceSpriteRightSwim;
-           image = ImageUtil.getImage("/ui/buttons/playerIce.png");
-     } else if (type == Type.FIRE){
-           up = AnimatedObject.fireSpriteUp;
-           down = AnimatedObject.fireSpriteDown;
-           left = AnimatedObject.fireSpriteLeft;
-           right = AnimatedObject.fireSpriteRight;
-           upSwim = AnimatedObject.fireSpriteUpSwim;
-           downSwim = AnimatedObject.fireSpriteDownSwim;
-           leftSwim = AnimatedObject.fireSpriteLeftSwim;
-           rightSwim = AnimatedObject.fireSpriteRightSwim;
-           upShoot = AnimatedObject.fireSpriteUpShoot;
-           downShoot = AnimatedObject.fireSpriteDownShoot;
-           leftShoot = AnimatedObject.fireSpriteLeftShoot;
-           rightShoot = AnimatedObject.fireSpriteRightShoot;
-           image = ImageUtil.getImage("/ui/buttons/playerFire.png");
-     }
-       changePlayer = false;
-   }
-   }
   
    public Inventory getInvent(){
        return panel.getInvent();
@@ -490,16 +421,6 @@ public class Player extends Mob implements EventListener {
                items.get(i).remove();
            }
        }
-   }
-  
-   public static void makeItem(String item){
-      if(!madeItem){
-          if (item == "FireBall"){
-            FireBall f = new FireBall(new Vector2i(5 * 16, 5 * 16));
-            if (level != null) level.add(f);
-          }
-          madeItem = true;
-      }
    }
 
 	public void render(Screen screen) {

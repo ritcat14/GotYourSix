@@ -1,9 +1,12 @@
 package com.ritcat14.GotYourSix;
 
+import java.awt.AlphaComposite;
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -37,8 +40,8 @@ public class Game extends Canvas implements Runnable, EventListener {
 
     private static int        width            = (Toolkit.getDefaultToolkit().getScreenSize().width / scale) - 60;
     private static int        height           = Toolkit.getDefaultToolkit().getScreenSize().height / scale;
-    private static int absoluteWidth = width + 60;
-    private static int absoluteHeight = height;
+    private static int        absoluteWidth    = width + 60;
+    private static int        absoluteHeight   = height;
 
     public static enum State {
         START,
@@ -123,13 +126,13 @@ public class Game extends Canvas implements Runnable, EventListener {
     public static int getWindowHeight() {
         return (height * scale);
     }
-  
+
     public static int getAbsoluteWidth() {
-      return (absoluteWidth * scale);
+        return (absoluteWidth * scale);
     }
-  
+
     public static int getAbsoluteHeight() {
-      return (absoluteHeight * scale);
+        return (absoluteHeight * scale);
     }
 
     public static int getScale() {
@@ -253,6 +256,10 @@ public class Game extends Canvas implements Runnable, EventListener {
         g.fillRect(0, 0, getWidth(), getHeight());
 
         g.drawImage(image, 0, 0, getWindowWidth(), getWindowHeight(), null);
+        g.setColor(new Color(0, 0, 0, 150));
+        g.fillRect(0, 0, getWindowWidth(), getWindowHeight());
+        
+
         uiManager.render(g);
         g.dispose();
         bs.show();

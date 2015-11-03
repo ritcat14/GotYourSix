@@ -18,7 +18,7 @@ public class IcArrow extends Projectile {
 
         nx = speed * Math.cos(angle);
         ny = speed * Math.sin(angle);
-        weapon = Weapon.ICEDARROW;
+        Projectile.weapon = Weapon.ICEDARROW;
     }
   
 }

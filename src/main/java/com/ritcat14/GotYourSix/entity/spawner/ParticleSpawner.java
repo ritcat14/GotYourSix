@@ -6,7 +6,7 @@ import com.ritcat14.GotYourSix.level.Level;
 
 public class ParticleSpawner extends Spawner{
 	
-	private int life;
+	private int life = 0;
 
 	public ParticleSpawner(int x, int y, int life, int amount, Level level, Sprite sprite) {
 		super(x, y, Type.PARTICLE, amount, level);

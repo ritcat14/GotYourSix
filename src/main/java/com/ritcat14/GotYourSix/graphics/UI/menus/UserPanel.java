@@ -41,10 +41,10 @@ public class UserPanel extends UIPanel {
         BufferedImage back = ImageUtil.getImage("/ui/bars/back.png");
         int fontCol = 0xFFE7EF;
         Font font = new Font("Serif", Font.BOLD + Font.ITALIC, 24);
-        if (Player.type == Player.Type.FIRE || Player.type == Player.Type.FIREKING) {
+        if (StartScreen.state == StartScreen.playerViewState.MF || StartScreen.state == StartScreen.playerViewState.FF) {
             back = ImageUtil.getImage("/ui/bars/back.png");
             fontCol = 0xE83E44;
-        } else if (Player.type == Player.Type.ICE || Player.type == Player.Type.ICEKING) {
+        } else if (StartScreen.state == StartScreen.playerViewState.MI || StartScreen.state == StartScreen.playerViewState.FI) {
             back = ImageUtil.getImage("/ui/bars/back.png");
             fontCol = 0x417FEA;
         }

@@ -29,13 +29,13 @@ public abstract class Projectile extends Entity {
     public static int FIRERATE;           //Higher is slower
 
     protected final double  xOrigin, yOrigin;
-    protected double        angle;
-    protected Sprite        sprite;
-    protected double        x, y;
-    protected double        nx, ny;
-    protected double        distance;
-    protected int           speed, range, damage;
-    private Mob             mob;
+    protected double        angle = 0;
+    protected Sprite        sprite = null;
+    protected double        x = 0, y = 0;
+    protected double        nx = 0, ny = 0;
+    protected double        distance = 0;
+    protected int           speed = 0, range = 0, damage = 0;
+    private Mob             mob = null;
     protected boolean collided = false;
 
     protected final Random  random   = new Random();

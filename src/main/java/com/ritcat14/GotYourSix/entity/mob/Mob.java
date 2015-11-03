@@ -16,7 +16,7 @@ public abstract class Mob extends Entity {
     protected boolean moving  = false;
     protected boolean walking = false;
 
-    public int     health;
+    public int     health = 0;
 
     protected enum Direction {
         UP,

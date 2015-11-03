@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.ritcat14.GotYourSix.graphics.Screen;
+import com.ritcat14.GotYourSix.graphics.UI.menus.StartScreen;
 import com.ritcat14.GotYourSix.items.*;
 import com.ritcat14.GotYourSix.level.tile.Tile;
 import com.ritcat14.GotYourSix.util.Vector2i;
@@ -25,7 +26,7 @@ public abstract class Enemy extends Mob {
     public static Item getItem() {
         Random ran = new Random();
         int i = ran.nextInt(4);
-        if (Player.type == Player.Type.FIRE || Player.type == Player.Type.FIREKING) {
+        if (StartScreen.state == StartScreen.playerViewState.MF || StartScreen.state == StartScreen.playerViewState.FF) {
             if (i == 0) {
                 CannonBall cb = new CannonBall();
                 return cb;
@@ -42,7 +43,7 @@ public abstract class Enemy extends Mob {
                 FireWall fw = new FireWall();
                 return fw;
             }
-        } else if (Player.type == Player.Type.ICE || Player.type == Player.Type.FIREKING) {
+        } else if (StartScreen.state == StartScreen.playerViewState.MI || StartScreen.state == StartScreen.playerViewState.FI) {
             if (i == 0) {
                 CannonBall cb = new CannonBall();
                 return cb;

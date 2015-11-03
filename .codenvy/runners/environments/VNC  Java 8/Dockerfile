@@ -9,7 +9,7 @@
 #   Codenvy, S.A. - initial API and implementation
 #
 
-FROM codenvy/jdk8_vnc
+FROM codenvy/jdk8_maven3_tomcat8
 RUN mkdir /home/user/app
 WORKDIR /home/user/app
 ADD $app$ /home/user/$app$

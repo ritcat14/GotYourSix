@@ -20,6 +20,6 @@ public class Cannon extends Projectile {
 
         nx = speed * Math.cos(angle);
         ny = speed * Math.sin(angle);
-        weapon = Weapon.CANNON;
+        Projectile.weapon = Weapon.CANNON;
     }
 }

@@ -10,13 +10,13 @@ import com.ritcat14.GotYourSix.graphics.Sprite;
 
 public class Particle extends Entity {
 
-    private Sprite   sprite;
+    private Sprite   sprite = null;
 
-    private int      life;
-    private int      time;
+    private int      life = 0;
+    private int      time = 0;
 
-    protected double xx, yy, zz;
-    protected double xa, ya, za;
+    protected double xx = 0, yy = 0, zz = 0;
+    protected double xa = 0, ya = 0, za = 0;
     private Random   ran = new Random();
 
     public Particle(int x, int y, int life, Sprite sprite) {
@@ -30,7 +30,7 @@ public class Particle extends Entity {
         this.ya = random.nextGaussian();
         this.zz = random.nextFloat() + 2.0;
         int col = ran.nextInt(4);
-        if (sprite != Sprite.particle_blood) {
+        if (sprite == Sprite.particle_normal) {
             if (Projectile.weapon == Projectile.Weapon.FIREDCANNON || Projectile.weapon == Projectile.Weapon.FIREDARROW) {
                 if (col == 0)
                     this.sprite = new Sprite(2, 0xff000000);

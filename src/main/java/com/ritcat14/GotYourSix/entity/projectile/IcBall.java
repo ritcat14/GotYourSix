@@ -18,7 +18,7 @@ public class IcBall extends Projectile {
 
         nx = speed * Math.cos(angle);
         ny = speed * Math.sin(angle);
-        weapon = Weapon.ICEBALL;
+        Projectile.weapon = Weapon.ICEBALL;
     }
   
 }

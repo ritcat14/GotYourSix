@@ -56,21 +56,21 @@ public class Weapons extends UIPanel {
         ui.addPanel(this);
         for (int i = 0; i < 6; i++) {
             int num = (i + 1);
-            if (Player.type == Player.Type.FIRE || Player.type == Player.Type.FIREKING) {
+            if (StartScreen.state == StartScreen.playerViewState.MF || StartScreen.state == StartScreen.playerViewState.FF) {
                 weaponImg = ImageUtil.getImage("/ui/panels/weapons/fire/fireWeapon" + num + ".png");
-            } else if (Player.type == Player.Type.ICE || Player.type == Player.Type.ICEKING) {
+            } else if (StartScreen.state == StartScreen.playerViewState.MI || StartScreen.state == StartScreen.playerViewState.FI) {
                 weaponImg = ImageUtil.getImage("/ui/panels/weapons/ice/iceWeapon" + num + ".png");
             }
             weapon = new UIPanel(new Vector2i(x + (i * 80), y), new Vector2i(weaponImg.getWidth(), weaponImg.getHeight()), weaponImg);
             addComponent(weapon);
             if (num == 1) amount = new UILabel(weapon.position, "∞");
             else if (num == 2) amount = new UILabel(weapon.position, "" + cannons.size());
-            if (Player.type == Player.Type.FIRE || Player.type == Player.Type.FIREKING) {
+            if (StartScreen.state == StartScreen.playerViewState.MF || StartScreen.state == StartScreen.playerViewState.FF) {
                 if (num == 3) amount = new UILabel(weapon.position, "" + firearrows.size());
                 else if (num == 4) amount = new UILabel(weapon.position, "" + firecannons.size());
                 else if (num == 5) amount = new UILabel(weapon.position, "" + fireballs.size());
                 else if (num == 6) amount = new UILabel(weapon.position, "" + firewalls.size());
-            } else if (Player.type == Player.Type.ICE || Player.type == Player.Type.ICEKING) {
+            } else if (StartScreen.state == StartScreen.playerViewState.MI || StartScreen.state == StartScreen.playerViewState.FI) {
                 if (num == 3) amount = new UILabel(weapon.position, "" + icearrows.size());
                 else if (num == 4) amount = new UILabel(weapon.position, "" + icecannons.size());
                 else if (num == 5) amount = new UILabel(weapon.position, "" + iceballs.size());
@@ -100,14 +100,14 @@ public class Weapons extends UIPanel {
     public void changeWeapon(int index) {
         if (index == 1) Projectile.weapon = Projectile.Weapon.ARROW;
         else if (index == 2) Projectile.weapon = Projectile.Weapon.CANNON;
-        if (Player.type == Player.Type.FIRE || Player.type == Player.Type.FIREKING) {
+        if (StartScreen.state == StartScreen.playerViewState.MF || StartScreen.state == StartScreen.playerViewState.FF) {
             weps.get(selectedWep - 1).setBackgroundImage(ImageUtil.getImage("/ui/panels/weapons/fire/fireWeapon" + selectedWep + ".png"));
             weps.get(index - 1).setBackgroundImage(ImageUtil.getImage("/ui/panels/weapons/fire/fireWeaponSelected" + index + ".png"));
             if (index == 3) Projectile.weapon = Projectile.Weapon.FIREDARROW;
             if (index == 4) Projectile.weapon = Projectile.Weapon.FIREDCANNON;
             if (index == 5) Projectile.weapon = Projectile.Weapon.FIREBALL;
             if (index == 6) Projectile.weapon = Projectile.Weapon.FIREWALL;
-        } else if (Player.type == Player.Type.ICE || Player.type == Player.Type.ICEKING) {
+        } else if (StartScreen.state == StartScreen.playerViewState.MI || StartScreen.state == StartScreen.playerViewState.FI) {
             weps.get(selectedWep - 1).setBackgroundImage(ImageUtil.getImage("/ui/panels/weapons/ice/iceWeapon" + selectedWep + ".png"));
             weps.get(index - 1).setBackgroundImage(ImageUtil.getImage("/ui/panels/weapons/ice/iceWeaponSelected" + index + ".png"));
             if (index == 3) Projectile.weapon = Projectile.Weapon.ICEDARROW;
@@ -126,14 +126,14 @@ public class Weapons extends UIPanel {
        switch(selectedWep){
            case 2: return cannons.size();
        }
-         if (Player.type == Player.Type.FIRE || Player.type == Player.Type.FIREKING){
+         if (StartScreen.state == StartScreen.playerViewState.MF || StartScreen.state == StartScreen.playerViewState.FF){
            switch(selectedWep){
              case 3: return firearrows.size();
              case 4: return firecannons.size();
              case 5: return fireballs.size();
              case 6: return firewalls.size();
            }
-         } else if (Player.type == Player.Type.ICE || Player.type == Player.Type.ICEKING) {
+         } else if (StartScreen.state == StartScreen.playerViewState.MI || StartScreen.state == StartScreen.playerViewState.FI) {
            switch(selectedWep){
              case 3: return icearrows.size();
              case 4: return icecannons.size();
@@ -149,12 +149,12 @@ public class Weapons extends UIPanel {
        if(selectedWep == 2){
            cannons.remove(cannons.size() - 1);
        }
-         if (Player.type == Player.Type.FIRE || Player.type == Player.Type.FIREKING){
+         if (StartScreen.state == StartScreen.playerViewState.MF || StartScreen.state == StartScreen.playerViewState.FF){
              if(selectedWep == 3) firearrows.remove(firearrows.size() - 1);
              if(selectedWep == 4) firecannons.remove(firecannons.size() - 1);
              if(selectedWep == 5) fireballs.remove(fireballs.size() - 1);
              if(selectedWep == 6) firewalls.remove(firewalls.size() - 1);
-         } else if (Player.type == Player.Type.ICE || Player.type == Player.Type.ICEKING) {
+         } else if (StartScreen.state == StartScreen.playerViewState.MI || StartScreen.state == StartScreen.playerViewState.FI) {
              if(selectedWep == 3)icearrows.remove(icearrows.size() - 1);
              if(selectedWep == 4) icecannons.remove(icecannons.size() - 1);
              if(selectedWep == 5) iceballs.remove(iceballs.size() - 1);
@@ -175,12 +175,12 @@ public class Weapons extends UIPanel {
         for (int i = 0; i < labels.size(); i++){
           if (i == 0) continue;
           if (i == 1) labels.get(i).setText("" + cannons.size());
-          if (Player.type == Player.Type.FIRE || Player.type == Player.Type.FIREKING){
+          if (StartScreen.state == StartScreen.playerViewState.MF || StartScreen.state == StartScreen.playerViewState.FF){
             if (i == 2) labels.get(i).setText("" + firearrows.size());
             if (i == 3) labels.get(i).setText("" + firecannons.size());
             if (i == 4) labels.get(i).setText("" + fireballs.size());
             if (i == 5) labels.get(i).setText("" + firewalls.size());
-          } else if (Player.type == Player.Type.ICE || Player.type == Player.Type.ICEKING) {
+          } else if (StartScreen.state == StartScreen.playerViewState.MI || StartScreen.state == StartScreen.playerViewState.FI) {
             if (i == 2) labels.get(i).setText("" + icearrows.size());
             if (i == 3) labels.get(i).setText("" + icecannons.size());
             if (i == 4) labels.get(i).setText("" + iceballs.size());

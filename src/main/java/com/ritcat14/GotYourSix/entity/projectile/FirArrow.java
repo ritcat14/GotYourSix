@@ -18,7 +18,7 @@ public class FirArrow extends Projectile {
 
         nx = speed * Math.cos(angle);
         ny = speed * Math.sin(angle);
-        weapon = Weapon.FIREDARROW;
+        Projectile.weapon = Weapon.FIREDARROW;
     }
   
 }

@@ -18,7 +18,7 @@ public class FirBall extends Projectile {
 
         nx = speed * Math.cos(angle);
         ny = speed * Math.sin(angle);
-        weapon = Weapon.FIREBALL;
+        Projectile.weapon = Weapon.FIREBALL;
     }
   
 }

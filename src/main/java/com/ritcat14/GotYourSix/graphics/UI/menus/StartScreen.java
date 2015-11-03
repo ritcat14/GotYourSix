@@ -6,6 +6,7 @@ import com.ritcat14.GotYourSix.graphics.UI.UIButton;
 import com.ritcat14.GotYourSix.graphics.UI.UIComponent;
 import com.ritcat14.GotYourSix.graphics.UI.UILabel;
 import com.ritcat14.GotYourSix.graphics.UI.UIPanel;
+import com.ritcat14.GotYourSix.graphics.SpriteSheet;
 import com.ritcat14.GotYourSix.util.Vector2i;
 import com.ritcat14.GotYourSix.util.ImageUtil;
 import com.ritcat14.GotYourSix.util.FileHandler;
@@ -44,21 +45,15 @@ public class StartScreen extends UIPanel implements KeyListener{
     }, "");
     private UIButton start = new UIButton(new Vector2i(Game.getAbsoluteWidth() - 232, Game.getAbsoluteHeight() - 100), ImageUtil.getImage("/ui/buttons/startBtn.png"), new UIActionListener() {
         public void perform() {
-            if (state == playerViewState.FI || state == playerViewState.MI){ //add in sprite states for male and female
-                Player.type = Player.Type.ICE;
-                Game.STATE = Game.State.GAME;
-            } else if (state == playerViewState.MF || state == playerViewState.FF){
-              Player.type = Player.Type.FIRE;
-              Game.STATE = Game.State.GAME;
-            }
+            Game.STATE = Game.State.GAME;
         }
     }, "");
     private UIPanel playerView = new UIPanel(new Vector2i((Game.getAbsoluteWidth() / 12) + 115, (Game.getAbsoluteHeight() / 2) - 180), ImageUtil.getImage("/ui/panels/characterView.png"));
     private UIPanel character = new UIPanel(new Vector2i((Game.getAbsoluteWidth() / 12) + 164, (Game.getAbsoluteHeight() / 2) - 141), ImageUtil.getImage("/ui/panels/characters/MF.png"));
-    private enum playerViewState {
+    public static enum playerViewState {
       MF, MI, FF, FI;
     }
-    private playerViewState state = playerViewState.MF;
+    public static playerViewState state = playerViewState.MF;
     private enum optionState {
       START, MAINTENANCE;
     }
@@ -108,6 +103,8 @@ public class StartScreen extends UIPanel implements KeyListener{
         for (int i = 0; i < menuItems.size(); i++){
           addComponent(menuItems.get(i));
         }
+        state = playerViewState.MF;
+        SpriteSheet.init();
         menuActive = true;
         activateMenu = false;
       } else if (menuActive){
@@ -118,7 +115,7 @@ public class StartScreen extends UIPanel implements KeyListener{
         //update start
         if (opState == optionState.START) options.setText("START");
         else if (opState == optionState.MAINTENANCE) options.setText("MAINTENANCE");
-        options.setPosition(new Vector2i((Game.getAbsoluteWidth() / 2) - (options.getFontMetrics().stringWidth(options.getText())/2), (Game.getAbsoluteHeight() - 200)));
+        options.setPosition(new Vector2i((Game.getAbsoluteWidth() / 2) - ((options.getFontMetrics().stringWidth(options.getText()))), (Game.getAbsoluteHeight() - 200)));
       }
     }  
 }
