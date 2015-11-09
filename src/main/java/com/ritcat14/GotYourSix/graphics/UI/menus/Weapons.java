@@ -48,9 +48,9 @@ public class Weapons extends UIPanel {
     private Keyboard key = Game.getKeyboard();
 
     public Weapons() {
-        super(new Vector2i((Game.getWindowWidth()-180), Game.getWindowHeight() - 80), new Vector2i(6 * 80, 80),
+        super(new Vector2i((Game.getWindowWidth()-(80 * 6)), Game.getWindowHeight() - 80), new Vector2i(6 * 80, 80),
               ImageUtil.getImage("/ui/weaponBarBack.png"));
-        this.x = (Game.getWindowWidth()-180);
+        this.x = (Game.getWindowWidth()-(80 * 6));
         this.y = Game.getWindowHeight() - 80;
         ui = new UIManager();
         ui.addPanel(this);
