@@ -13,6 +13,7 @@ public class UIPanel extends UIComponent{
     private List<UIComponent> components = new ArrayList<UIComponent>();
     private Vector2i size;
     private BufferedImage image;
+    public boolean imageSet = false;
   
     public UIPanel(Vector2i position, Vector2i size){
         super(position);
@@ -42,6 +43,7 @@ public class UIPanel extends UIComponent{
   
     public void setBackgroundImage(BufferedImage image){
         this.image = image;
+        imageSet = true;
     }
   
     public void removeComponent(UIComponent component){

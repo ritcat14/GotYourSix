@@ -1,11 +1,7 @@
 package com.ritcat14.GotYourSix.graphics.UI.menus;
 
 import com.ritcat14.GotYourSix.Game;
-import com.ritcat14.GotYourSix.graphics.UI.UIActionListener;
-import com.ritcat14.GotYourSix.graphics.UI.UIButton;
-import com.ritcat14.GotYourSix.graphics.UI.UIComponent;
-import com.ritcat14.GotYourSix.graphics.UI.UILabel;
-import com.ritcat14.GotYourSix.graphics.UI.UIPanel;
+import com.ritcat14.GotYourSix.graphics.UI.*;
 import com.ritcat14.GotYourSix.graphics.SpriteSheet;
 import com.ritcat14.GotYourSix.util.Vector2i;
 import com.ritcat14.GotYourSix.util.ImageUtil;
@@ -59,6 +55,7 @@ public class StartScreen extends UIPanel implements KeyListener{
     }
     private optionState opState = optionState.START;
     private boolean setupCreated = false;
+    private UITextBox nameBox = new UITextBox(new Vector2i((Game.getAbsoluteWidth() / 12) + 115, ((Game.getAbsoluteHeight() / 2) - 180) + 406), "NAME: ");
 
     public StartScreen() {
         super(new Vector2i(0, 0), new Vector2i(Game.getAbsoluteWidth(), Game.getAbsoluteHeight()), ImageUtil.getImage("/ui/panels/background.png"));
@@ -68,6 +65,22 @@ public class StartScreen extends UIPanel implements KeyListener{
         menuItems.add(start);
         menuItems.add(playerView);
         menuItems.add(character);
+        menuItems.add(nameBox);
+        /*menuItems.add(groupNameBox);
+        menuItems.add(groupPassBox);*/
+        List<UILabel> labels = new ArrayList<UILabel>();
+        for (int i = 0; i < menuItems.size(); i++){
+          if (menuItems.get(i) instanceof UITextBox){
+            UITextBox x = (UITextBox) menuItems.get(i);
+            if (x.getText() != ""){
+              UILabel l = new UILabel(x.getAbsolutePosition().add(new Vector2i(-150, -1)), x.getText());
+              labels.add(l);
+            }
+          }
+        }
+          for (int i = 0; i < labels.size(); i++){
+            menuItems.add(labels.get(i));
+        }
     }
 
     public void keyPressed(KeyEvent e) {

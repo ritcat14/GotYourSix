@@ -50,29 +50,31 @@ public class Game extends Canvas implements Runnable, EventListener {
 
     public static State      STATE      = State.START;
 
-    private Thread           thread;
-    private JFrame           frame;
-    private static Keyboard  key;
-    private static Level     level;
-    private static Player    player;
+    private Thread           thread = null;
+    private JFrame           frame = null;
+    private static Keyboard  key = null;
+    private static Level     level = null;
+    private static Player    player = null;
     private boolean          running    = false;
 
-    private static UIManager uiManager;
-    private static UIManager minimapManager;
-    private StartScreen      sc;
+    private static UIManager uiManager = null;
+    private static UIManager minimapManager = null;
+    private StartScreen      sc = null;
 
-    private Screen           screen;
+    private Screen           screen = null;
     private BufferedImage    image      = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     private int[]            pixels     = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
 
     private List<Layer>      layerStack = new ArrayList<Layer>();
 
-    private static Game      game;
+    private static Game      game = null;
     public static boolean    loaded     = false;
+    public static boolean paused = false;
 
     public Game() {
         Dimension size = new Dimension((width * scale), height * scale);
         setPreferredSize(size);
+        Game.game = this;
 
         screen = new Screen(width, height);
         uiManager = new UIManager();

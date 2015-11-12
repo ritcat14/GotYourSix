@@ -8,10 +8,12 @@ import com.ritcat14.GotYourSix.events.types.MouseReleasedEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import javax.swing.SwingUtilities;
 
 public class Mouse implements MouseListener, MouseMotionListener{
 	
 	private static int mouseX = -1, mouseY = -1, mouseB = -1;
+   public static boolean left = false, right = false;
   
    public EventListener eventListener;
   

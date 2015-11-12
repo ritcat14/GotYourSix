@@ -20,10 +20,7 @@ import com.ritcat14.GotYourSix.events.types.MousePressedEvent;
 import com.ritcat14.GotYourSix.events.types.MouseReleasedEvent;
 import com.ritcat14.GotYourSix.graphics.*;
 import com.ritcat14.GotYourSix.graphics.UI.*;
-import com.ritcat14.GotYourSix.graphics.UI.menus.Inventory;
-import com.ritcat14.GotYourSix.graphics.UI.menus.Minimap;
-import com.ritcat14.GotYourSix.graphics.UI.menus.Weapons;
-import com.ritcat14.GotYourSix.graphics.UI.menus.StartScreen;
+import com.ritcat14.GotYourSix.graphics.UI.menus.*;
 import com.ritcat14.GotYourSix.input.*;
 import com.ritcat14.GotYourSix.items.*;
 import com.ritcat14.GotYourSix.level.Level;
@@ -43,7 +40,7 @@ public class Player extends Mob implements EventListener {
 	private AnimatedObject down = null;
 	private AnimatedObject up = null;
 	private AnimatedObject left = null;
-	private AnimatedObject right = null;
+	private AnimatedObject right = null; //all the movement animatedObjects. These are set depending on the player you choose in the selection screen
    private Sprite weapon = null;
 	
 	private AnimatedObject animSprite = null;
@@ -66,6 +63,8 @@ public class Player extends Mob implements EventListener {
    private boolean changePlayer = true;
    private List<Item> items = null;
    private List<Projectile> shots = null;
+   private Inventory invent = new Inventory();
+   private boolean inventOpen = false;
 	
   @Deprecated
 	public Player(String name, Keyboard input) {
@@ -127,6 +126,10 @@ public class Player extends Mob implements EventListener {
       w = new Weapons();
       ui.addPanel(w);
       if (w != null) fireRate = getShots().get(w.getSelected() - 1).FIRERATE;
+      
+      Stats s = new Stats();
+      ui.addPanel(s);
+     
       up = AnimatedObject.up;
       down = AnimatedObject.down;
       left = AnimatedObject.left;
@@ -177,6 +180,22 @@ public class Player extends Mob implements EventListener {
        return XPLevel;
    }
   
+   public int getStamina(){
+     return stamina;
+   }
+  
+   public int getHealth(){
+     return health;
+   }
+  
+   public int getHunger(){
+     return hunger;
+   }
+  
+   public int getThirst(){
+     return thirst;
+   }
+  
    public void setLocation(Vector2i p){
        this.x = p.x;
        this.y = p.y;
@@ -199,6 +218,24 @@ public class Player extends Mob implements EventListener {
            return onMouseMoved((MouseMovedEvent) event);
          }
        });
+   }
+   private int timeOpen = 0;
+   private int timeClosed = 0;
+   public void updateInvent(){
+       if (input.invnt && !inventOpen && timeClosed >= 30){
+          //open invent
+          ui.addPanel(invent);
+          Game.paused = true;
+          inventOpen = true;
+          timeClosed = 0;
+      } else if (input.invnt && inventOpen && timeOpen >= 30){
+          //remove invent
+          ui.removePanel(invent);
+          Game.paused = false;
+          inventOpen = false;
+          timeOpen = 0;
+      } else if (inventOpen) timeOpen++;
+        else if (!inventOpen) timeClosed++;
    }
   
    private void updateStats(int time){
@@ -413,7 +450,7 @@ public class Player extends Mob implements EventListener {
            Rectangle r = new Rectangle(items.get(i).position.x, items.get(i).position.y, items.get(i).sprite.getWidth(), items.get(i).sprite.getHeight());
            if (r.x >= getBounds().x && r.x <= getBounds().x + getBounds().width
                && r.y >= getBounds().y && r.y <= getBounds().y + getBounds().height){
-               if (items.get(i) instanceof Weapon) w.add((Weapon)items.get(i));
+               if (items.get(i) instanceof Weapon) invent.add((Item)items.get(i));
                //else panel.getInvent().add(items.get(i));
                items.get(i).remove();
            }

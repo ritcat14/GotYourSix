@@ -41,5 +41,10 @@ public class SpawnLevel extends Level {
       }
    }
 	
-  protected void generateLevel(){}
+  protected void generateLevel(){
+    //no enemies!
+    Zombie e = new Zombie(16*5, 16*5);
+    EnemySpawner es = new EnemySpawner(16 * 5, 16 * 5, 100, 100, this, e);
+    add(es);
+  }
 }

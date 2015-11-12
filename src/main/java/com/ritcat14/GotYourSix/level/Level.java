@@ -69,6 +69,10 @@ public class Level extends Layer {
     }
 
     public void update() {
+      for (int i = 0; i < players.size(); i++){
+        players.get(i).updateInvent();
+      }
+      if (!Game.paused){
         if (Game.loaded) {
             for (int i = 0; i < entities.size(); i++) {
                 entities.get(i).update();
@@ -97,6 +101,7 @@ public class Level extends Layer {
         for (int i = 0; i < doors.size(); i++) {
             doors.get(i).update();
         }
+      }
         remove();
     }
   

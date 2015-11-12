@@ -44,7 +44,7 @@ public class Item {
        int[] pixels = new int[sprite.getWidth() * sprite.getHeight()];
        for (int x = 0; x < sprite.getWidth(); x++){
            for(int y = 0; y < sprite.getHeight(); y++){
-               if (sprite.getPixels()[x + y * sprite.getWidth()] == 0xff00ff) continue;
+               if (sprite.getPixels()[x + y * sprite.getWidth()] == 0xffff00ff) continue;
                pixels[x + y * sprite.getWidth()] = sprite.getPixels()[x + y * sprite.getWidth()];
            }
        }
@@ -60,5 +60,4 @@ public class Item {
     public boolean isRemoved(){
         return removed;
     }
-  
 }
