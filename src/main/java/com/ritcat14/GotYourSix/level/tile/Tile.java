@@ -5,69 +5,31 @@ import com.ritcat14.GotYourSix.graphics.Sprite;
 
 public class Tile {
     
-    public int x, y;
-    public Sprite sprite;
+    public int x = 0, y = 0;
+    public Sprite sprite = null;
     
-    public static Tile grass = new SpawnGrassTile(Sprite.grass);
-    public static Tile flower = new SpawnGrassTile(Sprite.flower);
-    public static Tile water = new SpawnWaterTile(Sprite.water);
-    public static Tile gravel = new SpawnGrassTile(Sprite.gravel);
-    public static Tile woodFloor = new SpawnFloorTile(Sprite.woodFloor);
-    public static Tile mossWall = new SpawnWallTile(Sprite.mossWall);
-    public static Tile brickWall = new SpawnWallTile(Sprite.brickWall);
-    public static Tile portal = new SpawnPortalTile(Sprite.portal);
-    public static Tile door = new SpawnDoorTile(Sprite.doorClosed);
-    public static Tile bush = new SpawnWallTile(Sprite.bush);
-    public static Tile mossWallShad = new SpawnWallTile(Sprite.mossWallShad);
-    public static Tile brickWallShad = new SpawnWallTile(Sprite.brickWallShad);
+    public static Tile grass = new SpawnGrassTile(Sprite.grass), flower = new SpawnGrassTile(Sprite.flower), water = new SpawnWaterTile(Sprite.water), 
+  							  gravel = new SpawnGrassTile(Sprite.gravel), woodFloor = new SpawnFloorTile(Sprite.woodFloor), mossWall = new SpawnWallTile(Sprite.mossWall), 
+  							  brickWall = new SpawnWallTile(Sprite.brickWall), portal = new SpawnPortalTile(Sprite.portal), door = new SpawnDoorTile(Sprite.doorClosed), 
+  							  bush = new SpawnWallTile(Sprite.bush), mossWallShad = new SpawnWallTile(Sprite.mossWallShad), brickWallShad = new SpawnWallTile(Sprite.brickWallShad),
   
-    public static Tile wallGrassTL = new SpawnEdgeTile(Sprite.wallGrassTL);
-    public static Tile wallGrassTM = new SpawnEdgeTile(Sprite.wallGrassTM);
-    public static Tile wallGrassTR = new SpawnEdgeTile(Sprite.wallGrassTR);
-    public static Tile wallGrassLM = new SpawnEdgeTile(Sprite.wallGrassLM);
-    public static Tile wallGrassRM = new SpawnEdgeTile(Sprite.wallGrassRM);
-    public static Tile wallGrassBL = new SpawnEdgeTile(Sprite.wallGrassBL);
-    public static Tile wallGrassBM = new SpawnEdgeTile(Sprite.wallGrassBM);
-    public static Tile wallGrassBR = new SpawnEdgeTile(Sprite.wallGrassBR);
-  
-    public static Tile wallWaterTL = new SpawnEdgeTile(Sprite.wallWaterTL);
-    public static Tile wallWaterTM = new SpawnEdgeTile(Sprite.wallWaterTM);
-    public static Tile wallWaterTR = new SpawnEdgeTile(Sprite.wallWaterTR);
-    public static Tile wallWaterLM = new SpawnEdgeTile(Sprite.wallWaterLM);
-    public static Tile wallWaterRM = new SpawnEdgeTile(Sprite.wallWaterRM);
-    public static Tile wallWaterBL = new SpawnEdgeTile(Sprite.wallWaterBL);
-    public static Tile wallWaterBM = new SpawnEdgeTile(Sprite.wallWaterBM);
-    public static Tile wallWaterBR = new SpawnEdgeTile(Sprite.wallWaterBR);
+  							  wallGrassTL = new SpawnEdgeTile(Sprite.wallGrassTL), wallGrassTM = new SpawnEdgeTile(Sprite.wallGrassTM), wallGrassTR = new SpawnEdgeTile(Sprite.wallGrassTR),
+    						  wallGrassLM = new SpawnEdgeTile(Sprite.wallGrassLM), wallGrassRM = new SpawnEdgeTile(Sprite.wallGrassRM), wallGrassBL = new SpawnEdgeTile(Sprite.wallGrassBL),
+  							  wallGrassBM = new SpawnEdgeTile(Sprite.wallGrassBM), wallGrassBR = new SpawnEdgeTile(Sprite.wallGrassBR),
+  							  
+  							  wallWaterTL = new SpawnEdgeTile(Sprite.wallWaterTL), wallWaterTM = new SpawnEdgeTile(Sprite.wallWaterTM), wallWaterTR = new SpawnEdgeTile(Sprite.wallWaterTR),
+  						     wallWaterLM = new SpawnEdgeTile(Sprite.wallWaterLM), wallWaterRM = new SpawnEdgeTile(Sprite.wallWaterRM), wallWaterBL = new SpawnEdgeTile(Sprite.wallWaterBL),
+  							  wallWaterBM = new SpawnEdgeTile(Sprite.wallWaterBM), wallWaterBR = new SpawnEdgeTile(Sprite.wallWaterBR);
     
-    public static final int col_grass = 0xff01ff01;
-    public static final int col_flower = 0xffffd800;
-    public static final int col_water = 0xff0094ff;
-    public static final int col_gravel = 0xff303030;
-    public static final int col_woodFloor = 0xff7f0000;
-    public static final int col_mossWall = 0xff606060;
-    public static final int col_brickWall = 0xff808080;
-    public static final int col_portal = 0xff2FFCFF;
-    public static final int col_door = 0xff460037;
-    public static final int col_mossWallShad = 0xff707070;
-    public static final int col_brickWallShad = 0xff0A0A0A;
+    public static final int col_grass = 0xff01ff01, col_flower = 0xffffd800, col_water = 0xff0094ff, col_gravel = 0xff303030, 
+  	 								 col_woodFloor = 0xff7f0000, col_mossWall = 0xff606060, col_brickWall = 0xff808080, col_portal = 0xff2FFCFF, 
+    								 col_door = 0xff460037, col_mossWallShad = 0xff707070, col_brickWallShad = 0xff0A0A0A;
   
-    public static final int col_wallGrassTL = 0xff000000;
-    public static final int col_wallGrassTM = 0xff00FF90;
-    public static final int col_wallGrassTR = 0xffFFFFFF;
-    public static final int col_wallGrassLM = 0xffB200FF;
-    public static final int col_wallGrassRM = 0xffFF006E;
-    public static final int col_wallGrassBL = 0xffFF6A00;
-    public static final int col_wallGrassBM = 0xffFF0000;
-    public static final int col_wallGrassBR = 0xff7F3300;
+    public static final int col_wallGrassTL = 0xff000000, col_wallGrassTM = 0xff00FF90, col_wallGrassTR = 0xffFFFFFF, col_wallGrassLM = 0xffB200FF, 
+    								 col_wallGrassRM = 0xffFF006E,  col_wallGrassBL = 0xffFF6A00, col_wallGrassBM = 0xffFF0000, col_wallGrassBR = 0xff7F3300;
   
-    public static final int col_wallWaterTL = 0xff0046FF;
-    public static final int col_wallWaterTM = 0xff0061FF;
-    public static final int col_wallWaterTR = 0xff0078FF;
-    public static final int col_wallWaterLM = 0xff0026FF;
-    public static final int col_wallWaterRM = 0xff7CFF21;
-    public static final int col_wallWaterBL = 0xff7C466D;
-    public static final int col_wallWaterBM = 0xff7C4621;
-    public static final int col_wallWaterBR = 0xffB6FF21;
+    public static final int col_wallWaterTL = 0xff0046FF, col_wallWaterTM = 0xff0061FF, col_wallWaterTR = 0xff0078FF, col_wallWaterLM = 0xff0026FF,
+  									 col_wallWaterRM = 0xff7CFF21, col_wallWaterBL = 0xff7C466D, col_wallWaterBM = 0xff7C4621, col_wallWaterBR = 0xffB6FF21;
     
   
     public Tile(Sprite sprite){

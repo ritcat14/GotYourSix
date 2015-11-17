@@ -1,4 +1,6 @@
 package com.ritcat14.GotYourSix.util;
+import com.ritcat14.GotYourSix.Game;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,17 +23,17 @@ import java.awt.Font;
 
 
 public class Console implements ActionListener{
-  JFrame frame;
-  JTextPane textPane;
-  JTextField box;
-  JButton button;
+  JFrame frame = null;
+  JTextPane textPane = null;
   public ArrayList<String> text = new ArrayList<String>();
   public boolean hasInputText = false;
   
   public Console(){
     this.frame = new JFrame("Server Console");
-    this.frame.setSize(600, 400);
-    this.frame.setLocationRelativeTo(null);
+    this.frame.setSize(350, 700);
+    JFrame gameFrame = Game.getGame().getFrame();
+    this.frame.setLocation(gameFrame.getX() + gameFrame.getWidth(), gameFrame.getY());
+    this.frame.setUndecorated(true);
     this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
     this.textPane = new JTextPane();
@@ -47,12 +49,9 @@ public class Console implements ActionListener{
       }
       
     });
-    this.box = new JTextField(1);
-    this.box.addActionListener(this);
     
     this.frame.getContentPane().setLayout(new BorderLayout());
     this.frame.getContentPane().add(new JScrollPane(this.textPane), "Center");
-    this.frame.getContentPane().add(this.box, "South");
     this.frame.setVisible(true);
     redirectSystemStreams();
   }
@@ -117,12 +116,5 @@ public class Console implements ActionListener{
   }
   
   public void actionPerformed(ActionEvent e){
-    try{
-      Document doc = textPane.getDocument();
-      doc.insertString(doc.getLength(),this.box.getText() + "\n", null);
-    }catch(Exception ex){ex.printStackTrace();}
-    this.text.add(""+this.box.getText());
-    this.box.setText("");
-    hasInputText = true;
   }
 }

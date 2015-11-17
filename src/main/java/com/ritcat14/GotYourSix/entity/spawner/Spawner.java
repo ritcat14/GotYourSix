@@ -9,7 +9,7 @@ public abstract class Spawner extends Entity{
 		MOB, PARTICLE
 	}
 	
-	protected Type type;
+	protected Type type = null;
 	
 	public Spawner(int x, int y, Type type, int amount, Level level){
 		init(level);

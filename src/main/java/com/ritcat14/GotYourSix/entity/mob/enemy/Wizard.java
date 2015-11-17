@@ -1,10 +1,11 @@
-package com.ritcat14.GotYourSix.entity.mob;
+package com.ritcat14.GotYourSix.entity.mob.enemy;
 
 import java.util.List;
 
 /*This class follows the A* search algorithm, 
  making it able to track the player across the map*/
 
+import com.ritcat14.GotYourSix.entity.mob.Player;
 import com.ritcat14.GotYourSix.graphics.AnimatedObject;
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.SpriteSheet;

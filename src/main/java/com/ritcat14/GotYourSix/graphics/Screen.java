@@ -3,19 +3,19 @@ package com.ritcat14.GotYourSix.graphics;
 import java.util.Random;
 
 import com.ritcat14.GotYourSix.entity.mob.Mob;
-import com.ritcat14.GotYourSix.entity.mob.SoulEater;
+import com.ritcat14.GotYourSix.entity.mob.enemy.SoulEater;
 import com.ritcat14.GotYourSix.entity.projectile.Projectile;
 import com.ritcat14.GotYourSix.level.tile.Tile;
 
 public class Screen {
 
-	public int width;
-	public int height;
-	public int[] pixels;
+	public int width = 0;
+	public int height = 0;
+	public int[] pixels = null;
 	public final int MAP_SIZE = 64;
 	public final int MAP_SIZE_MASK = MAP_SIZE - 1;
 	public int[] tiles = new int[MAP_SIZE * MAP_SIZE];
-	public int xOffset, yOffset;
+	public int xOffset = 0, yOffset = 0;
 	private Random random = new Random();
 
 	public Screen(int width, int height) {

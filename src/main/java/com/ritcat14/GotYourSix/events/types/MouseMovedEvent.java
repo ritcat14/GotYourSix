@@ -4,8 +4,8 @@ import com.ritcat14.GotYourSix.events.Event;
 
 public class MouseMovedEvent extends Event {
 
-	private int x, y;
-	private boolean dragged;
+	private int x = 0, y = 0;
+	private boolean dragged = false;
 	
 	public MouseMovedEvent(int x, int y, boolean dragged) {
 		super(Event.Type.MOUSE_MOVED);

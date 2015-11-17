@@ -1,9 +1,9 @@
 From 23/09/2015
-
+V1.1.0
 23/09 - Added UI button events
-
+V1.1.4
 24/09 - Story line intro:
-
+v1.3.6
  IDEA: Start off in a bedroom, with bed and crate. crate contains armour (beginners). Tutorial/helper advises equiping the armour
  (introduction to equiping, and give knowledge that armour is required to survive).
  Arrows indicate health, food, water etc. bars, explaing what they're for.
@@ -14,8 +14,13 @@ From 23/09/2015
  weapon bar added, minimap removed until layers have been fully implemented, and all events handled by corresponding layer. Player has
  shooting and swimming animations that need to be implemented. Need to add in player doing rendom things if left alone for a certain 
  amount of time. Start menu added and file handling begun. Need to implement 
- 
+V1.3.8
 30/10 - UPDATE:
  Started implementing new GUI design for start screen and menu's. Also started implementing player variations (male/female, fire/ice). 
  Plan to change player state to playerViewState, making playerViewState plublic and static, to be accessed even after start screen is
  removed. Use state.toString() method as spritesheet file name
+17/11 - UPDATE:
+  Finished implementing GUI anf file handling. Added lots of fixes for bugs. Still have startScreen -> game bug, don't know why, no 
+  errors given. Added new inventory, minimap, enemies. Tidyed up code and files, made generating enemy types easier. Still bug with
+  weapons bar needs fixing. Need to add weather and content to game (levels, story line, hints etc.)
+V1.4.9

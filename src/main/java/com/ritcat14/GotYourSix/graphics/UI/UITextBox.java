@@ -14,13 +14,16 @@ import java.awt.event.MouseEvent;
 
 public class UITextBox extends UILabel implements KeyListener {
 
-    private boolean   selected;
+    private boolean   selected = false;
     private boolean[] keys      = new boolean[1000];
-    private Cursor    c;
+    private Cursor    c = null;
+    private String sc = "";
+    private String storedText = "";
 
     private Vector2i  size      = new Vector2i(150, 30);
     private String    keyString = "";
     private String boxName = "";
+    private boolean pass = false;
 
     public UITextBox(Vector2i position, String text) {
         super(position.add(new Vector2i(0, 30)), "");
@@ -28,12 +31,20 @@ public class UITextBox extends UILabel implements KeyListener {
         Game.getGame().addKeyListener(this); //Adds the listener to the game
     }
 
+    public UITextBox(Vector2i position, String text, String character) {
+        super(position.add(new Vector2i(0, 30)), "");
+        this.boxName = text;
+        Game.getGame().addKeyListener(this); //Adds the listener to the game
+        pass = true;
+        sc = character;
+    }
+
     public UITextBox(Vector2i position) {
         super(position.add(new Vector2i(0, 30)), "");
         Game.getGame().addKeyListener(this);
     }
   
-    public String getText(){
+    public String getName(){
       return boxName;
     }
 
@@ -67,7 +78,7 @@ public class UITextBox extends UILabel implements KeyListener {
     }
   
     public String getTypedText(){
-      return keyString;
+      return storedText;
     }
 
     public void keyPressed(KeyEvent e) {
@@ -79,7 +90,13 @@ public class UITextBox extends UILabel implements KeyListener {
             int id = e.getID(); //gets int ID of the event
             if (id == KeyEvent.KEY_PRESSED) {
                 char c = e.getKeyChar(); //converts the key's character value to a character, and adds it to the string
-                if (Character.isLetter(c) || Character.isDigit(c)) keyString = "" + c;
+                if ((Character.isLetter(c) || Character.isDigit(c)) && !pass){
+                  keyString = "" + c;
+                  storedText = storedText + keyString;
+                } else if ((Character.isLetter(c) || Character.isDigit(c)) && pass){
+                  keyString = sc;
+                  storedText = storedText + c;
+                }
             } else {
                 int keyCode = e.getKeyCode();
                 keyString = KeyEvent.getKeyText(keyCode);

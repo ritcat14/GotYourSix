@@ -2,15 +2,9 @@ package com.ritcat14.GotYourSix.level.worlds;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import com.ritcat14.GotYourSix.entity.mob.Wizard;
-import com.ritcat14.GotYourSix.entity.mob.Zombie;
-import com.ritcat14.GotYourSix.entity.mob.Dummy;
-import com.ritcat14.GotYourSix.entity.mob.Shooter;
-import com.ritcat14.GotYourSix.entity.mob.SoulEater;
 import com.ritcat14.GotYourSix.entity.spawner.EnemySpawner;
 import com.ritcat14.GotYourSix.level.Level;
 import com.ritcat14.GotYourSix.util.Vector2i;
@@ -43,8 +37,7 @@ public class SpawnLevel extends Level {
 	
   protected void generateLevel(){
     //no enemies!
-    Zombie e = new Zombie(16*5, 16*5);
-    EnemySpawner es = new EnemySpawner(16 * 5, 16 * 5, 100, 100, this, e);
+    EnemySpawner es = new EnemySpawner(10, 15, 100, 5, this, "Zombie");
     add(es);
   }
 }

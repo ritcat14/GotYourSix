@@ -10,8 +10,8 @@ public class Event {
       KEY_RELEASED
 	}
 	
-	private Type type;
-	boolean handled;
+	private Type type = null;
+	boolean handled = false;
 	
 	protected Event(Type type) {
 		this.type = type;

@@ -8,9 +8,9 @@ import com.ritcat14.GotYourSix.util.Vector2i;
 
 public class Item {
   
-    public Sprite sprite;
-    protected int amount;
-    public Vector2i position;
+    public Sprite sprite = null;
+    protected int amount = 0;
+    public Vector2i position = null;
     private boolean removed = false;
     int life = 10;
   

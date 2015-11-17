@@ -1,4 +1,4 @@
-package com.ritcat14.GotYourSix.entity.mob;
+package com.ritcat14.GotYourSix.entity.mob.enemy;
 
 import java.util.List;
 import java.util.Random;
@@ -7,12 +7,14 @@ import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.UI.menus.StartScreen;
 import com.ritcat14.GotYourSix.items.*;
 import com.ritcat14.GotYourSix.level.tile.Tile;
+import com.ritcat14.GotYourSix.level.TileCoordinate;
 import com.ritcat14.GotYourSix.util.Vector2i;
 import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.entity.Entity;
+import com.ritcat14.GotYourSix.entity.mob.Mob;
 import com.ritcat14.GotYourSix.entity.mob.Player;
 
-public abstract class Enemy extends Mob { //yea
+public abstract class Enemy extends Mob {
 
     public double     XPBonus    = 1;
     public int        time       = 0;
@@ -71,7 +73,7 @@ public abstract class Enemy extends Mob { //yea
             remove();
             player.inXP((int)Math.ceil(XPBonus / (Player.getLevel() * 2)));
             Random ran = new Random();
-            int j = ran.nextInt(5);
+            int j = ran.nextInt(3);
             for (int g = 0; g <= j; g++) {
                 Item e = getItem();
                 e.setPosition(new Vector2i((int)getX() + ((ran.nextInt(40) - 20)), (int)getY() + ((ran.nextInt(40) - 20))));
@@ -81,10 +83,11 @@ public abstract class Enemy extends Mob { //yea
     }
 
     public void checkLocation() {
-        Tile at = Game.getLevel().getTile((int)x, (int)y);
+        TileCoordinate loc = new TileCoordinate((int)x,(int)y);
+        Tile at = Game.getLevel().getTile(loc.x(), loc.y());
         if (at.solid()) {
-            x = random.nextInt(20) + 3;
-            y = random.nextInt(60) + 3;
+            x = random.nextInt(3);
+            y = random.nextInt(3);
         }
     }
 
@@ -132,5 +135,4 @@ public abstract class Enemy extends Mob { //yea
             shoot(x, y, dir);
         }
     }
-
 }

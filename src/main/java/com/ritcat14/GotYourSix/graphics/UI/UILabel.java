@@ -10,9 +10,9 @@ import java.awt.FontMetrics;
 
 public class UILabel extends UIComponent {
   
-    public String text;
-    private Font font;
-    private FontMetrics fm;
+    public String text = "";
+    private Font font = null;
+    private FontMetrics fm = null;
   
     public UILabel(Vector2i position, String text) {
         super(position);

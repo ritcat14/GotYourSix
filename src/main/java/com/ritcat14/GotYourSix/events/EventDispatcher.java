@@ -2,7 +2,7 @@ package com.ritcat14.GotYourSix.events;
 
 public class EventDispatcher {
 
-	private Event event;
+	private Event event = null;
 	
 	public EventDispatcher(Event event) {
 		this.event = event;

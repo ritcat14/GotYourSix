@@ -14,11 +14,11 @@ public class Sound {
 
     private static Sound staticSound = new Sound();
 
-    public String        name;
-    private Clip clip;
+    public String        name = "";
+    private Clip clip = null;
     private boolean      running     = false;
     public static float volume = 5.0f;
-    private FloatControl control;
+    private FloatControl control = null;
 
     private Sound() {
     }
