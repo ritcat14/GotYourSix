@@ -14,16 +14,11 @@ public class SpriteSheet {
     public final int          SPRITE_WIDTH, SPRITE_HEIGHT;
     private int               width = 0, height = 0;
     public int[]              pixels = null;
-    private BufferedImage image;
+    private BufferedImage image = null;
 
     public static SpriteSheet tiles                 = new SpriteSheet("/textures/sheets/spritesheet.png", 256);
     public static SpriteSheet projectiles       = new SpriteSheet("/textures/sheets/projectiles/test.png", 48, 64);
-    public static SpriteSheet playerSheet = null;
-    public static SpriteSheet playerViewSheet = null;
-    public static SpriteSheet up = null;
-    public static SpriteSheet down = null;
-    public static SpriteSheet left = null;
-    public static SpriteSheet right = null;
+    public static SpriteSheet playerSheet = null, playerViewSheet = null, up  = null, down  = null, left  = null, right  = null;
 
     public static SpriteSheet soul                  = new SpriteSheet("/textures/sheets/mob/enemy/soulEaterSprite.png", 128, 96);
     public static SpriteSheet soul_down             = new SpriteSheet(soul, 0, 0, 1, 3, 32);
@@ -36,12 +31,6 @@ public class SpriteSheet {
     public static SpriteSheet dummy_up              = new SpriteSheet(dummy, 1, 0, 1, 3, 32);
     public static SpriteSheet dummy_left            = new SpriteSheet(dummy, 2, 0, 1, 3, 32);
     public static SpriteSheet dummy_right           = new SpriteSheet(dummy, 3, 0, 1, 3, 32);
-
-    public static SpriteSheet zombie                = new SpriteSheet("/textures/sheets/mob/enemy/zombieSprite.png", 128, 96);
-    public static SpriteSheet zombie_down           = new SpriteSheet(zombie, 0, 0, 1, 3, 32);
-    public static SpriteSheet zombie_up             = new SpriteSheet(zombie, 1, 0, 1, 3, 32);
-    public static SpriteSheet zombie_left           = new SpriteSheet(zombie, 2, 0, 1, 3, 32);
-    public static SpriteSheet zombie_right          = new SpriteSheet(zombie, 3, 0, 1, 3, 32);
 
     public static SpriteSheet wizard                = new SpriteSheet("/textures/sheets/mob/enemy/wizardSprite.png", 128, 96);
     public static SpriteSheet wizard_down           = new SpriteSheet(wizard, 0, 0, 1, 3, 32);

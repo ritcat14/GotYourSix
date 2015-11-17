@@ -1,14 +1,15 @@
 package com.ritcat14.GotYourSix.level;
 
 import java.util.ArrayList;
+import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.awt.Graphics2D;
 
 import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.entity.Entity;
-import com.ritcat14.GotYourSix.entity.mob.Door;
-import com.ritcat14.GotYourSix.entity.mob.Enemy;
+import com.ritcat14.GotYourSix.entity.mob.enemy.Enemy;
 import com.ritcat14.GotYourSix.entity.mob.Player;
 import com.ritcat14.GotYourSix.entity.particle.Particle;
 import com.ritcat14.GotYourSix.entity.projectile.Projectile;
@@ -18,37 +19,35 @@ import com.ritcat14.GotYourSix.graphics.layers.Layer;
 import com.ritcat14.GotYourSix.items.Item;
 import com.ritcat14.GotYourSix.level.tile.Tile;
 import com.ritcat14.GotYourSix.level.worlds.SpawnLevel;
+import com.ritcat14.GotYourSix.util.ImageUtil;
 import com.ritcat14.GotYourSix.util.Vector2i;
 
 public class Level extends Layer {
 
-    protected int            width, height;
-    protected int[]          tilesInt;
-    protected int[]          tiles;
-    protected int            tile_size;
-    protected TileCoordinate playerPos;
-    private boolean          createdDoors = false;
-    private int xScroll, yScroll;
+    protected int               width       = 0, height = 0, tile_size = 0;
+    protected int[]             tilesInt    = null, tiles = null;
+    protected TileCoordinate    playerPos   = null;
+    private int                 xScroll     = 0, yScroll = 0;
 
-    private List<Entity>     entities     = new ArrayList<Entity>();
-    private List<Projectile> projectiles  = new ArrayList<Projectile>();
-    private List<Particle>   particles    = new ArrayList<Particle>();
-    private List<Player>     players      = new ArrayList<Player>();
-    private List<Enemy>      enemies      = new ArrayList<Enemy>();
-    private List<Door>       doors        = new ArrayList<Door>();
-    private List<Item>		  items			= new ArrayList<Item>();
+    private List<Entity>        entities    = new ArrayList<Entity>();
+    private List<Projectile>    projectiles = new ArrayList<Projectile>();
+    private List<Particle>      particles   = new ArrayList<Particle>();
+    private List<Player> players     = new ArrayList<Player>();
+    private List<Enemy>         enemies     = new ArrayList<Enemy>();
+    private List<Item>          items       = new ArrayList<Item>();
+    private BufferedImage       mapImage    = null;
 
-    private Comparator<Node> nodeSorter   = new Comparator<Node>() {
-                                              public int compare(Node n0, Node n1) {
-                                                  if (n1.fCost < n0.fCost)
-                                                      return +1;
-                                                  if (n1.fCost > n0.fCost)
-                                                      return -1;
-                                                  return 0;
-                                              }
-                                          };
+    private Comparator<Node>    nodeSorter  = new Comparator<Node>() {
+                                                public int compare(Node n0, Node n1) {
+                                                    if (n1.fCost < n0.fCost)
+                                                        return +1;
+                                                    if (n1.fCost > n0.fCost)
+                                                        return -1;
+                                                    return 0;
+                                                }
+                                            };
 
-    public static Level      spawn        = new SpawnLevel("/levels/spawn.png");
+    public static Level         spawn       = new SpawnLevel("/levels/spawn.png");
 
     public Level(int width, int height) {
         this.width = width;
@@ -59,7 +58,22 @@ public class Level extends Layer {
 
     public Level(String path) {
         loadLevel(path);
+        mapImage = ImageUtil.getImage(path);
         generateLevel();
+    }
+
+    public BufferedImage getMapImage() {
+        return mapImage;
+    }
+
+    public static BufferedImage resizeImage(BufferedImage image, int width, int height) {
+        int type = 0;
+        type = image.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : image.getType();
+        BufferedImage resizedImage = new BufferedImage(width, height, type);
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(image, 0, 0, width, height, null);
+        g.dispose();
+        return resizedImage;
     }
 
     protected void generateLevel() {
@@ -69,63 +83,59 @@ public class Level extends Layer {
     }
 
     public void update() {
-      for (int i = 0; i < players.size(); i++){
-        players.get(i).updateInvent();
-      }
-      if (!Game.paused){
-        if (Game.loaded) {
-            for (int i = 0; i < entities.size(); i++) {
-                entities.get(i).update();
-            }
-        }for (int i = 0; i < projectiles.size(); i++) {
-            projectiles.get(i).update();
-        }for (int i = 0; i < particles.size(); i++) {
-            particles.get(i).update();
-        }for (int i = 0; i < players.size(); i++) {
-            players.get(i).update();
-        }for (int i = 0; i < enemies.size(); i++) {
-            enemies.get(i).update();
-            enemies.get(i).checkLocation();
+        for (int i = 0; i < players.size(); i++) {
+            players.get(i).updateInvent();
+            players.get(i).updateMap();
         }
-        if (!createdDoors) {
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++) {
-                    if (tiles[x + y * width] == Tile.col_door) {
-                        Door d = new Door(x, y);
-                        add(d);
-                    }
+        if (!Game.paused) {
+            if (Game.loaded) {
+                for (int i = 0; i < entities.size(); i++) {
+                    entities.get(i).update();
                 }
             }
-          createdDoors = true;
-        } 
-        for (int i = 0; i < doors.size(); i++) {
-            doors.get(i).update();
+            for (int i = 0; i < projectiles.size(); i++) {
+                projectiles.get(i).update();
+            }
+            for (int i = 0; i < particles.size(); i++) {
+                particles.get(i).update();
+            }
+            for (int i = 0; i < players.size(); i++) {
+                players.get(i).update();
+            }
+            for (int i = 0; i < enemies.size(); i++) {
+                enemies.get(i).update();
+                enemies.get(i).checkLocation();
+            }
         }
-      }
         remove();
     }
-  
-    public void onEvent(Event event){
-         getClientPlayer().onEvent(event);
+
+    public void onEvent(Event event) {
+        getClientPlayer().onEvent(event);
     }
 
     private void remove() {
         for (int i = 0; i < entities.size(); i++) {
             if (entities.get(i).isRemoved())
                 entities.remove(i);
-        }for (int i = 0; i < items.size(); i++) {
+        }
+        for (int i = 0; i < items.size(); i++) {
             if (items.get(i).isRemoved())
                 items.remove(i);
-        }for (int i = 0; i < projectiles.size(); i++) {
+        }
+        for (int i = 0; i < projectiles.size(); i++) {
             if (projectiles.get(i).isRemoved())
                 projectiles.remove(i);
-        }for (int i = 0; i < particles.size(); i++) {
+        }
+        for (int i = 0; i < particles.size(); i++) {
             if (particles.get(i).isRemoved())
                 particles.remove(i);
-        }for (int i = 0; i < players.size(); i++) {
+        }
+        for (int i = 0; i < players.size(); i++) {
             if (players.get(i).isRemoved())
                 players.remove(i);
-        }for (int i = 0; i < enemies.size(); i++) {
+        }
+        for (int i = 0; i < enemies.size(); i++) {
             if (enemies.get(i).isRemoved())
                 enemies.remove(i);
         }
@@ -142,9 +152,9 @@ public class Level extends Layer {
     public List<Enemy> getEnemies() {
         return enemies;
     }
-  
-    public List<Item> getItems(){
-      return items;
+
+    public List<Item> getItems() {
+        return items;
     }
 
     public Player getPlayerAt(int index) {
@@ -154,29 +164,29 @@ public class Level extends Layer {
     public Player getClientPlayer() {
         return players.get(0);
     }
-  
-    public int[] getTiles(){
+
+    public int[] getTiles() {
         return tiles;
     }
-  
-    public int getWidth(){
+
+    public int getWidth() {
         return width;
     }
-  
-    public int getHeight(){
+
+    public int getHeight() {
         return height;
     }
-  
-    public int xScroll(){
-       return xScroll;
+
+    public int xScroll() {
+        return xScroll;
     }
-  
-    public int yScroll(){
+
+    public int yScroll() {
         return yScroll;
     }
-  
-    public TileCoordinate getPlayerPos(){
-      return playerPos;
+
+    public TileCoordinate getPlayerPos() {
+        return playerPos;
     }
 
     public List<Node> findPath(Vector2i start, Vector2i goal) {
@@ -289,7 +299,7 @@ public class Level extends Layer {
         }
         return solid;
     }
-  
+
     public void setScroll(int xScroll, int yScroll) {
         this.xScroll = xScroll;
         this.yScroll = yScroll;
@@ -310,27 +320,31 @@ public class Level extends Layer {
         renderEntities(screen);
         Game.loaded = true;
     }
-  
-   public void renderEntities(Screen screen){
-       for (int i = 0; i < entities.size(); i++) {
+
+    public void renderEntities(Screen screen) {
+        for (int i = 0; i < entities.size(); i++) {
             entities.get(i).render(screen);
-        }for (int i = 0; i < items.size(); i++) {
-            items.get(i).render(screen);
-        }for (int i = 0; i < projectiles.size(); i++) {
-            projectiles.get(i).render(screen);
-        }for (int i = 0; i < particles.size(); i++) {
-            particles.get(i).render(screen);
-        }for (int i = 0; i < players.size(); i++) {
-            players.get(i).render(screen);
-        }for (int i = 0; i < enemies.size(); i++) {
-            enemies.get(i).render(screen);
-        }for (int i = 0; i < doors.size(); i++) {
-            doors.get(i).render(screen);
         }
-   }
+        for (int i = 0; i < items.size(); i++) {
+            items.get(i).render(screen);
+        }
+        for (int i = 0; i < projectiles.size(); i++) {
+            projectiles.get(i).render(screen);
+        }
+        for (int i = 0; i < particles.size(); i++) {
+            particles.get(i).render(screen);
+        }
+        for (int i = 0; i < players.size(); i++) {
+            players.get(i).render(screen);
+        }
+        for (int i = 0; i < enemies.size(); i++) {
+            enemies.get(i).render(screen);
+        }
+    }
 
     public void add(Object e) {
-        if (e instanceof Entity) ((Entity) e).init(this);
+        if (e instanceof Entity)
+            ((Entity)e).init(this);
         if (e instanceof Particle) {
             particles.add((Particle)e);
         } else if (e instanceof Projectile) {
@@ -339,8 +353,6 @@ public class Level extends Layer {
             players.add((Player)e);
         } else if (e instanceof Enemy) {
             enemies.add((Enemy)e);
-        } else if (e instanceof Door) {
-            doors.add((Door)e);
         } else if (e instanceof Item) {
             items.add((Item)e);
         } else {

@@ -3,8 +3,11 @@ package com.ritcat14.GotYourSix.entity.mob;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.Rectangle;
 
 import com.ritcat14.GotYourSix.entity.Entity;
+import com.ritcat14.GotYourSix.entity.mob.enemy.Enemy;
+import com.ritcat14.GotYourSix.entity.mob.enemy.Wizard;
 import com.ritcat14.GotYourSix.entity.projectile.*;
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.level.tile.SpawnEdgeTile;
@@ -124,7 +127,7 @@ public abstract class Mob extends Entity {
 
     protected boolean entityCollided(Entity e) {
         boolean collided = false;
-        for (int c = 0; c < 4; c++) {
+        /*for (int c = 0; c < 4; c++) {
             double xt = ((x + e.getX()) - (c % 2) * 15) / 16;
             double yt = ((y + e.getY()) - (c / 2) * 15) / 16;
             int ix = (int)Math.ceil(xt);
@@ -133,7 +136,10 @@ public abstract class Mob extends Entity {
             int height = e.getSprite().getHeight();
             if (ix >= x || ix <= x + width || iy >= y || iy <= y + height)
                 collided = true;
-        }
+        }*/
+        Rectangle r1 = new Rectangle((int)x - 16, (int)y, 32, 16);
+        Rectangle r2 = new Rectangle((int)e.getX() - 16, (int)e.getY(), 32, 16);
+        collided = (r1.intersects(r2));
         return collided;
     }
 
@@ -156,6 +162,14 @@ public abstract class Mob extends Entity {
                 iy = (int)Math.floor(yt);
             if (this instanceof Enemy && level.getTile(ix, iy) instanceof SpawnEdgeTile)
                 return true;
+            if (this instanceof Enemy){
+              int index = level.getEnemies().indexOf(this);
+              for (int i = 0; i < level.getEnemies().size(); i++){
+                if (entityCollided(level.getEnemies().get(i)) && i != index){
+                    return true;
+                }
+                }
+              }
             if (this instanceof Player) {
                 if (level.getTile(ix, iy) instanceof SpawnWaterTile) {
                     Player.swimming = true;
@@ -164,15 +178,6 @@ public abstract class Mob extends Entity {
                     Player.swimming = false;
                     Player.canShoot = true;
                 }
-                /*if (level.getTile(ix, iy) instanceof SpawnPortalTile) {
-                    Player.changeLevel = true;
-                    if (level == Level.test)
-                        Player.levelToGo = Level.spawn;
-                    else if (level == Level.spawn)
-                        Player.levelToGo = Level.level1;
-                } else {
-                    Player.changeLevel = false;
-                }*/
             }
             if (level.getTile(ix, iy).solid())
                 solid = true;

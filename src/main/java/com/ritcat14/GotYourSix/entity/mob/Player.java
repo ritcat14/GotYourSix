@@ -7,66 +7,56 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Random;
 import java.awt.event.MouseEvent;
+import java.lang.*;
 
 import com.ritcat14.GotYourSix.Game;
+import com.ritcat14.GotYourSix.entity.mob.enemy.Enemy;
 import com.ritcat14.GotYourSix.entity.projectile.*;
 import com.ritcat14.GotYourSix.entity.spawner.LightSpawner;
-import com.ritcat14.GotYourSix.events.Event;
-import com.ritcat14.GotYourSix.events.EventDispatcher;
-import com.ritcat14.GotYourSix.events.EventListener;
-import com.ritcat14.GotYourSix.events.EventHandler;
-import com.ritcat14.GotYourSix.events.types.MouseMovedEvent;
-import com.ritcat14.GotYourSix.events.types.MousePressedEvent;
-import com.ritcat14.GotYourSix.events.types.MouseReleasedEvent;
+import com.ritcat14.GotYourSix.events.*;
+import com.ritcat14.GotYourSix.events.types.*;
 import com.ritcat14.GotYourSix.graphics.*;
 import com.ritcat14.GotYourSix.graphics.UI.*;
 import com.ritcat14.GotYourSix.graphics.UI.menus.*;
 import com.ritcat14.GotYourSix.input.*;
 import com.ritcat14.GotYourSix.items.*;
 import com.ritcat14.GotYourSix.level.Level;
-import com.ritcat14.GotYourSix.util.ImageUtil;
-import com.ritcat14.GotYourSix.util.Vector2i;
+import com.ritcat14.GotYourSix.util.*;
 
 public class Player extends Mob implements EventListener {
 	
-   private static String name = null;
-	private Keyboard input = null;
-	private double speed = 1.5;
-   public static boolean swimming = false;
-   public static boolean canShoot = true;
-   public static boolean changeLevel = false;
+   public static boolean swimming = false, canShoot = true, changeLevel = false;
    public static Level levelToGo = null;
-   
-	private AnimatedObject down = null;
-	private AnimatedObject up = null;
-	private AnimatedObject left = null;
-	private AnimatedObject right = null; //all the movement animatedObjects. These are set depending on the player you choose in the selection screen
-   private Sprite weapon = null;
-	
-	private AnimatedObject animSprite = null;
-	
    public static int XPLevel = 1;
-   public int XP = 0, hunger = 0, thirst = 0, fireRate = 0;
-   public int stamina = 100;
-   private int staminaDec = 15;
-   private int staminaInc = 3;
-   private double invin = 1.5;
-   private boolean hit = false;
-   private boolean dying = false;
-   private boolean shooting = false;
-   private BufferedImage image = null;
-   private static Weapons    w = null;
-    private UIManager         ui = null;
-   private Game game = Game.getGame();
+  
+   public int XP = 0, hunger = 0, thirst = 0, fireRate = 0, stamina = 100;
+  
   
    private static boolean madeItem = false;
-   private boolean changePlayer = true;
+   private static String name = null;
+   private static Weapons    w = null;
+  
+   private boolean hit = false, dying = false, shooting = false, changePlayer = true, inventOpen = false, mapOpen = false;
+	private double speed = 1.5, invin = 1;
+   private int staminaDec = 15, staminaInc = 3;
+  
+	private AnimatedObject down = null, up = null, left = null, right = null; // All the movement animatedObjects. These are set depending on the player you choose in the selection screen
+   private Sprite weapon = null;
+	private AnimatedObject animSprite = null;
+
+   private BufferedImage image = null;
+	private Keyboard input = null;  
+   private Game game = Game.getGame();
+  
    private List<Item> items = null;
    private List<Projectile> shots = null;
-   private Inventory invent = new Inventory();
-   private boolean inventOpen = false;
+  
+   private static Inventory invent = new Inventory();
+   private Minimap m = new Minimap();
+   private UIManager         ui = null;
+   private CustomFont font = new CustomFont();
 	
-  @Deprecated
+   @Deprecated
 	public Player(String name, Keyboard input) {
       this.name = name;
 		this.input = input;
@@ -88,7 +78,6 @@ public class Player extends Mob implements EventListener {
 		this.y = y;
 		this.input = input;
       this.name = name;
-      AnimatedObject.init();
      
       // Player default attributes
       health = 100;
@@ -98,6 +87,9 @@ public class Player extends Mob implements EventListener {
       stamina = 100;
       staminaDec = 15;
       staminaInc = 3;
+      
+      if (FileHandler.fileExists(FileHandler.netUserDir + name + ".txt")) setStats(FileHandler.getStats());
+      AnimatedObject.init();
      
       Arrow a = new Arrow();
       avShots.add(a);
@@ -129,6 +121,8 @@ public class Player extends Mob implements EventListener {
       
       Stats s = new Stats();
       ui.addPanel(s);
+      
+      m.setLevel(Level.spawn);
      
       up = AnimatedObject.up;
       down = AnimatedObject.down;
@@ -150,12 +144,13 @@ public class Player extends Mob implements EventListener {
        return name;
    }
   
-   public static String getGroup(){
-     return "Clan";
+   public static Inventory getInvent(){
+     return invent;
    }
   
-   public static String getStats(){
-     return "";
+   public String getStats(){
+     String nl = "\n";
+     return health + nl + hunger + nl + thirst + nl + XPLevel + nl + XP + nl + StartScreen.state.toString() + nl;
    }
   
    public void inXP(int xp){
@@ -174,6 +169,16 @@ public class Player extends Mob implements EventListener {
   
    public int getXP(){
        return XP;
+   }
+ 
+   public void setStats(String stats){
+       String[] parts = stats.split("\n");
+       health = Integer.parseInt(parts[0]);
+       hunger = Integer.parseInt(parts[1]);
+       thirst = Integer.parseInt(parts[2]);
+       XPLevel = Integer.parseInt(parts[3]);
+       XP = Integer.parseInt(parts[4]);
+       StartScreen.state = StartScreen.playerViewState.valueOf(parts[5]);
    }
   
    public static int getLevel(){
@@ -222,7 +227,7 @@ public class Player extends Mob implements EventListener {
    private int timeOpen = 0;
    private int timeClosed = 0;
    public void updateInvent(){
-       if (input.invnt && !inventOpen && timeClosed >= 30){
+       if (input.invnt && !inventOpen && timeClosed >= 30 && !mapOpen){
           //open invent
           ui.addPanel(invent);
           Game.paused = true;
@@ -237,12 +242,30 @@ public class Player extends Mob implements EventListener {
       } else if (inventOpen) timeOpen++;
         else if (!inventOpen) timeClosed++;
    }
+   private int mapTimeClosed = 0;
+   public void updateMap(){
+     if (input.map && !mapOpen && mapTimeClosed >= 30 && !inventOpen){
+       //open map
+       ui.addPanel(m);
+       m.setLevel(level);
+       //Game.paused = true;
+       mapOpen = true;
+       mapTimeClosed = 0;
+     } else if (input.map && mapOpen && timeOpen >= 30){
+       //remove map
+       ui.removePanel(m);
+       //Game.paused = false;
+       mapOpen = false;
+       timeOpen = 0;
+     } else if (mapOpen) timeOpen ++;
+       else if (!mapOpen) mapTimeClosed ++;
+   }
   
    private void updateStats(int time){
-      if (hit && time % 30 == 0){
+      if (hit && time % 5 == 0){
         invin-= 0.5;
        if (invin <= 0){
-         invin = 3;
+         invin = 1;
          hit = false;
        }
       }
@@ -273,7 +296,6 @@ public class Player extends Mob implements EventListener {
 	public void update() {
       if (level != null) shots = level.getProjectiles();
       items = level.getItems();
-      //if (level != null) map.setLevel(level);
       
       sprite = animSprite.getSprite();
       time++;
@@ -459,5 +481,6 @@ public class Player extends Mob implements EventListener {
 
 	public void render(Screen screen) {
 		screen.renderMob((int)(x - 16), (int)(y - 16), sprite);
+      font.render(0,0,0xffaaaaaa,name + " Level " + XPLevel,screen);
 	}
 }

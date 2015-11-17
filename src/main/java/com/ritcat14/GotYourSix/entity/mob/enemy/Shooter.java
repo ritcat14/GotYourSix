@@ -1,4 +1,4 @@
-package com.ritcat14.GotYourSix.entity.mob;
+package com.ritcat14.GotYourSix.entity.mob.enemy;
 
 import com.ritcat14.GotYourSix.entity.Entity;
 import com.ritcat14.GotYourSix.graphics.AnimatedObject;

@@ -4,7 +4,6 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -30,15 +29,19 @@ import com.ritcat14.GotYourSix.input.Mouse;
 import com.ritcat14.GotYourSix.level.Level;
 import com.ritcat14.GotYourSix.level.TileCoordinate;
 import com.ritcat14.GotYourSix.util.Console;
+import com.ritcat14.GotYourSix.util.FileHandler;
+import com.ritcat14.GotYourSix.util.ImageUtil;
+import com.ritcat14.GotYourSix.util.Installer;
 
 public class Game extends Canvas implements Runnable, EventListener {
     private static final long serialVersionUID = 1L;
-    private static int        scale            = 5;
+    private static int        scale            = 3;
 
-    private static int        width            = Toolkit.getDefaultToolkit().getScreenSize().width / scale;
-    private static int        height           = Toolkit.getDefaultToolkit().getScreenSize().height / scale;
-    private static int        absoluteWidth    = width;
-    private static int        absoluteHeight   = height;
+    private static Dimension  imgDim           = new Dimension(ImageUtil.getImage("/ui/panels/background.png").getWidth(),
+                                                               ImageUtil.getImage("/ui/panels/background.png").getHeight()),
+  										boundary = new Dimension(900, 700), size = Game.getScaledDimension(imgDim, boundary);
+    private static int        width            = size.width / scale, height = size.height / scale,
+  										absoluteWidth = width, absoluteHeight = height;
 
     public static enum State {
         START,
@@ -48,28 +51,27 @@ public class Game extends Canvas implements Runnable, EventListener {
         PAUSE
     }
 
-    public static State      STATE      = State.START;
+    public static State      STATE          = State.START;
 
-    private Thread           thread = null;
-    private JFrame           frame = null;
-    private static Keyboard  key = null;
-    private static Level     level = null;
-    private static Player    player = null;
-    private boolean          running    = false;
+    private Thread           thread         = null;
+    private JFrame           frame          = null;
+    private static Keyboard  key            = null;
+    private static Level     level          = null;
+    private static Player    player         = null;
+    private boolean          running        = false;
 
-    private static UIManager uiManager = null;
-    private static UIManager minimapManager = null;
-    private StartScreen      sc = null;
+    private static UIManager uiManager      = null, minimapManager = null;
+    private StartScreen      sc             = null;
 
-    private Screen           screen = null;
-    private BufferedImage    image      = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-    private int[]            pixels     = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
+    private Screen           screen         = null;
+    private BufferedImage    image          = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    private int[]            pixels         = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
 
-    private List<Layer>      layerStack = new ArrayList<Layer>();
+    private List<Layer>      layerStack     = new ArrayList<Layer>();
 
-    private static Game      game = null;
-    public static boolean    loaded     = false;
-    public static boolean paused = false;
+    private static Game      game           = null;
+    public static boolean    loaded         = false, paused         = false;
+    private int time = 0;
 
     public Game() {
         Dimension size = new Dimension((width * scale), height * scale);
@@ -90,17 +92,73 @@ public class Game extends Canvas implements Runnable, EventListener {
         addMouseMotionListener(mouse);
     }
 
+    public static void startGame() {
+        game = new Game();
+        game.frame.setResizable(false);
+        game.frame.setUndecorated(true); //Enable for full screen
+        game.frame.add(game);
+        game.frame.pack();
+        game.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        WindowListener exitListener = new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                //save game
+                Game.paused = true;
+                int confirm =
+                              JOptionPane.showOptionDialog(null, "Are You Sure to Close Application?", "Exit Confirmation",
+                                                           JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                if (confirm == 0 && player != null) {
+                  int confirm2 =
+                              JOptionPane.showOptionDialog(null, "Save Progress?", "Save Confirmation",
+                                                           JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                    if (confirm2 == 0){
+                    FileHandler.save(player);
+                    System.exit(0);
+                    } else {
+                      System.exit(0);
+                    }
+                } else if (confirm == 0) {
+                  System.exit(0);
+                } else {
+                    Game.paused = false;
+                }
+            }
+        };
+        game.frame.addWindowListener(exitListener);
+        game.frame.setLocationRelativeTo(null);
+        game.frame.setVisible(true);
+        game.frame.requestFocus();
+        game.start();
+        new Console();
+    }
+  public static void infoBox(String infoMessage, String titleBar) {
+        JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.INFORMATION_MESSAGE);
+    }
+
     private void init(State state) {
         if (state == State.GAME) {
+            FileHandler.setupGame();
             level = Level.spawn;
             TileCoordinate playerSpawn = new TileCoordinate(15, 60);
-            player = new Player("Kris", playerSpawn.x(), playerSpawn.y(), key);
+            String playerName = "";
+            if (FileHandler.fileExists(FileHandler.localUserFile))
+                playerName = FileHandler.getPlayerName();
+            else
+                playerName = sc.getPlayerName();
+            player = new Player(playerName, playerSpawn.x(), playerSpawn.y(), key);
             changeLevel(Level.spawn);
+            FileHandler.save(player);
         } else if (state == State.START) {
             sc = new StartScreen();
             uiManager.addPanel(sc);
         }
         STATE = State.WAITING;
+    }
+
+    public JFrame getWindow() {
+        return frame;
     }
 
     public void changeLevel(Level lev) {
@@ -158,6 +216,36 @@ public class Game extends Canvas implements Runnable, EventListener {
         layerStack.add(layer);
     }
 
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public static Dimension getScaledDimension(Dimension imgSize, Dimension boundary) {
+        int originalWidth = imgSize.width;
+        int originalHeight = imgSize.height;
+        int boundWidth = boundary.width;
+        int boundHeight = boundary.height;
+        int newWidth = originalWidth;
+        int newHeight = originalHeight;
+
+        // first check if we need to scale width
+        if (originalWidth > boundWidth) {
+            //scale width to fit
+            newWidth = boundWidth;
+            //scale height to maintain aspect ratio
+            newHeight = (newWidth * originalHeight) / originalWidth;
+        }
+
+        // then check if we need to scale even with the new height
+        if (newHeight > boundHeight) {
+            //scale height to fit instead
+            newHeight = boundHeight;
+            //scale width to maintain aspect ratio
+            newWidth = (newHeight * originalWidth) / originalHeight;
+        }
+        return new Dimension(newWidth, newHeight);
+    }
+
     public synchronized void start() { //Starts the Thread running
         running = true;
         thread = new Thread(this, "Display"); //Initialises the Thread
@@ -210,6 +298,8 @@ public class Game extends Canvas implements Runnable, EventListener {
     }
 
     public void update() {
+        time ++;
+        if (time % 1800 == 0 && player != null) FileHandler.save(player);
         init(STATE);
         key.update();
         uiManager.update();
@@ -253,11 +343,19 @@ public class Game extends Canvas implements Runnable, EventListener {
         }
         g.setColor(new Color(0xff00ff));
         g.fillRect(0, 0, getWidth(), getHeight());
+        int newWidth = 0, newHeight = 0;
+        if (image.getWidth() / image.getHeight() < getAbsoluteWidth() / getAbsoluteHeight()) {
+            newWidth = getAbsoluteWidth();
+            newHeight = (int)Math.floor((double)image.getHeight() * (double)getAbsoluteWidth() / (double)image.getWidth());
+        } else {
+            newHeight = getAbsoluteHeight();
+            newWidth = (int)Math.floor((double)image.getWidth() * (double)getAbsoluteHeight() / (double)image.getHeight());
+        }
 
-        g.drawImage(image, 0, 0, getWindowWidth(), getWindowHeight(), null);
+        g.drawImage(image, 0, 0, newWidth, newHeight, null);
         //g.setColor(new Color(0, 0, 0, 150));
         //g.fillRect(0, 0, getWindowWidth(), getWindowHeight());
-        
+
 
         uiManager.render(g);
         g.dispose();
@@ -265,31 +363,10 @@ public class Game extends Canvas implements Runnable, EventListener {
     }
 
     public static void main(String[] args) {
-        new Console();
-        game = new Game();
-        game.frame.setResizable(false);
-        game.frame.setUndecorated(true); //Enable for full screen
-        game.frame.add(game);
-        game.frame.pack();
-        game.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
-        WindowListener exitListener = new WindowAdapter() {
-
-            @Override
-            public void windowClosing(WindowEvent e) {
-                //save game
-                int confirm =
-                              JOptionPane.showOptionDialog(null, "Are You Sure to Close Application?", "Exit Confirmation",
-                                                           JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-                if (confirm == 0) {
-                    System.exit(0);
-                }
-            }
-        };
-        game.frame.addWindowListener(exitListener);
-        game.frame.setLocationRelativeTo(null);
-        game.frame.setVisible(true);
-        game.frame.requestFocus();
-        game.start();
+        if (!Installer.installed) {
+            new Installer();
+        } else {
+            startGame();
+        }
     }
 }

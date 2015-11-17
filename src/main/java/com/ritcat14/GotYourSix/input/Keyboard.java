@@ -6,7 +6,9 @@ import java.awt.event.KeyListener;
 public class Keyboard implements KeyListener{
 	
 	private boolean[] keys = new boolean[1000];
-	public boolean up, down, left, right, sprint, sel1, sel2, sel3, sel4, sel5, sel6, invnt;
+	public boolean up = false, down = false, left = false, right = false, sprint = false,
+   	sel1 = false, sel2 = false, sel3 = false, sel4 = false, sel5 = false, sel6 = false,
+  		invnt = false, map = false;
 	
 	public void update(){
 		up = keys[KeyEvent.VK_UP] ||keys[KeyEvent.VK_W];
@@ -21,6 +23,7 @@ public class Keyboard implements KeyListener{
       sel5 = keys[KeyEvent.VK_5];
       sel6 = keys[KeyEvent.VK_6];
       invnt = keys[KeyEvent.VK_Q];
+      map = keys[KeyEvent.VK_M];
 	}
 
 	public void keyPressed(KeyEvent e) {

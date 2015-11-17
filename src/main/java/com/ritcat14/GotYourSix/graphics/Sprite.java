@@ -8,10 +8,10 @@ import com.ritcat14.GotYourSix.graphics.SpriteSheet;
 public class Sprite {
 
     public final int      SIZE;
-    private int           x, y;
-    private int           width, height;
-    public int[]          pixels;
-    protected SpriteSheet sheet;
+    private int           x = 0, y = 0;
+    private int           width = 0, height = 0;
+    public int[]          pixels = null;
+    protected SpriteSheet sheet = null;
 
     public static Sprite  voidSprite      = new Sprite(16, 6, 1, SpriteSheet.tiles);
 

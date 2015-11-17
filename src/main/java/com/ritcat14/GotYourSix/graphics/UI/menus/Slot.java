@@ -17,7 +17,7 @@ import com.ritcat14.GotYourSix.input.Mouse;
 
 public class Slot extends UIPanel {
   
-    private List<Item> items = new ArrayList<Item>();
+    private static List<Item> items = new ArrayList<Item>();
     private UILabel counter = null;
   
     public Slot(Vector2i position){
@@ -48,6 +48,10 @@ public class Slot extends UIPanel {
   
     public void remove(){
         items.remove(items.size()-1);
+    }
+  
+    public static List<Item> getItems(){
+      return items;
     }
   
     public void update(){

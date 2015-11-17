@@ -3,10 +3,10 @@ package com.ritcat14.GotYourSix.graphics;
 public class AnimatedObject extends Sprite {
 
     //walking animations
-    public static AnimatedObject up;
-    public static AnimatedObject down;
-    public static AnimatedObject left;
-    public static AnimatedObject right;
+    public static AnimatedObject up = null;
+    public static AnimatedObject down = null;
+    public static AnimatedObject left = null;
+    public static AnimatedObject right = null;
 
     private int                  frame                = 0;
     private Sprite               sprite;

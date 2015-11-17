@@ -1,8 +1,10 @@
-package com.ritcat14.GotYourSix.graphics;
+package com.ritcat14.GotYourSix.util;
 
 import com.ritcat14.GotYourSix.graphics.Screen;
+import com.ritcat14.GotYourSix.graphics.Sprite;
+import com.ritcat14.GotYourSix.graphics.SpriteSheet;
 
-public class Font {
+public class CustomFont {
 
     private static SpriteSheet font       = new SpriteSheet("/fonts/custom.png", 8);
     private static Sprite[]    characters = Sprite.split(font);
@@ -13,7 +15,7 @@ public class Font {
                                             "NOPQRSTUVWXYZ" + //
                                             "0123456789,.?!";
 
-    public Font() {
+    public CustomFont() {
 
     }
 

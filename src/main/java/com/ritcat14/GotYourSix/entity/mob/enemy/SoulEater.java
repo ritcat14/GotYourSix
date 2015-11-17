@@ -1,5 +1,6 @@
-package com.ritcat14.GotYourSix.entity.mob;
+package com.ritcat14.GotYourSix.entity.mob.enemy;
 
+import com.ritcat14.GotYourSix.entity.mob.Player;
 import com.ritcat14.GotYourSix.graphics.AnimatedObject;
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.SpriteSheet;
@@ -41,9 +42,6 @@ public class SoulEater extends Enemy {
 	}
 
 	public void update() {
-		if (!collision(xa, ya)){
-			move();
-		}
 		move();
 		if (walking) animSprite.update();
 		else

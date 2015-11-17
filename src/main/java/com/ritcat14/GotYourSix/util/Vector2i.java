@@ -2,7 +2,7 @@ package com.ritcat14.GotYourSix.util;
 
 public class Vector2i {
 
-    public int x, y;
+    public int x = 0, y = 0;
 
     public Vector2i() {
         set(0, 0);

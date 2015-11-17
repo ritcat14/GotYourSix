@@ -4,8 +4,8 @@ import com.ritcat14.GotYourSix.events.Event;
 
 public class MouseButtonEvent extends Event { 
 
-	protected int button;
-	protected int x, y;
+	protected int button = -1;
+	protected int x = 0, y = 0;
 	
 	protected MouseButtonEvent(int button, int x, int y, Type type) {
 		super(type);

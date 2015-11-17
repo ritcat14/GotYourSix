@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.ritcat14.GotYourSix.entity.Entity;
-import com.ritcat14.GotYourSix.entity.mob.Enemy;
+import com.ritcat14.GotYourSix.entity.mob.enemy.Enemy;
 import com.ritcat14.GotYourSix.entity.mob.Mob;
 import com.ritcat14.GotYourSix.entity.mob.Player;
 import com.ritcat14.GotYourSix.entity.spawner.ParticleSpawner;

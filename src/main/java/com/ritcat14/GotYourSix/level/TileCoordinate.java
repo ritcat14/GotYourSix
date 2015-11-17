@@ -2,7 +2,7 @@ package com.ritcat14.GotYourSix.level;
 
 public class TileCoordinate {
 	
-	private int x, y;
+	private int x = 0, y= 0;
 	private final int TILE_SIZE = 16;
 	
 	public TileCoordinate(int x, int y){

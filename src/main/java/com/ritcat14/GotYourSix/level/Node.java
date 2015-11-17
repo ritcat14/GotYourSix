@@ -4,9 +4,9 @@ import com.ritcat14.GotYourSix.util.Vector2i;
 
 public class Node {
 	
-	public Vector2i tile;
-	public Node parent;
-	public double fCost, gCost, hCost;
+	public Vector2i tile = null;
+	public Node parent = null;
+	public double fCost = 0.0, gCost = 0.0, hCost = 0.0;
 	
 	public Node(Vector2i tile, Node parent, double gCost, double hCost){
 		this.tile = tile;

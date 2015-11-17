@@ -15,7 +15,7 @@ public class Mouse implements MouseListener, MouseMotionListener{
 	private static int mouseX = -1, mouseY = -1, mouseB = -1;
    public static boolean left = false, right = false;
   
-   public EventListener eventListener;
+   public EventListener eventListener = null;
   
    public Mouse(EventListener listener) {
      this.eventListener = listener;

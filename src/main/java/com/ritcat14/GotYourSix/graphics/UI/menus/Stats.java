@@ -7,21 +7,22 @@ import com.ritcat14.GotYourSix.graphics.UI.UIPanel;
 import com.ritcat14.GotYourSix.graphics.UI.UIProgressBar;
 import com.ritcat14.GotYourSix.util.ImageUtil;
 import com.ritcat14.GotYourSix.util.Vector2i;
+import com.ritcat14.GotYourSix.level.Level;
 
 public class Stats extends UIPanel {
-  
+    
     private UIProgressBar health = null;
     private UIProgressBar food = null;
     private UIProgressBar stamina = null;
     private UIProgressBar water = null;
-  
+    
     public Stats(){
-      super(new Vector2i(20, (Game.getAbsoluteHeight() / 8) * 7), ImageUtil.getImage("/ui/panels/stats/stats.png"));
-      BufferedImage back = ImageUtil.getImage("/ui/bars/barBack.png");
-      health = new UIProgressBar(new Vector2i(30,8), back, ImageUtil.getImage("/ui/bars/healthFront.png"));
-      food = new UIProgressBar(new Vector2i(30,38), back, ImageUtil.getImage("/ui/bars/foodFront.png"));
-      water = new UIProgressBar(new Vector2i(30,68), back, ImageUtil.getImage("/ui/bars/waterFront.png"));
-      stamina = new UIProgressBar(new Vector2i(30,98), back, ImageUtil.getImage("/ui/bars/staminaFront.png"));
+      super(new Vector2i(20,(Game.getAbsoluteHeight() - (ImageUtil.getImage("/ui/panels/stats/stats.png").getHeight()/2))), new Vector2i(ImageUtil.getImage("/ui/panels/stats/stats.png").getWidth() / 2, ImageUtil.getImage("/ui/panels/stats/stats.png").getHeight() / 2), ImageUtil.getImage("/ui/panels/stats/stats.png"));
+      BufferedImage back = Level.resizeImage(ImageUtil.getImage("/ui/bars/barBack.png"), ImageUtil.getImage("/ui/bars/barBack.png").getWidth()/2, ImageUtil.getImage("/ui/bars/barBack.png").getHeight()/2);
+      health = new UIProgressBar(new Vector2i(15,4), back, Level.resizeImage(ImageUtil.getImage("/ui/bars/healthFront.png"), ImageUtil.getImage("/ui/bars/healthFront.png").getWidth()/2, ImageUtil.getImage("/ui/bars/healthFront.png").getHeight()/2));
+      food = new UIProgressBar(new Vector2i(15,19), back, Level.resizeImage(ImageUtil.getImage("/ui/bars/foodFront.png"), ImageUtil.getImage("/ui/bars/foodFront.png").getWidth()/2, ImageUtil.getImage("/ui/bars/foodFront.png").getHeight()/2));
+      water = new UIProgressBar(new Vector2i(15,34), back, Level.resizeImage(ImageUtil.getImage("/ui/bars/waterFront.png"), ImageUtil.getImage("/ui/bars/waterFront.png").getWidth()/2, ImageUtil.getImage("/ui/bars/waterFront.png").getHeight()/2));
+      stamina = new UIProgressBar(new Vector2i(15,49), back, Level.resizeImage(ImageUtil.getImage("/ui/bars/staminaFront.png"), ImageUtil.getImage("/ui/bars/staminaFront.png").getWidth()/2, ImageUtil.getImage("/ui/bars/staminaFront.png").getHeight()/2));
       addComponent(health);
       addComponent(food);
       addComponent(water);

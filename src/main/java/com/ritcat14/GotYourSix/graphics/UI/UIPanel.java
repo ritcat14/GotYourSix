@@ -11,8 +11,8 @@ import java.util.ArrayList;
 public class UIPanel extends UIComponent{
   
     private List<UIComponent> components = new ArrayList<UIComponent>();
-    private Vector2i size;
-    private BufferedImage image;
+    private Vector2i size = null;
+    private BufferedImage image = null;
     public boolean imageSet = false;
   
     public UIPanel(Vector2i position, Vector2i size){
@@ -64,6 +64,15 @@ public class UIPanel extends UIComponent{
             component.setOffset(position);
             component.update();
         }
+    }
+  
+    public BufferedImage getImage(){
+      if (image != null) return image;
+      return null;
+    }
+  
+    public void setSize(Vector2i size){
+      this.size = size;
     }
   
     public Rectangle getBounds(){

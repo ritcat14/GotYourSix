@@ -9,10 +9,10 @@ import java.awt.Graphics;
 
 public class UIComponent implements EventListener {
   
-    public Vector2i position, size;
-    protected Vector2i offset;
-    public Color colour;
-    protected UIPanel panel;
+    public Vector2i position = null, size = null;
+    protected Vector2i offset = null;
+    public Color colour = null;
+    protected UIPanel panel = null;
   
     public boolean active = true;
   
