@@ -15,7 +15,11 @@ import javax.swing.JFrame;
 
 public class Installer implements ActionListener {
   JFrame frame = null;
+<<<<<<< HEAD
   public static boolean installed = FileHandler.fileExists(FileHandler.startDir);
+=======
+  public static boolean installed = FileHandler.fileExists(FileHandler.localUserFile);
+>>>>>>> be10df84ef0068172709da65b942c285d33a0083
   private JButton install = null;
   public Installer(){
     
@@ -45,7 +49,11 @@ public void actionPerformed(ActionEvent arg0) {
     FileHandler.setupGame();
     this.install.setText(System.getenv("userprofile"));
   try {
+<<<<<<< HEAD
     createInternetShortcut("Got Your Six", FileHandler.netDir + "Current Version/GotYourSix-" + Game.getVersion(this) + ".jar");
+=======
+    createInternetShortcut("Got Your Six", FileHandler.netDir + "Current Version/GotYourSix-1.4.8.jar");
+>>>>>>> be10df84ef0068172709da65b942c285d33a0083
   } catch (IOException e){}
   this.install.setVisible(false);
   this.install.enable(false);

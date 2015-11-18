@@ -1,6 +1,5 @@
 package com.ritcat14.GotYourSix.util;
 
-import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.entity.mob.Player;
 
 import java.io.BufferedReader;
@@ -9,7 +8,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
