@@ -136,16 +136,12 @@ public class Game extends Canvas implements Runnable, EventListener {
   public static void infoBox(String infoMessage, String titleBar) {
         JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.INFORMATION_MESSAGE);
     }
-<<<<<<< HEAD
   
     public static String getVersion(Object classRes){
       return classRes.getClass().getPackage().getImplementationVersion();
     }
-=======
->>>>>>> be10df84ef0068172709da65b942c285d33a0083
 
     private void init(State state) {
-      System.out.println(getVersion(this));
         if (state == State.GAME) {
             FileHandler.setupGame();
             level = Level.spawn;
