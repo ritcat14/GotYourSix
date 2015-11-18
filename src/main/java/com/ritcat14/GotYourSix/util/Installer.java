@@ -15,11 +15,7 @@ import javax.swing.JFrame;
 
 public class Installer implements ActionListener {
   JFrame frame = null;
-<<<<<<< HEAD
   public static boolean installed = FileHandler.fileExists(FileHandler.startDir);
-=======
-  public static boolean installed = FileHandler.fileExists(FileHandler.localUserFile);
->>>>>>> be10df84ef0068172709da65b942c285d33a0083
   private JButton install = null;
   public Installer(){
     
