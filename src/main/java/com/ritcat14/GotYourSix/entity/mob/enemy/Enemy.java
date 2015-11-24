@@ -3,6 +3,7 @@ package com.ritcat14.GotYourSix.entity.mob.enemy;
 import java.util.List;
 import java.util.Random;
 
+import com.ritcat14.GotYourSix.graphics.AnimatedObject;
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.UI.menus.StartScreen;
 import com.ritcat14.GotYourSix.items.*;
@@ -13,14 +14,27 @@ import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.entity.Entity;
 import com.ritcat14.GotYourSix.entity.mob.Mob;
 import com.ritcat14.GotYourSix.entity.mob.Player;
+import com.ritcat14.GotYourSix.graphics.SpriteSheet;
 
 public abstract class Enemy extends Mob {
 
     public double     XPBonus    = 1;
     public int        time       = 0;
     private Entity    rand       = null;
-    protected boolean collidable = false;
+    protected boolean collidable = false; 
+    /* AnimSprite is used to change the players direction. While each of the directional animated objects
+    update, animSprite is used as a blank animatedObject to allow the sprite image of the animated object to be set depending on the enemies 
+    direction of movement.*/
+    protected AnimatedObject down       = null;
+    protected AnimatedObject up         = null;
+    protected AnimatedObject left       = null;
+    protected AnimatedObject right      = null;
+    protected String         sheet      = "";
 
+    // Animated Objects for each direction of the enemies movement.
+    protected AnimatedObject animSprite = null;
+    
+  
     public abstract void update();
 
     public abstract void render(Screen screen);
@@ -134,5 +148,13 @@ public abstract class Enemy extends Mob {
             double dir = Math.atan2(dy, dx);
             shoot(x, y, dir);
         }
+    }
+
+    public void initSheets() {
+        SpriteSheet mainSheet = new SpriteSheet(sheet, 96, 128);
+        down = new AnimatedObject(new SpriteSheet(mainSheet, 0, 0, 3, 1, 32), 32, 32, 3);
+        up = new AnimatedObject(new SpriteSheet(mainSheet, 0, 3, 3, 1, 32), 32, 32, 3);
+        left = new AnimatedObject(new SpriteSheet(mainSheet, 0, 1, 3, 1, 32), 32, 32, 3);
+        right = new AnimatedObject(new SpriteSheet(mainSheet, 0, 2, 3, 1, 32), 32, 32, 3);
     }
 }

@@ -10,20 +10,15 @@ import com.ritcat14.GotYourSix.entity.mob.Mob;
 import com.ritcat14.GotYourSix.util.Debug;
 import java.util.List;
 
-public class Shooter extends Enemy {
-    private AnimatedObject down       = new AnimatedObject(SpriteSheet.dummy_down, 32, 32, 3);
-    private AnimatedObject up         = new AnimatedObject(SpriteSheet.dummy_up, 32, 32, 3);
-    private AnimatedObject left       = new AnimatedObject(SpriteSheet.dummy_left, 32, 32, 3);
-    private AnimatedObject right      = new AnimatedObject(SpriteSheet.dummy_right, 32, 32, 3);
-
-    private AnimatedObject animSprite = down;
-  
+public class Shooter extends Enemy {  
     int                    xa         = 0, ya = 0;
 
     public Shooter(int x, int y) {
         this.x = x << 4;
         this.y = y << 4;
-        sprite = down.getSprite();
+        initSheets();
+        animSprite = down;
+        sprite = animSprite.getSprite();
         health = 10;
         XPBonus = health;
         collidable = true;

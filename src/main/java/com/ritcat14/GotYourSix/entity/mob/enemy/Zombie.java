@@ -14,13 +14,6 @@ public class Zombie extends Enemy {
 
     private int            time       = 0;
     private double         speed      = 0.2;
-    private AnimatedObject down       = null;
-    private AnimatedObject up         = null;
-    private AnimatedObject left       = null;
-    private AnimatedObject right      = null;
-    private String         sheet      = "";
-
-    private AnimatedObject animSprite = null;
 
     double                 xa         = 0, ya = 0;
 
@@ -86,14 +79,6 @@ public class Zombie extends Enemy {
             animSprite = right;
             dir = Direction.RIGHT;
         }
-    }
-
-    private void initSheets() {
-        SpriteSheet zombie = new SpriteSheet(sheet, 96, 128);
-        down = new AnimatedObject(new SpriteSheet(zombie, 0, 0, 3, 1, 32), 32, 32, 3);
-        up = new AnimatedObject(new SpriteSheet(zombie, 0, 3, 3, 1, 32), 32, 32, 3);
-        left = new AnimatedObject(new SpriteSheet(zombie, 0, 1, 3, 1, 32), 32, 32, 3);
-        right = new AnimatedObject(new SpriteSheet(zombie, 0, 2, 3, 1, 32), 32, 32, 3);
     }
 
     public void render(Screen screen) {

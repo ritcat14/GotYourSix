@@ -22,6 +22,7 @@ import com.ritcat14.GotYourSix.events.EventListener;
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.UI.UIManager;
 import com.ritcat14.GotYourSix.graphics.UI.UIPanel;
+import com.ritcat14.GotYourSix.graphics.UI.menus.Pause;
 import com.ritcat14.GotYourSix.graphics.UI.menus.StartScreen;
 import com.ritcat14.GotYourSix.graphics.layers.Layer;
 import com.ritcat14.GotYourSix.input.Keyboard;
@@ -46,7 +47,6 @@ public class Game extends Canvas implements Runnable, EventListener {
     public static enum State {
         START,
         GAME,
-        MAINTENANCE,
         WAITING,
         PAUSE
     }
@@ -62,6 +62,7 @@ public class Game extends Canvas implements Runnable, EventListener {
 
     private static UIManager uiManager      = null, minimapManager = null;
     private StartScreen      sc             = null;
+    private Pause pause = null;
 
     private Screen           screen         = null;
     private BufferedImage    image          = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -70,7 +71,7 @@ public class Game extends Canvas implements Runnable, EventListener {
     private List<Layer>      layerStack     = new ArrayList<Layer>();
 
     private static Game      game           = null;
-    public static boolean    loaded         = false, paused         = false;
+    public static boolean    loaded         = false, paused         = false, initPause = false;;
     private int time = 0;
 
     public Game() {
@@ -101,11 +102,11 @@ public class Game extends Canvas implements Runnable, EventListener {
         game.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         WindowListener exitListener = new WindowAdapter() {
-
             @Override
             public void windowClosing(WindowEvent e) {
                 //save game
-                Game.paused = true;
+                State preState = STATE;
+                if (player != null) STATE = State.PAUSE;
                 int confirm =
                               JOptionPane.showOptionDialog(null, "Are You Sure to Close Application?", "Exit Confirmation",
                                                            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
@@ -122,7 +123,8 @@ public class Game extends Canvas implements Runnable, EventListener {
                 } else if (confirm == 0) {
                   System.exit(0);
                 } else {
-                    Game.paused = false;
+                    STATE = preState;
+                    paused = false;
                 }
             }
         };
@@ -132,6 +134,7 @@ public class Game extends Canvas implements Runnable, EventListener {
         game.frame.requestFocus();
         game.start();
         new Console();
+        game.frame.requestFocus();
     }
   public static void infoBox(String infoMessage, String titleBar) {
         JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.INFORMATION_MESSAGE);
@@ -143,7 +146,6 @@ public class Game extends Canvas implements Runnable, EventListener {
 
     private void init(State state) {
         if (state == State.GAME) {
-            FileHandler.setupGame();
             level = Level.spawn;
             TileCoordinate playerSpawn = new TileCoordinate(15, 60);
             String playerName = "";
@@ -154,9 +156,15 @@ public class Game extends Canvas implements Runnable, EventListener {
             player = new Player(playerName, playerSpawn.x(), playerSpawn.y(), key);
             changeLevel(Level.spawn);
             FileHandler.save(player);
+            initPause = false;
         } else if (state == State.START) {
             sc = new StartScreen();
             uiManager.addPanel(sc);
+        } else if (state == State.PAUSE){
+            pause = new Pause();
+            uiManager.addPanel(pause);
+            initPause = true;
+            paused = true;
         }
         STATE = State.WAITING;
     }
@@ -303,6 +311,8 @@ public class Game extends Canvas implements Runnable, EventListener {
 
     public void update() {
         time ++;
+        if (key.paused && !initPause) STATE = State.PAUSE;
+        else if (key.paused && initPause) STATE = State.GAME;
         if (time % 1800 == 0 && player != null) FileHandler.save(player);
         init(STATE);
         key.update();

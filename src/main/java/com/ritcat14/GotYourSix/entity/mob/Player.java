@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Random;
 import java.awt.event.MouseEvent;
-import java.lang.*;
 
 import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.entity.mob.enemy.Enemy;

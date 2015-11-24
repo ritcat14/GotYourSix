@@ -8,7 +8,7 @@ public class Keyboard implements KeyListener{
 	private boolean[] keys = new boolean[1000];
 	public boolean up = false, down = false, left = false, right = false, sprint = false,
    	sel1 = false, sel2 = false, sel3 = false, sel4 = false, sel5 = false, sel6 = false,
-  		invnt = false, map = false;
+  		invnt = false, map = false, paused = false;
 	
 	public void update(){
 		up = keys[KeyEvent.VK_UP] ||keys[KeyEvent.VK_W];
@@ -24,6 +24,7 @@ public class Keyboard implements KeyListener{
       sel6 = keys[KeyEvent.VK_6];
       invnt = keys[KeyEvent.VK_Q];
       map = keys[KeyEvent.VK_M];
+      paused = keys[KeyEvent.VK_ESCAPE];
 	}
 
 	public void keyPressed(KeyEvent e) {

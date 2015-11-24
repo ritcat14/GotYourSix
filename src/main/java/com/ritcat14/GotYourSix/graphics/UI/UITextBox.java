@@ -3,14 +3,8 @@ import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.input.Mouse;
 import com.ritcat14.GotYourSix.util.Vector2i;
 
-import java.awt.Cursor;
-import java.awt.Graphics;
-import java.awt.Color;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
+import java.awt.*;
+import java.awt.event.*;
 
 public class UITextBox extends UILabel implements KeyListener {
 
@@ -104,8 +98,13 @@ public class UITextBox extends UILabel implements KeyListener {
             if (keys[KeyEvent.VK_BACK_SPACE]) {
                 if (text.length() > 0)
                     text = text.substring(0, text.length() - 1); //removes a character if you press backspace
+                    if (pass) storedText = storedText.substring(0, storedText.length() - 1);
                 keyString = "";
-            } else if (keys[KeyEvent.VK_SPACE] || keys[KeyEvent.VK_SHIFT]) keyString = "";
+            } else if (keys[KeyEvent.VK_SPACE]) keyString = " ";
+              AWTKeyStroke ak = AWTKeyStroke.getAWTKeyStrokeForEvent(e);
+                   if(ak.equals(AWTKeyStroke.getAWTKeyStroke(KeyEvent.KEY_PRESSED,InputEvent.SHIFT_MASK))) {
+                       keyString = keyString.toUpperCase();
+                   }
           text = text + keyString; //sets the labels text value equal to the string it was before plus the string/character you've typed.
         }
     }

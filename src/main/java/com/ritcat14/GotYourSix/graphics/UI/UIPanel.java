@@ -84,7 +84,6 @@ public class UIPanel extends UIComponent{
           if (size != null) {
               g.drawImage(image, position.x, position.y, size.x, size.y, null);
           } else {
-              System.out.println("Creating size");
               this.size = new Vector2i(image.getWidth(), image.getHeight());
               g.drawImage(image, position.x, position.y, size.x, size.y, null);
           }

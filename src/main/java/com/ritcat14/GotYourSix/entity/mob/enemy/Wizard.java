@@ -17,12 +17,6 @@ public class Wizard extends Enemy {
 
     private int            time       = 0;
     private double         speed      = 0.8;
-    private AnimatedObject down       = new AnimatedObject(SpriteSheet.wizard_down, 32, 32, 3);
-    private AnimatedObject up         = new AnimatedObject(SpriteSheet.wizard_up, 32, 32, 3);
-    private AnimatedObject left       = new AnimatedObject(SpriteSheet.wizard_left, 32, 32, 3);
-    private AnimatedObject right      = new AnimatedObject(SpriteSheet.wizard_right, 32, 32, 3);
-
-    private AnimatedObject animSprite = down;
 
     double                 xa         = 0, ya = 0;
     private List<Node>     path       = null;
@@ -30,6 +24,8 @@ public class Wizard extends Enemy {
     public Wizard(int x, int y) {
         this.x = x << 4;
         this.y = y << 4;
+        initSheets();
+        animSprite = down;
         sprite = animSprite.getSprite();
         health = 20;
         XPBonus = health;

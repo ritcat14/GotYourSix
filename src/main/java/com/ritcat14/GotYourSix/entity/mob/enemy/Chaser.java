@@ -12,21 +12,14 @@ import com.ritcat14.GotYourSix.level.tile.Tile;
 public class Chaser extends Enemy { // Extends enemy class
 
     private int            time       = 0; // Used to check how much time has passed. If (time % 60 == ) -> one second has passed
-    // Animated Objects for each direction of the enemies movement.
-    private AnimatedObject down       = new AnimatedObject(SpriteSheet.soul_down, 32, 32, 3);
-    private AnimatedObject up         = new AnimatedObject(SpriteSheet.soul_up, 16, 32, 3);
-    private AnimatedObject left       = new AnimatedObject(SpriteSheet.soul_left, 32, 32, 3);
-    private AnimatedObject right      = new AnimatedObject(SpriteSheet.soul_right, 32, 32, 3);
-
-    private AnimatedObject animSprite = down; /* AnimSprite is used to change the players direction. While each of the directional animated objects
-    update, animSprite is used as a blank animatedObject to allow the sprite image of the animated object to be set depending on the enemies 
-    direction of movement.*/
 
     int                    xa         = 0, ya = 0; // X and Y values to ba added to the X and Y coordinate of the sprites location
 
     public Chaser(int x, int y) { // Require a coordinate to spawn at when the sprite is created
         this.x = x << 4; // mulitplies the value of X by 4^2 (4x4) by shifting the bits to the left 4 spaces.
         this.y = y << 4;
+        initSheets();
+        animSprite = down;
         sprite = animSprite.getSprite(); // Sets the sprite of the enemy to the current directions sprite
         health = 10; // Sets the health value to 10
         XPBonus = health; // Sets the XP bonus that the player recieves when the enemy dies to the value of the enemies health
