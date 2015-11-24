@@ -3,10 +3,9 @@ package com.ritcat14.GotYourSix.graphics.UI.menus;
 import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.graphics.UI.*;
 import com.ritcat14.GotYourSix.graphics.SpriteSheet;
-import com.ritcat14.GotYourSix.util.Vector2i;
-import com.ritcat14.GotYourSix.util.ImageUtil;
-import com.ritcat14.GotYourSix.util.FileHandler;
+import com.ritcat14.GotYourSix.util.*;
 import com.ritcat14.GotYourSix.entity.mob.Player;
+import com.ritcat14.GotYourSix.input.Mouse;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -107,7 +106,9 @@ public class StartScreen extends UIPanel implements KeyListener{
     private UITextBox nameBox = new UITextBox(new Vector2i((Game.getAbsoluteWidth() / 12) + 115, ((Game.getAbsoluteHeight() / 2) - 180) + 406), "NAME: ");
     private UITextBox groupNameBox = new UITextBox(new Vector2i((Game.getAbsoluteWidth() / 2) + 200, ((Game.getAbsoluteHeight() / 2) - 150)), "GROUP: ");
     private UITextBox groupPassBox = new UITextBox(new Vector2i((Game.getAbsoluteWidth() / 2) + 200, ((Game.getAbsoluteHeight() / 2) - 80)), "PASS: ", "*");
-    
+    private MessageBox mb = null;
+    private boolean messageBoxAdded = false;
+  
     public StartScreen() {
         super(new Vector2i(0, 0), new Vector2i(Game.getAbsoluteWidth(), Game.getAbsoluteHeight()), ImageUtil.getImage("/ui/panels/background.png"));
         BufferedImage image = ImageUtil.getImage("/ui/panels/background.png");
@@ -164,7 +165,10 @@ public class StartScreen extends UIPanel implements KeyListener{
         if (keys[KeyEvent.VK_ENTER]){
           if (!menuActive && opState == optionState.START) {
               activateMenu = true;
-              if (FileHandler.fileExists(FileHandler.localUserFile)) nameBox.setText(FileHandler.getPlayerName());
+              if (FileHandler.fileExists(FileHandler.localUserFile)){
+                nameBox.setText(FileHandler.getPlayerName());
+                
+              }
               removeComponent(options);
           }
         } else if (keys[KeyEvent.VK_LEFT]) {
@@ -182,7 +186,7 @@ public class StartScreen extends UIPanel implements KeyListener{
 
     public void keyTyped(KeyEvent e) {}
   
-    public void update(){
+    public void update(){      
         if (Game.getGame() != null && !keyAdded){
           Game.getGame().addKeyListener(this);
           keyAdded = true;
@@ -199,6 +203,21 @@ public class StartScreen extends UIPanel implements KeyListener{
               activateMenu = false;
           } else if (menuActive){
               //update menu
+              for (UIComponent comp : menuItems) {
+                  if (comp.hoverable() && comp.equals(character)) {
+                        if (comp.isHovered() && !messageBoxAdded){
+                          if (state == playerViewState.MF) mb = new MessageBox(new Vector2i(0, 0), "MF");
+                          else if (state == playerViewState.FF) mb = new MessageBox(new Vector2i(0, 0), "FF");
+                          else if (state == playerViewState.MI) mb = new MessageBox(new Vector2i(0, 0), "MI");
+                          else if (state == playerViewState.FI) mb = new MessageBox(new Vector2i(0, 0), "FI");
+                          addComponent(mb);
+                          messageBoxAdded = true;
+                        } else if (!comp.isHovered() && messageBoxAdded){
+                          removeComponent(mb);
+                          messageBoxAdded = false;
+                        }
+                  }
+              }
               String charName = state.toString();
               character.setBackgroundImage(ImageUtil.getImage("/ui/panels/characters/" + charName + ".png"));
           }

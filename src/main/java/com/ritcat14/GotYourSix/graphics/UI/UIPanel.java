@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class UIPanel extends UIComponent{
   
-    private List<UIComponent> components = new ArrayList<UIComponent>();
+    public List<UIComponent> components = new ArrayList<UIComponent>();
     private Vector2i size = null;
     private BufferedImage image = null;
     public boolean imageSet = false;
@@ -57,6 +57,10 @@ public class UIPanel extends UIComponent{
   
     public UIComponent getComponent(int index){
         return components.get(index);
+    }
+  
+    public List<UIComponent> getComponents(){
+        return components;
     }
   
     public void update() {
