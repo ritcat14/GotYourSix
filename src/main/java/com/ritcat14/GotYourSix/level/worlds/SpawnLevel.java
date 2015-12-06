@@ -5,14 +5,13 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import com.ritcat14.GotYourSix.entity.spawner.EnemySpawner;
 import com.ritcat14.GotYourSix.level.Level;
 import com.ritcat14.GotYourSix.util.Vector2i;
 
 public class SpawnLevel extends Level {
 	
 	public SpawnLevel(String path) {
-		super(path);
+		super(path, false);
 	}
 	
 	protected void loadLevel(String path){
@@ -31,13 +30,11 @@ public class SpawnLevel extends Level {
   
      public void setPlayerLocation(){
       for (int i = 0; i < getPlayers().size(); i ++){
-          getPlayers().get(i).setLocation(new Vector2i(5 * 16, 70 * 16));
+          getPlayers().get(i).setLocation(new Vector2i(4 * 16, 6 * 16));
       }
    }
 	
   protected void generateLevel(){
     //no enemies!
-    EnemySpawner es = new EnemySpawner(10, 15, 100, 5, this, "Zombie");
-    add(es);
   }
 }

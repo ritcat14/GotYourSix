@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-public class StartScreen extends UIPanel implements KeyListener{
+public class StartScreen extends UIPanel implements KeyListener {
   
     private boolean menuActive = false, activateMenu = false, keyAdded = false;
     private boolean[] keys      = new boolean[1000];
@@ -201,6 +201,9 @@ public class StartScreen extends UIPanel implements KeyListener{
               SpriteSheet.init();
               menuActive = true;
               activateMenu = false;
+              Game.getConsole().clearTextArea();
+              System.out.println("About: ");
+              System.out.println("Please fill out name and group. If you'd like to create a group, enter a name and password, or enter an existing one to join a group. Use the arrow buttons to select a character");
           } else if (menuActive){
               //update menu
               for (UIComponent comp : menuItems) {

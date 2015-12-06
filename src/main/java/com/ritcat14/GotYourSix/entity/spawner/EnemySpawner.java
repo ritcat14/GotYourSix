@@ -23,18 +23,52 @@ public class EnemySpawner extends Spawner {
         super(x, y, Type.MOB, amount, level);
         this.life = life;
         remove();
+        String type = "";
         for (int i = 0; i < amount; i++) {
-            int xx = ran.nextInt(10) - 5;
-            int yy = ran.nextInt(10) - 5;
+            int xx = ran.nextInt(8) - 4;
+            int yy = ran.nextInt(8) - 4;
             if (enemy == "Zombie") {
                 int j = ran.nextInt(3);
-                String type = "";
                 if (j == 0) type = "baby";
                 else if (j == 1) type = "blue";
                 else if (j == 2) type = "female";
                 level.add(new Zombie(x + xx, y + yy, "/textures/sheets/mob/enemy/zombie/"+ type + enemy + ".png"));
+            } else if (enemy == "Goblin"){
+                int j = ran.nextInt(4);
+                switch (j){
+                  case 0: type = "hooded";
+                  break;
+                  case 1: type = "knight";
+                  break;
+                  case 2: type = "minion";
+                  break;
+                  case 3: type = "naked";
+                  break;
+                }
+                level.add(new Zombie(x + xx, y + yy, "/textures/sheets/mob/enemy/goblin/"+ type + enemy + ".png"));
+            } else if (enemy == "Mummy"){
+                int j = ran.nextInt(2);
+                switch (j){
+                  case 0: type = "blind";
+                  break;
+                  case 1: type = "eye";
+                  break;
+                }
+                level.add(new Zombie(x + xx, y + yy, "/textures/sheets/mob/enemy/mummy/"+ type + enemy + ".png"));
+          } else if (enemy == "Person"){
+                int j = ran.nextInt(4);
+                switch (j){
+                  case 0: type = "cat";
+                  break;
+                  case 1: type = "emo";
+                  break;
+                  case 2: type = "knight";
+                  break;
+                  case 3: type = "viking";
+                  break;
+                }
+                level.add(new Zombie(x + xx, y + yy, "/textures/sheets/mob/enemy/goblin/"+ type + enemy + ".png"));
             }
-        }
+      }
     }
-
 }

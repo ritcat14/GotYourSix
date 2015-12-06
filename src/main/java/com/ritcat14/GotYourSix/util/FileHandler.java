@@ -64,9 +64,7 @@ public class FileHandler {
                 break;
               }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) {}
         return exists;
     }
   
@@ -82,24 +80,16 @@ public class FileHandler {
                 break;
               }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) {}
         return correct;
     }
 
     private static void createTree(String dir) {
         File theDir = new File(dir);
         if (!theDir.exists()) {
-            System.out.println("creating directory: " + theDir.getPath());
-            boolean result = false;
             try {
                 theDir.mkdirs();
-                result = true;
             } catch (SecurityException se) {}
-            if (result) {
-                System.out.println("DIR created");
-            }
         }
     }
   
@@ -111,9 +101,7 @@ public class FileHandler {
     public static String getStats(){
         try {
             return readFile(netUserDir + getPlayerName() + ".txt", StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) {}
         return "";
     }
   
@@ -125,14 +113,8 @@ public class FileHandler {
         try {
             name = reader.readLine();
             reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    } catch (UnsupportedEncodingException e) {
-        e.printStackTrace();
-    } catch (FileNotFoundException e) {
-        e.printStackTrace();
-    }
+        } catch (IOException e) {}
+    } catch (UnsupportedEncodingException e) {} catch (FileNotFoundException e) {}
       return name;
     }
   
@@ -145,7 +127,6 @@ public class FileHandler {
     }
 
     public static void save(Player p) {
-        System.out.println("Saving...");
         //1. Save users name locally
         try {
             PrintWriter pw = new PrintWriter(localUserFile); // Recreate the file
@@ -160,6 +141,5 @@ public class FileHandler {
           pw.write(p.getStats());
           pw.close();
         } catch (IOException ex) {}
-        System.out.println("Saved");
       }
     }

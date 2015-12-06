@@ -1,6 +1,7 @@
 package com.ritcat14.GotYourSix.entity.mob.enemy;
 
 import java.util.List;
+import java.util.Random;
 
 /*This class follows the A* search algorithm, 
  making it able to track the player across the map*/
@@ -16,7 +17,7 @@ import com.ritcat14.GotYourSix.Game;
 public class Wizard extends Enemy {
 
     private int            time       = 0;
-    private double         speed      = 0.8;
+    protected double         speed      = 0.8;
 
     double                 xa         = 0, ya = 0;
     private List<Node>     path       = null;
@@ -28,7 +29,8 @@ public class Wizard extends Enemy {
         animSprite = down;
         sprite = animSprite.getSprite();
         health = 20;
-        XPBonus = health;
+        Random r = new Random();
+        speed = 0 + (0.8 - 0) * r.nextDouble();
         collidable = true;
     }
 

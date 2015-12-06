@@ -22,7 +22,6 @@ public class Chaser extends Enemy { // Extends enemy class
         animSprite = down;
         sprite = animSprite.getSprite(); // Sets the sprite of the enemy to the current directions sprite
         health = 10; // Sets the health value to 10
-        XPBonus = health; // Sets the XP bonus that the player recieves when the enemy dies to the value of the enemies health
         collidable = true; // Tells the collision detection that the enemy is collibale so that it does damage to the plaer on collision
     }
 

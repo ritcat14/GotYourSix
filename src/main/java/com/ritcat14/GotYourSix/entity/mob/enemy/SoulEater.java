@@ -17,7 +17,6 @@ public class SoulEater extends Enemy {
         animSprite = down;
         sprite = animSprite.getSprite();
         health = 15;
-        XPBonus = health;
         collidable = false;
     }
 

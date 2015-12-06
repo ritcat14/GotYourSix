@@ -1,33 +1,25 @@
 package com.ritcat14.GotYourSix.entity.mob.enemy;
 
 import java.util.List;
-import java.util.Random;
 
 import com.ritcat14.GotYourSix.entity.mob.Player;
-import com.ritcat14.GotYourSix.graphics.AnimatedObject;
 import com.ritcat14.GotYourSix.graphics.Screen;
-import com.ritcat14.GotYourSix.graphics.Sprite;
-import com.ritcat14.GotYourSix.graphics.SpriteSheet;
-import com.ritcat14.GotYourSix.level.tile.Tile;
-import com.ritcat14.GotYourSix.util.Debug;
 
-public class Zombie extends Enemy {
+public class Boss extends Enemy {
 
     private int            time       = 0;
-    protected double         speed      = 0.2;
+    private double         speed      = 0.2;
 
     double                 xa         = 0, ya = 0;
 
-    public Zombie(int x, int y, String sheet) {
+    public Boss(int x, int y, int health, String sheet) {
         this.sheet = sheet;
         this.x = x << 4;
         this.y = y << 4;
+        this.health = health;
         initSheets();
         animSprite = down;
         sprite = animSprite.getSprite();
-        health = 30;
-        Random r = new Random();
-        speed = 0 + (1.5 - 0) * r.nextDouble();
         collidable = true;
     }
 
@@ -55,14 +47,14 @@ public class Zombie extends Enemy {
                 walking = true;
             } else
                 walking = false;
-        } /*else {
+        } else {
             if (xa > 0) xa = -xa;
             else if (xa < 0) xa *= -1;
             if (ya > 0) ya = -ya;
             else if (ya < 0) ya *= -1;
             ya *= -1;
             move(xa, ya);
-        }*/
+        }
         if (walking)
             animSprite.update();
         else
@@ -86,7 +78,5 @@ public class Zombie extends Enemy {
     public void render(Screen screen) {
         sprite = animSprite.getSprite();
         screen.renderMob((int)(x - 16), (int)(y - 16), this);
-        //Debug.drawRect(screen, ((int)x) - 16, (int)y, 32, 16, true);
     }
-
 }

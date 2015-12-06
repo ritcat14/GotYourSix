@@ -20,7 +20,6 @@ public class Shooter extends Enemy {
         animSprite = down;
         sprite = animSprite.getSprite();
         health = 10;
-        XPBonus = health;
         collidable = true;
     }
 

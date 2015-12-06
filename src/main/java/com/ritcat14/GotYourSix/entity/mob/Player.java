@@ -28,7 +28,7 @@ public class Player extends Mob implements EventListener {
    public static Level levelToGo = null;
    public static int XPLevel = 1;
   
-   public int XP = 0, hunger = 0, thirst = 0, fireRate = 0, stamina = 100;
+   public int hunger = 0, thirst = 0, fireRate = 0, stamina = 100;
   
   
    private static boolean madeItem = false;
@@ -64,7 +64,6 @@ public class Player extends Mob implements EventListener {
      
       // Player default attributes
       health = 100;
-      XP = 0;
       hunger = 0;
       thirst = 0;
       stamina = 100;
@@ -80,7 +79,6 @@ public class Player extends Mob implements EventListener {
      
       // Player default attributes
       health = 100;
-      XP = 0;
       hunger = 0;
       thirst = 0;
       stamina = 100;
@@ -149,25 +147,12 @@ public class Player extends Mob implements EventListener {
   
    public String getStats(){
      String nl = "\n";
-     return health + nl + hunger + nl + thirst + nl + XPLevel + nl + XP + nl + StartScreen.state.toString() + nl;
+     return health + nl + hunger + nl + thirst + nl + XPLevel + nl + StartScreen.state.toString() + nl;
    }
   
-   public void inXP(int xp){
-       XP += xp;
-       if (XP >= 100){
-           levelIn();
-           XP = 0;
-           health = 100;
-       }
-   }
-  
-   private void levelIn(){
+   public void levelIn(){
        XPLevel ++;
        checkWep();
-   }
-  
-   public int getXP(){
-       return XP;
    }
  
    public void setStats(String stats){
@@ -176,8 +161,7 @@ public class Player extends Mob implements EventListener {
        hunger = Integer.parseInt(parts[1]);
        thirst = Integer.parseInt(parts[2]);
        XPLevel = Integer.parseInt(parts[3]);
-       XP = Integer.parseInt(parts[4]);
-       StartScreen.state = StartScreen.playerViewState.valueOf(parts[5]);
+       StartScreen.state = StartScreen.playerViewState.valueOf(parts[4]);
    }
   
    public static int getLevel(){
@@ -198,6 +182,10 @@ public class Player extends Mob implements EventListener {
   
    public int getThirst(){
      return thirst;
+   }
+  
+   public void setSpeed(double spd){
+       speed = spd;
    }
   
    public void setLocation(Vector2i p){
@@ -268,7 +256,7 @@ public class Player extends Mob implements EventListener {
          hit = false;
        }
       }
-      if (time % 180 == 0 && thirst < 100) thirst += 2;
+      /*if (time % 180 == 0 && thirst < 100) thirst += 2;
       if (time % 180 == 0 && hunger < 100) hunger += 1;
       if (time % 180 == 0 && thirst>= 100){
         loseHealth(4);
@@ -278,13 +266,13 @@ public class Player extends Mob implements EventListener {
         dying = true;
       } else {
         dying = false;
-      }
+      }*/
       if (time % 60 == 0 && health < 100 && !hit && !dying) health ++;
      
       w.update();
       
       if (input.sprint && time % 100 == 0 && stamina > staminaDec && walking) stamina -= staminaDec;
-      else if (input.sprint && stamina > staminaDec && walking) speed = 2.5;
+      else if (input.sprint && stamina > staminaDec && walking && speed >= 1.5) speed = 2.5;
       else speed = 1.5;
       
       if (stamina < 100 && !input.sprint && time % 60 == 0) stamina += staminaInc;
@@ -330,6 +318,10 @@ public class Player extends Mob implements EventListener {
 		}else{
 			walking = false;
 		}
+      if (input.home && !level.equals(Level.spawn)){
+        Level.initLevels();
+        Game.getGame().changeLevel(Level.spawn);
+      }
 		clear();
       updateShooting();
       enemyCollision();
@@ -453,8 +445,11 @@ public class Player extends Mob implements EventListener {
    }
   
    public void loseHealth(int damage){
-        health -= damage;
-        if (health <= 0){
+     if (!hit){
+       health -= damage;
+       hit = true;
+     }
+        if (health <= 1){
             Game.STATE = Game.State.PAUSE;
             health = 1;
         }
@@ -463,7 +458,6 @@ public class Player extends Mob implements EventListener {
    public static Weapons getWepInvent(){
        return w;
    }
-  
   
    private void itemCollision(){
        for (int i = 0; i < items.size(); i++){

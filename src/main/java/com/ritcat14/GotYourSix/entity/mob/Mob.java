@@ -6,12 +6,14 @@ import java.util.List;
 import java.awt.Rectangle;
 
 import com.ritcat14.GotYourSix.entity.Entity;
-import com.ritcat14.GotYourSix.entity.mob.enemy.Enemy;
-import com.ritcat14.GotYourSix.entity.mob.enemy.Wizard;
+import com.ritcat14.GotYourSix.entity.mob.enemy.*;
 import com.ritcat14.GotYourSix.entity.projectile.*;
 import com.ritcat14.GotYourSix.graphics.Screen;
+import com.ritcat14.GotYourSix.level.worlds.LavaLevel;
 import com.ritcat14.GotYourSix.level.tile.SpawnEdgeTile;
+import com.ritcat14.GotYourSix.level.tile.SpawnLavaTile;
 import com.ritcat14.GotYourSix.level.tile.SpawnWaterTile;
+import com.ritcat14.GotYourSix.level.tile.Tile;
 
 public abstract class Mob extends Entity {
 
@@ -90,31 +92,31 @@ public abstract class Mob extends Entity {
             if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof Arrow) {
 					p = new Arrow(x, y, dir, this);
                level.add(p);
-            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof Cannon){
+            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof Cannon) {
               p = new Cannon(x, y, dir, this);
               level.add(p);
-            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof  FirArrow){
+            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof  FirArrow) {
               p = new FirArrow(x, y, dir, this);
               level.add(p);
-            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof FirCannon){
+            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof FirCannon) {
               p = new FirCannon(x, y, dir, this);
               level.add(p);
-            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof  FirBall){
+            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof  FirBall) {
               p = new FirBall(x, y, dir, this);
               level.add(p);
-            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof FirWall){
+            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof FirWall) {
               p = new FirWall(x, y, dir, this);
               level.add(p);
-            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof IcArrow){
+            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof IcArrow) {
               p = new IcArrow(x, y, dir, this);
               level.add(p);
-            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof IcCannon){
+            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof IcCannon) {
               p = new IcCannon(x, y, dir, this);
               level.add(p);
-            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof IcBall){
+            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof IcBall) {
               p = new IcBall(x, y, dir, this);
               level.add(p);
-            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof IcWall){
+            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof IcWall) {
               p = new IcWall(x, y, dir, this);
               level.add(p);
             }
@@ -160,23 +162,23 @@ public abstract class Mob extends Entity {
                 ix = (int)Math.floor(xt);
             if (c / 2 == 0)
                 iy = (int)Math.floor(yt);
-            if (this instanceof Enemy && level.getTile(ix, iy) instanceof SpawnEdgeTile)
+            if (this instanceof Enemy && level.getTile(ix, iy) instanceof SpawnEdgeTile && !(level instanceof LavaLevel))
                 return true;
-            if (this instanceof Enemy){
+            /*if (this instanceof Enemy){
               int index = level.getEnemies().indexOf(this);
               for (int i = 0; i < level.getEnemies().size(); i++){
                 if (entityCollided(level.getEnemies().get(i)) && i != index){
                     return true;
                 }
-                }
               }
+            }*/
             if (this instanceof Player) {
                 if (level.getTile(ix, iy) instanceof SpawnWaterTile) {
-                    Player.swimming = true;
-                    Player.canShoot = false;
+                } else if (level.getTile(ix,iy) instanceof SpawnLavaTile){
+                    level.getClientPlayer().setSpeed(1.0);
+                    level.getClientPlayer().loseHealth(1);
                 } else {
-                    Player.swimming = false;
-                    Player.canShoot = true;
+                  level.getClientPlayer().setSpeed(1.5);
                 }
             }
             if (level.getTile(ix, iy).solid())

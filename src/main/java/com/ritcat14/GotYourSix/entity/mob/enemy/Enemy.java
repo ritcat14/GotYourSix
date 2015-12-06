@@ -18,7 +18,6 @@ import com.ritcat14.GotYourSix.graphics.SpriteSheet;
 
 public abstract class Enemy extends Mob {
 
-    public double     XPBonus    = 1;
     public int        time       = 0;
     private Entity    rand       = null;
     protected boolean collidable = false; 
@@ -30,6 +29,7 @@ public abstract class Enemy extends Mob {
     protected AnimatedObject left       = null;
     protected AnimatedObject right      = null;
     protected String         sheet      = "";
+    protected double speed = 0;
 
     // Animated Objects for each direction of the enemies movement.
     protected AnimatedObject animSprite = null;
@@ -82,11 +82,18 @@ public abstract class Enemy extends Mob {
     }
 
     public void loseHealth(int damage, Player player) {
+        Random ran = new Random();
         health -= damage;
+        int chance = ran.nextInt(5);
+        if (chance == 2 || chance == 3){
+          speed -= 0.1;
+        }
+        if (speed <= 0) speed = 0.1;
         if (health <= 0) {
+            if (this instanceof Boss) {
+                Player.XPLevel += 1;
+            }
             remove();
-            player.inXP((int)Math.ceil(XPBonus / (Player.getLevel() * 2)));
-            Random ran = new Random();
             int j = ran.nextInt(3);
             for (int g = 0; g <= j; g++) {
                 Item e = getItem();

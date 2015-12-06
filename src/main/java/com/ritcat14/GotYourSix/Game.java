@@ -29,6 +29,7 @@ import com.ritcat14.GotYourSix.input.Keyboard;
 import com.ritcat14.GotYourSix.input.Mouse;
 import com.ritcat14.GotYourSix.level.Level;
 import com.ritcat14.GotYourSix.level.TileCoordinate;
+import com.ritcat14.GotYourSix.level.worlds.LavaLevel;
 import com.ritcat14.GotYourSix.util.Console;
 import com.ritcat14.GotYourSix.util.FileHandler;
 import com.ritcat14.GotYourSix.util.ImageUtil;
@@ -40,9 +41,9 @@ public class Game extends Canvas implements Runnable, EventListener {
 
     private static Dimension  imgDim           = new Dimension(ImageUtil.getImage("/ui/panels/background.png").getWidth(),
                                                                ImageUtil.getImage("/ui/panels/background.png").getHeight()),
-  										boundary = new Dimension(900, 700), size = Game.getScaledDimension(imgDim, boundary);
-    private static int        width            = size.width / scale, height = size.height / scale,
-  										absoluteWidth = width, absoluteHeight = height;
+        boundary = new Dimension(900, 700), size = Game.getScaledDimension(imgDim, boundary);
+    private static int        width            = size.width / scale, height = size.height / scale, absoluteWidth = width,
+        absoluteHeight = height;
 
     public static enum State {
         START,
@@ -51,28 +52,29 @@ public class Game extends Canvas implements Runnable, EventListener {
         PAUSE
     }
 
-    public static State      STATE          = State.START;
+    public static State      STATE      = State.START;
 
-    private Thread           thread         = null;
-    private JFrame           frame          = null;
-    private static Keyboard  key            = null;
-    private static Level     level          = null;
-    private static Player    player         = null;
-    private boolean          running        = false;
+    private Thread           thread     = null;
+    private JFrame           frame      = null;
+    private static Keyboard  key        = null;
+    private static Level     level      = null;
+    private static Player    player     = null;
+    private boolean          running    = false;
 
-    private static UIManager uiManager      = null, minimapManager = null;
-    private StartScreen      sc             = null;
-    private Pause pause = null;
+    private static UIManager uiManager  = null, minimapManager = null;
+    private StartScreen      sc         = null;
+    private Pause            pause      = null;
 
-    private Screen           screen         = null;
-    private BufferedImage    image          = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-    private int[]            pixels         = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
+    private Screen           screen     = null;
+    private BufferedImage    image      = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    private int[]            pixels     = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
 
-    private List<Layer>      layerStack     = new ArrayList<Layer>();
+    private List<Layer>      layerStack = new ArrayList<Layer>();
 
-    private static Game      game           = null;
-    public static boolean    loaded         = false, paused         = false, initPause = false;;
-    private int time = 0;
+    private static Game      game       = null;
+    public static boolean    loaded     = false, paused = false, initPause = false;;
+    private int              time       = 0;
+    private static Console   c          = null;
 
     public Game() {
         Dimension size = new Dimension((width * scale), height * scale);
@@ -106,22 +108,23 @@ public class Game extends Canvas implements Runnable, EventListener {
             public void windowClosing(WindowEvent e) {
                 //save game
                 State preState = STATE;
-                if (player != null) STATE = State.PAUSE;
+                if (player != null)
+                    STATE = State.PAUSE;
                 int confirm =
                               JOptionPane.showOptionDialog(null, "Are You Sure to Close Application?", "Exit Confirmation",
                                                            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
                 if (confirm == 0 && player != null) {
-                  int confirm2 =
-                              JOptionPane.showOptionDialog(null, "Save Progress?", "Save Confirmation",
-                                                           JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-                    if (confirm2 == 0){
-                    FileHandler.save(player);
-                    System.exit(0);
+                    int confirm2 =
+                                   JOptionPane.showOptionDialog(null, "Save Progress?", "Save Confirmation", JOptionPane.YES_NO_OPTION,
+                                                                JOptionPane.QUESTION_MESSAGE, null, null, null);
+                    if (confirm2 == 0) {
+                        FileHandler.save(player);
+                        System.exit(0);
                     } else {
-                      System.exit(0);
+                        System.exit(0);
                     }
                 } else if (confirm == 0) {
-                  System.exit(0);
+                    System.exit(0);
                 } else {
                     STATE = preState;
                     paused = false;
@@ -133,15 +136,17 @@ public class Game extends Canvas implements Runnable, EventListener {
         game.frame.setVisible(true);
         game.frame.requestFocus();
         game.start();
-        new Console();
+        c = new Console();
         game.frame.requestFocus();
+        System.out.println("Press Enter to start...");
     }
-  public static void infoBox(String infoMessage, String titleBar) {
+
+    public static void infoBox(String infoMessage, String titleBar) {
         JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.INFORMATION_MESSAGE);
     }
-  
-    public static String getVersion(Object classRes){
-      return classRes.getClass().getPackage().getImplementationVersion();
+
+    public static String getVersion(Object classRes) {
+        return classRes.getClass().getPackage().getImplementationVersion();
     }
 
     private void init(State state) {
@@ -157,10 +162,13 @@ public class Game extends Canvas implements Runnable, EventListener {
             changeLevel(Level.spawn);
             FileHandler.save(player);
             initPause = false;
+            c.clearTextArea();
+            System.out.println("Controls: \n W/up -> Player up \n A/left -> Player left \n S/down -> Player down \n D/right -> Player right \n " +
+                               "Q -> Inventory \n Shift -> Sprint \n HOME -> home level \n M -> Map \n numbers 1-6 -> Weapons");
         } else if (state == State.START) {
             sc = new StartScreen();
             uiManager.addPanel(sc);
-        } else if (state == State.PAUSE){
+        } else if (state == State.PAUSE) {
             pause = new Pause();
             uiManager.addPanel(pause);
             initPause = true;
@@ -174,14 +182,24 @@ public class Game extends Canvas implements Runnable, EventListener {
     }
 
     public void changeLevel(Level lev) {
-        level = lev;
-        level.add(player);
-        level.setPlayerLocation();
-        addLayer(level);
+        if (lev instanceof LavaLevel){
+          System.out.println();
+        }
+        if (level != null) {
+            layerStack.remove(level);
+            level = lev;
+            level.add(player);
+            level.setPlayerLocation();
+            addLayer(level);
+        }
     }
 
     public static UIManager getUIManager() {
         return uiManager;
+    }
+  
+    public static Console getConsole(){
+      return c;
     }
 
     public static UIManager getMapManager() {
@@ -226,6 +244,10 @@ public class Game extends Canvas implements Runnable, EventListener {
 
     public void addLayer(Layer layer) {
         layerStack.add(layer);
+    }
+
+    public void removeLayer(Layer layer) {
+        layerStack.remove(layer);
     }
 
     public BufferedImage getImage() {
@@ -310,10 +332,13 @@ public class Game extends Canvas implements Runnable, EventListener {
     }
 
     public void update() {
-        time ++;
-        if (key.paused && !initPause) STATE = State.PAUSE;
-        else if (key.paused && initPause) STATE = State.GAME;
-        if (time % 1800 == 0 && player != null) FileHandler.save(player);
+        time++;
+        if (key.paused && !initPause)
+            STATE = State.PAUSE;
+        else if (key.paused && initPause)
+            STATE = State.GAME;
+        if (time % 1800 == 0 && player != null)
+            FileHandler.save(player);
         init(STATE);
         key.update();
         uiManager.update();

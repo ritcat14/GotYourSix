@@ -20,24 +20,6 @@ public class SpriteSheet {
     public static SpriteSheet projectiles       = new SpriteSheet("/textures/sheets/projectiles/test.png", 48, 64);
     public static SpriteSheet playerSheet = null, playerViewSheet = null, up  = null, down  = null, left  = null, right  = null;
 
-    public static SpriteSheet soul                  = new SpriteSheet("/textures/sheets/mob/enemy/soulEaterSprite.png", 128, 96);
-    public static SpriteSheet soul_down             = new SpriteSheet(soul, 0, 0, 1, 3, 32);
-    public static SpriteSheet soul_up               = new SpriteSheet(soul, 1, 0, 1, 3, 32);
-    public static SpriteSheet soul_left             = new SpriteSheet(soul, 2, 0, 1, 3, 32);
-    public static SpriteSheet soul_right            = new SpriteSheet(soul, 3, 0, 1, 3, 32);
-
-    public static SpriteSheet dummy                 = new SpriteSheet("/textures/sheets/mob/npc01.png", 128, 96);
-    public static SpriteSheet dummy_down            = new SpriteSheet(dummy, 0, 0, 1, 3, 32);
-    public static SpriteSheet dummy_up              = new SpriteSheet(dummy, 1, 0, 1, 3, 32);
-    public static SpriteSheet dummy_left            = new SpriteSheet(dummy, 2, 0, 1, 3, 32);
-    public static SpriteSheet dummy_right           = new SpriteSheet(dummy, 3, 0, 1, 3, 32);
-
-    public static SpriteSheet wizard                = new SpriteSheet("/textures/sheets/mob/enemy/wizardSprite.png", 128, 96);
-    public static SpriteSheet wizard_down           = new SpriteSheet(wizard, 0, 0, 1, 3, 32);
-    public static SpriteSheet wizard_up             = new SpriteSheet(wizard, 1, 0, 1, 3, 32);
-    public static SpriteSheet wizard_left           = new SpriteSheet(wizard, 2, 0, 1, 3, 32);
-    public static SpriteSheet wizard_right          = new SpriteSheet(wizard, 3, 0, 1, 3, 32);
-
     private Sprite[]          sprites = null;
 
     public SpriteSheet(SpriteSheet sheet, int x, int y, int width, int height, int spriteWidth, int spriteHeight) {
@@ -146,18 +128,12 @@ public class SpriteSheet {
 
     private void load() {
         try {
-            System.out.print("Trying to load " + path + "...");
             image = ImageIO.read(SpriteSheet.class.getResource(path));
-            System.out.println("Success!");
             this.width = image.getWidth();
             this.height = image.getHeight();
             pixels = new int[this.width * this.height];
             image.getRGB(0, 0, this.width, this.height, pixels, 0, this.width);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.err.println("Failed");
-        }
+        } catch (IOException e) {} catch (Exception e) {}
     }
   
     public static void init(){

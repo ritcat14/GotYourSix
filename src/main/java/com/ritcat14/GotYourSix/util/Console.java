@@ -28,10 +28,10 @@ public class Console implements ActionListener{
   
   public Console(){
     this.frame = new JFrame("Server Console");
-    this.frame.setSize(350, 700);
+    this.frame.setSize(600, 600);
     JFrame gameFrame = Game.getGame().getFrame();
     this.frame.setLocation(gameFrame.getX() + gameFrame.getWidth(), gameFrame.getY());
-    this.frame.setUndecorated(true);
+    this.frame.setUndecorated(false);
     this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
     this.textPane = new JTextPane();
