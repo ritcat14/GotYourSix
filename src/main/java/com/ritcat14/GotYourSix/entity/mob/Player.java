@@ -17,9 +17,11 @@ import com.ritcat14.GotYourSix.events.types.*;
 import com.ritcat14.GotYourSix.graphics.*;
 import com.ritcat14.GotYourSix.graphics.UI.*;
 import com.ritcat14.GotYourSix.graphics.UI.menus.*;
+import com.ritcat14.GotYourSix.graphics.UI.menus.inventory.*;
 import com.ritcat14.GotYourSix.input.*;
 import com.ritcat14.GotYourSix.items.*;
 import com.ritcat14.GotYourSix.level.Level;
+import com.ritcat14.GotYourSix.level.worlds.SpawnLevel;
 import com.ritcat14.GotYourSix.util.*;
 
 public class Player extends Mob implements EventListener {
@@ -30,6 +32,10 @@ public class Player extends Mob implements EventListener {
   
    public int hunger = 0, thirst = 0, fireRate = 0, stamina = 100;
   
+   private Sprite chestPlate = new Sprite(32,32,0xffff00ff);
+   private Sprite legs = new Sprite(32,32,0xffff00ff);
+   private Sprite helmet = new Sprite(32,32,0xffff00ff);
+  
   
    private static boolean madeItem = false;
    private static String name = null;
@@ -37,7 +43,7 @@ public class Player extends Mob implements EventListener {
   
    private boolean hit = false, dying = false, shooting = false, changePlayer = true, inventOpen = false, mapOpen = false;
 	private double speed = 1.5, invin = 1;
-   private int staminaDec = 15, staminaInc = 3;
+   private int staminaDec = 15, staminaInc = 3, defence = 10;
   
 	private AnimatedObject down = null, up = null, left = null, right = null; // All the movement animatedObjects. These are set depending on the player you choose in the selection screen
    private Sprite weapon = null;
@@ -119,7 +125,7 @@ public class Player extends Mob implements EventListener {
       Stats s = new Stats();
       ui.addPanel(s);
       
-      m.setLevel(Level.spawn);
+      m.setLevel(Level.activeLevel);
      
       up = AnimatedObject.up;
       down = AnimatedObject.down;
@@ -147,7 +153,7 @@ public class Player extends Mob implements EventListener {
   
    public String getStats(){
      String nl = "\n";
-     return health + nl + hunger + nl + thirst + nl + XPLevel + nl + StartScreen.state.toString() + nl;
+     return health + nl + hunger + nl + thirst + nl + XPLevel + nl + StartScreen.state.toString() + nl + defence + nl;
    }
   
    public void levelIn(){
@@ -161,7 +167,16 @@ public class Player extends Mob implements EventListener {
        hunger = Integer.parseInt(parts[1]);
        thirst = Integer.parseInt(parts[2]);
        XPLevel = Integer.parseInt(parts[3]);
+       defence = Integer.parseInt(parts[5]);
        StartScreen.state = StartScreen.playerViewState.valueOf(parts[4]);
+   }
+  
+   public int getDefence(){
+     return defence;
+   }
+  
+   public void setDefence(int def){
+     this.defence = def;
    }
   
    public static int getLevel(){
@@ -318,9 +333,8 @@ public class Player extends Mob implements EventListener {
 		}else{
 			walking = false;
 		}
-      if (input.home && !level.equals(Level.spawn)){
-        Level.initLevels();
-        Game.getGame().changeLevel(Level.spawn);
+      if (input.home && !(Level.activeLevel instanceof SpawnLevel)){
+        Game.getGame().changeLevel(Level.createLevel(0));
       }
 		clear();
       updateShooting();
@@ -364,6 +378,17 @@ public class Player extends Mob implements EventListener {
        }
        return false;
      }
+   }
+  
+   private void updateArmour(){
+       /*switch(animSprite){
+         case animSprite.equals(up):
+         break;
+         case animSprite.equals(down):
+         break;
+         case animSprite.equals(left):
+         break;
+       }*/
    }
   
   private void checkWep(){
@@ -459,7 +484,7 @@ public class Player extends Mob implements EventListener {
        return w;
    }
   
-   private void itemCollision(){
+      private void itemCollision(){
        for (int i = 0; i < items.size(); i++){
            if (time % 60 == 0) items.get(i).inLife();
            Rectangle r = new Rectangle(items.get(i).position.x, items.get(i).position.y, items.get(i).sprite.getWidth(), items.get(i).sprite.getHeight());
@@ -475,5 +500,8 @@ public class Player extends Mob implements EventListener {
 	public void render(Screen screen) {
 		screen.renderMob((int)(x - 16), (int)(y - 16), sprite);
       font.render(0,0,0xffaaaaaa,name + " Level " + XPLevel,screen);
+      screen.renderMob((int)(x-16),(int)(y-16),helmet);
+      screen.renderMob((int)(x-16),(int)(y-16),chestPlate);
+      screen.renderMob((int)(x-16),(int)(y-16),legs);
 	}
 }

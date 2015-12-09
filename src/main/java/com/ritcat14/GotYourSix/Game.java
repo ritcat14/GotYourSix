@@ -25,6 +25,7 @@ import com.ritcat14.GotYourSix.graphics.UI.UIPanel;
 import com.ritcat14.GotYourSix.graphics.UI.menus.Pause;
 import com.ritcat14.GotYourSix.graphics.UI.menus.StartScreen;
 import com.ritcat14.GotYourSix.graphics.layers.Layer;
+import com.ritcat14.GotYourSix.graphics.layers.UILayer;
 import com.ritcat14.GotYourSix.input.Keyboard;
 import com.ritcat14.GotYourSix.input.Mouse;
 import com.ritcat14.GotYourSix.level.Level;
@@ -70,6 +71,7 @@ public class Game extends Canvas implements Runnable, EventListener {
     private int[]            pixels     = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
 
     private List<Layer>      layerStack = new ArrayList<Layer>();
+    private List<UILayer>      UILayerStack = new ArrayList<UILayer>();
 
     private static Game      game       = null;
     public static boolean    loaded     = false, paused = false, initPause = false;;
@@ -83,6 +85,7 @@ public class Game extends Canvas implements Runnable, EventListener {
 
         screen = new Screen(width, height);
         uiManager = new UIManager();
+        UILayerStack.add(uiManager);
         minimapManager = new UIManager();
         frame = new JFrame();
         key = new Keyboard();
@@ -151,7 +154,7 @@ public class Game extends Canvas implements Runnable, EventListener {
 
     private void init(State state) {
         if (state == State.GAME) {
-            level = Level.spawn;
+            level = Level.createLevel(0);
             TileCoordinate playerSpawn = new TileCoordinate(15, 60);
             String playerName = "";
             if (FileHandler.fileExists(FileHandler.localUserFile))
@@ -159,7 +162,7 @@ public class Game extends Canvas implements Runnable, EventListener {
             else
                 playerName = sc.getPlayerName();
             player = new Player(playerName, playerSpawn.x(), playerSpawn.y(), key);
-            changeLevel(Level.spawn);
+            changeLevel(Level.activeLevel);
             FileHandler.save(player);
             initPause = false;
             c.clearTextArea();
@@ -249,6 +252,14 @@ public class Game extends Canvas implements Runnable, EventListener {
     public void removeLayer(Layer layer) {
         layerStack.remove(layer);
     }
+  
+    public void addUILayer(UILayer layer){
+      UILayerStack.add(layer);
+    }
+  
+    public void removeUILayer(UILayer layer) {
+      UILayerStack.remove(layer);
+    }
 
     public BufferedImage getImage() {
         return image;
@@ -326,6 +337,9 @@ public class Game extends Canvas implements Runnable, EventListener {
     }
 
     public void onEvent(Event event) {
+        for (int i = UILayerStack.size() - 1; i >= 0; i--){
+          UILayerStack.get(i).onEvent(event);
+        }
         for (int i = layerStack.size() - 1; i >= 0; i--) {
             layerStack.get(i).onEvent(event);
         }
@@ -341,9 +355,12 @@ public class Game extends Canvas implements Runnable, EventListener {
             FileHandler.save(player);
         init(STATE);
         key.update();
-        uiManager.update();
+        //uiManager.update();
 
         //Update layers
+        for (int i = 0; i < UILayerStack.size(); i++){
+          UILayerStack.get(i).update();
+        }
         for (int i = 0; i < layerStack.size(); i++) {
             layerStack.get(i).update();
         }
@@ -396,7 +413,11 @@ public class Game extends Canvas implements Runnable, EventListener {
         //g.fillRect(0, 0, getWindowWidth(), getWindowHeight());
 
 
-        uiManager.render(g);
+        //uiManager.render(g);
+      
+        for (int i = 0; i < UILayerStack.size(); i++) {
+          UILayerStack.get(i).render(g);
+        }
         g.dispose();
         bs.show();
     }

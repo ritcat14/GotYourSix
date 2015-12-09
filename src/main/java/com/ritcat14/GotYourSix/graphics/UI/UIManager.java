@@ -4,14 +4,22 @@ import java.awt.Graphics;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.ritcat14.GotYourSix.events.Event;
 import com.ritcat14.GotYourSix.graphics.UI.UIPanel;
+import com.ritcat14.GotYourSix.graphics.layers.UILayer;
 
-public class UIManager {
+public class UIManager extends UILayer {
 
     private List<UIPanel> panels = new ArrayList<UIPanel>();
 
     public UIManager() {
 
+    }
+
+    public void onEvent(Event event) {
+      for (UIPanel panel : panels) {
+        panel.onEvent(event);
+      }
     }
 
     public void addPanel(UIPanel panel) {

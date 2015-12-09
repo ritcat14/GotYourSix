@@ -27,8 +27,10 @@ public class Minimap extends UIPanel {
     }
   
     public void setLevel(Level level){
-        image = level.getMapImage();
+      if (Level.activeLevel != null) {
+        image = Level.activeLevel.getMapImage();
         this.level = level;
+      }
     }
 
     public void render(Graphics g) {

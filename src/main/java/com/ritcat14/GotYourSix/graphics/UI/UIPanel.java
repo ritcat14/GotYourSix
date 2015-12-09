@@ -1,5 +1,6 @@
 package com.ritcat14.GotYourSix.graphics.UI;
 import com.ritcat14.GotYourSix.util.Vector2i;
+import com.ritcat14.GotYourSix.events.*;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -8,7 +9,7 @@ import java.awt.Color;
 import java.util.List;
 import java.util.ArrayList;
 
-public class UIPanel extends UIComponent{
+public class UIPanel extends UIComponent implements EventListener {
   
     public List<UIComponent> components = new ArrayList<UIComponent>();
     private Vector2i size = null;
@@ -39,6 +40,12 @@ public class UIPanel extends UIComponent{
         super(position);
         this.position = position;
         this.image = image;
+    }
+
+    public void onEvent(Event event) {
+      for (UIComponent panel : components) {
+        if (panel instanceof UIPanel) panel.onEvent(event);
+      }
     }
   
     public void setBackgroundImage(BufferedImage image){

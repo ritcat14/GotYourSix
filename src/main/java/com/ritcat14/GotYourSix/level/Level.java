@@ -38,7 +38,6 @@ public class Level extends Layer {
     private List<Item>          items       = new ArrayList<Item>();
     private List<Portal> portals = new ArrayList<Portal>();
     private BufferedImage       mapImage    = null;
-    private static boolean generatedPortals = false;
 
     private Comparator<Node>    nodeSorter  = new Comparator<Node>() {
                                                 public int compare(Node n0, Node n1) {
@@ -50,13 +49,7 @@ public class Level extends Layer {
                                                 }
                                             };
 
-    public static Level level1 = new BossLevel("/levels/level1.png", "Zombie", 60);
-    public static Level level2 = new LavaLevel("/levels/level2.png", "Mummy", 120);
-    public static Level level3 = new BossLevel("/levels/level1.png", "Goblin", 180);
-    public static Level level4 = new BossLevel("/levels/level1.png", "Mummy", 240);
-    public static Level level5 = new BossLevel("/levels/level1.png", "Goblin", 180);
-    public static Level level6 = new BossLevel("/levels/level1.png", "Zombie", 60);
-    public static Level         spawn       = new SpawnLevel("/levels/spawn.png");
+    public static Level activeLevel = null;
 
     public Level(int width, int height) {
         this.width = width;
@@ -85,25 +78,25 @@ public class Level extends Layer {
         return resizedImage;
     }
   
-    public static void initLevels(){
-        Level.level1 = new BossLevel("/levels/level1.png", "Zombie", 60);
-        Level.level2 = new LavaLevel("/levels/level1.png", "Mummy", 120);
-        Level.level3 = new BossLevel("/levels/level1.png", "Goblin", 180);
-        Level.level4 = new BossLevel("/levels/level1.png", "Mummy", 240);
-        Level.level5 = new BossLevel("/levels/level1.png", "Goblin", 180);
-    	  Level.level6 = new BossLevel("/levels/level1.png", "Zombie", 60);
-        Level.spawn       = new SpawnLevel("/levels/spawn.png");
-        generatedPortals = false;
-    }
-  
-    public void generatePortals(){
-        spawn.add(Portal.Level1 = new LevelPortal(4,4,this,level1));
-        spawn.add(Portal.Level2 = new LevelPortal(6,4,this,level2));
-        spawn.add(Portal.Level3 = new LevelPortal(8,4,this,level3));
-        spawn.add(Portal.Level4 = new LevelPortal(10,4,this,level4));
-        spawn.add(Portal.Level5 = new LevelPortal(12,4,this,level5));
-        spawn.add(Portal.Level6 = new LevelPortal(14,4,this,level6));
-        generatedPortals = true;
+    public static Level createLevel(int levelID){
+      switch (levelID){
+        case 0: activeLevel = new SpawnLevel("/levels/spawn.png");
+        activeLevel.add(new LevelPortal(4,4,activeLevel));
+        break;
+        case 1: activeLevel = new BossLevel("/levels/level1.png", "Zombie", 60);
+        break;
+        case 2: activeLevel = new LavaLevel("/levels/level2.png", "Mummy", 120);
+        break;
+        case 3: activeLevel = new BossLevel("/levels/level1.png", "Goblin", 180);
+        break;
+        case 4: activeLevel = new BossLevel("/levels/level1.png", "Mummy", 240);
+        break;
+        case 5: activeLevel = new BossLevel("/levels/level1.png", "Goblin", 180);
+        break;
+        case 6: activeLevel = new BossLevel("/levels/level1.png", "Zombie", 60);
+        break;
+      }
+      return activeLevel;
     }
 
     protected void generateLevel() {
@@ -140,7 +133,6 @@ public class Level extends Layer {
                 enemies.get(i).checkLocation();
             }
         }
-        if (!generatedPortals && spawn != null) generatePortals();
         remove();
     }
 

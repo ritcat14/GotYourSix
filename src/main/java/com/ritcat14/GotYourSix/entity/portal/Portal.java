@@ -11,22 +11,14 @@ import com.ritcat14.GotYourSix.level.Level;
 
 public class Portal extends Entity {
   
-    private Level currLevel = null, locationLevel = null;
-    private boolean locked = true;
+    private Level currLevel = null;
+    private boolean locked = false;
   
-    public static Portal Level1 = null;
-    public static Portal Level2 = null;
-    public static Portal Level3 = null;
-    public static Portal Level4 = null;
-    public static Portal Level5 = null;
-    public static Portal Level6 = null;
-    public static Portal spawnPortal = null;
   
-    public Portal(int x, int y, Level currLevel, Level locationLevel){
+    public Portal(int x, int y, Level currLevel){
         this.x = x;
         this.y = y;
         this.currLevel = currLevel;
-        this.locationLevel = locationLevel;
         sprite = Sprite.portal;
     }
   
@@ -37,7 +29,7 @@ public class Portal extends Entity {
           sprite = Sprite.portal;
         }
         Rectangle bounds = new Rectangle((int)(x * 16), (int)(y * 16), sprite.getWidth(), sprite.getHeight());
-        switch (Player.getLevel()) {
+        /*switch (Player.getLevel()) {
             case 1: Level1.unLock();
             break;
             case 2: Level2.unLock();
@@ -50,9 +42,9 @@ public class Portal extends Entity {
             break;
             case 6: Level6.unLock();
             break;
-        }
+        }*/
         if (bounds.intersects(currLevel.getClientPlayer().getBounds()) && !isLocked()) {
-          Game.getGame().changeLevel(locationLevel);
+          Game.getGame().changeLevel(Level.createLevel(Player.getLevel()));
         }
     }
   

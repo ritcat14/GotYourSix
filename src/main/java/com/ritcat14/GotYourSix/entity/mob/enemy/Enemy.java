@@ -20,7 +20,7 @@ public abstract class Enemy extends Mob {
 
     public int        time       = 0;
     private Entity    rand       = null;
-    protected boolean collidable = false; 
+    protected boolean collidable = false;
     /* AnimSprite is used to change the players direction. While each of the directional animated objects
     update, animSprite is used as a blank animatedObject to allow the sprite image of the animated object to be set depending on the enemies 
     direction of movement.*/
@@ -33,7 +33,6 @@ public abstract class Enemy extends Mob {
 
     // Animated Objects for each direction of the enemies movement.
     protected AnimatedObject animSprite = null;
-    
   
     public abstract void update();
 
