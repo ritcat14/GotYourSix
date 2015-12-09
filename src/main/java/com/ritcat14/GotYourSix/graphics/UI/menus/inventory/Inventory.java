@@ -42,8 +42,8 @@ public class Inventory extends UIPanel {
             addComponent(as);
           }
         }
-        for (int x = 1; x < 2; x++){
-          for (int y = 7; y < 9; y++){
+        for (int x = 1; x < 3; x++){
+          for (int y = 7; y < 8; y++){
             rs = new ResSlot(new Vector2i((x * (slotSize + 6)) + 50, (y * (slotSize + 6)) + 50));
             resSlots.add(rs);
             addComponent(rs);
