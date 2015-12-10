@@ -409,8 +409,6 @@ public class Game extends Canvas implements Runnable, EventListener {
         }
 
         g.drawImage(image, 0, 0, newWidth, newHeight, null);
-        //g.setColor(new Color(0, 0, 0, 150));
-        //g.fillRect(0, 0, getWindowWidth(), getWindowHeight());
 
 
         //uiManager.render(g);

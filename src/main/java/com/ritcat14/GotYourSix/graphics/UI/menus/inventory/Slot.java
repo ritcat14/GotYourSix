@@ -1,6 +1,5 @@
 package com.ritcat14.GotYourSix.graphics.UI.menus.inventory;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -19,11 +18,13 @@ public class Slot extends UIPanel {
     private UILabel counter = null;
     private boolean selected = false;
   
-    public Slot(Vector2i position){
+    public Slot(Vector2i position, boolean armour){
       super(position, new Vector2i(50,50), ImageUtil.getImage("/ui/panels/inventory/slot.png"));
-      counter = new UILabel(new Vector2i(5,5), "" + items.size());
-      counter.setFont(new Font("Magneto",Font.BOLD, 10));
-      addComponent(counter);
+      if (!armour){
+          counter = new UILabel(new Vector2i(5,5), "" + items.size());
+          counter.setFont(new Font("Magneto",Font.BOLD, 10));
+          addComponent(counter);
+      }
     }
   
     public void updateBack(){

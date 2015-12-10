@@ -7,6 +7,7 @@ public class Armour extends Item {
   
     protected int defence = 0;
     protected int strength = 0;
+    protected String type = "";
     
     public Armour(int defence, int strength, Sprite sprite){
         this.defence = defence;
@@ -22,8 +23,12 @@ public class Armour extends Item {
       strength --;
     }
   
-    public int getStrrength(){
+    public int getStrength(){
       return strength;
+    }
+  
+    public String getType(){
+      return type;
     }
   
 }

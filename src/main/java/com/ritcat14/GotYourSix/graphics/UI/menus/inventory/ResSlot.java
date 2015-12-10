@@ -5,7 +5,9 @@ import com.ritcat14.GotYourSix.util.Vector2i;
 public class ResSlot extends Slot {
   
     public ResSlot(Vector2i position){
-      super(position);
+      super(position, true);
     }
+  
+  
   
 }

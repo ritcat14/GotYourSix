@@ -17,35 +17,35 @@ import com.ritcat14.GotYourSix.input.Mouse;
 
 public class Inventory extends UIPanel {
   
-    private Slot slot = null, s = new Slot(new Vector2i(Mouse.getX(), Mouse.getY()));
+    private Slot slot = null, s = new Slot(new Vector2i(Mouse.getX(), Mouse.getY()), false);
     private ArmourSlot as = null;
     private ResSlot rs = null;
-    private int slotSize = 50;
+    private int slotSize = 50, defence = 0;
     
     private List<Slot> slots = new ArrayList<Slot>();
-    private List<ArmourSlot> armourSlots = new ArrayList<ArmourSlot>();
-    private List<ResSlot> resSlots = new ArrayList<ResSlot>();
   
     public Inventory() {
         super(new Vector2i(50,50), new Vector2i(Game.getAbsoluteWidth() - 100, Game.getAbsoluteHeight() - 100), ImageUtil.getImage("/ui/panels/inventory/inventory.png"));
         for (int x =5; x < 14; x++){
           for (int y = 0; y < 7; y++){
-            slot = new Slot(new Vector2i((x * (slotSize + 6)) + 50, (y * (slotSize + 6)) + 50));
+            slot = new Slot(new Vector2i((x * (slotSize + 6)) + 50, (y * (slotSize + 6)) + 50), false);
             slots.add(slot);
             addComponent(slot);
           }
         }
-        for (int x = 1; x < 3; x++){
-          for (int y = 1; y < 5; y++){
-            as = new ArmourSlot(new Vector2i((x * (slotSize + 6)) + 50, (y * (slotSize + 6)) + 50));
-            armourSlots.add(as);
-            addComponent(as);
-          }
-        }
+        as = new ArmourSlot(new Vector2i((1 * (slotSize + 6)) + 50, (1 * (slotSize + 6)) + 50), "Head");
+        slots.add(as);
+        addComponent(as);
+        as = new ArmourSlot(new Vector2i((1 * (slotSize + 6)) + 50, (2 * (slotSize + 6)) + 50), "Chest");
+        slots.add(as);
+        addComponent(as);
+        as = new ArmourSlot(new Vector2i((1 * (slotSize + 6)) + 50, (3 * (slotSize + 6)) + 50), "Legs");
+        slots.add(as);
+        addComponent(as);
         for (int x = 1; x < 3; x++){
           for (int y = 7; y < 8; y++){
             rs = new ResSlot(new Vector2i((x * (slotSize + 6)) + 50, (y * (slotSize + 6)) + 50));
-            resSlots.add(rs);
+            slots.add(rs);
             addComponent(rs);
           }
         }
@@ -119,8 +119,8 @@ public class Inventory extends UIPanel {
                 }
                 currSlot.updateBack();
             }
-        }
         return true;
+        }
     }
   
    public boolean onMouseReleased(MouseReleasedEvent e) {
@@ -144,12 +144,23 @@ public class Inventory extends UIPanel {
         }
     }
   
+    public int getDefence(){
+      for (int i = 0; i < slots.size(); i ++){
+          if (slots.get(i) instanceof ArmourSlot){
+             defence += ((ArmourSlot)(slots.get(i))).getDefence();
+          }
+      }
+      return defence;
+    }
+  
     public void render(Graphics g){
         super.render(g);
+        s.render(g);
     }
   
     public void update(){
       super.update();
+      s.update();
       for (int i = 0; i < slots.size(); i++){
         slots.get(i).update();
       }
