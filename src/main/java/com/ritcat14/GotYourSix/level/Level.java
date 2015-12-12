@@ -5,7 +5,9 @@ import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 import java.awt.Graphics2D;
+
 
 import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.entity.Entity;
@@ -79,6 +81,53 @@ public class Level extends Layer {
     }
   
     public static Level createLevel(int levelID){
+      switch (levelID){
+        case 0:
+          activeLevel = new SpawnLevel("/levels/spawn.png");
+          activeLevel.add(new LevelPortal(4,4,activeLevel));
+          return activeLevel;
+      }
+      Random r = new Random();
+      int i = r.nextInt(3);
+      String levelType = "";
+      switch (i){
+        case 0:
+          levelType = "Zombie";
+          break;
+        case 1:
+          levelType = "Mummy";
+          break;
+        case 2:
+          levelType = "Goblin";
+          break;
+        case 3:
+          levelType = "Person";
+          break;
+      }
+      int lev = r.nextInt(5);
+      if (levelID > 5){
+        i = r.nextInt(1);
+        switch(i){
+          case 0:
+            switch(lev){
+              case 2:
+                break;
+              default:
+                activeLevel = new BossLevel("/levels/level" + lev + ".png",levelType,60 * levelID);
+                break;
+            }
+          case 1:
+            activeLevel = new LavaLevel("/levels/level2.png",levelType,60*levelID);
+            break;
+        }
+      } else {
+          switch(lev){
+            case 2:
+              break;
+            default:
+              activeLevel = new BossLevel("/levels/level" + lev + ".png",levelType,60*levelID);
+          }
+      }
       switch (levelID){
         case 0: activeLevel = new SpawnLevel("/levels/spawn.png");
         activeLevel.add(new LevelPortal(4,4,activeLevel));

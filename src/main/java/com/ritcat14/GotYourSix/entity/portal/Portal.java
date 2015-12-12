@@ -29,20 +29,6 @@ public class Portal extends Entity {
           sprite = Sprite.portal;
         }
         Rectangle bounds = new Rectangle((int)(x * 16), (int)(y * 16), sprite.getWidth(), sprite.getHeight());
-        /*switch (Player.getLevel()) {
-            case 1: Level1.unLock();
-            break;
-            case 2: Level2.unLock();
-            break;
-            case 3: Level3.unLock();
-            break;
-            case 4: Level4.unLock();
-            break;
-            case 5: Level5.unLock();
-            break;
-            case 6: Level6.unLock();
-            break;
-        }*/
         if (bounds.intersects(currLevel.getClientPlayer().getBounds()) && !isLocked()) {
           Game.getGame().changeLevel(Level.createLevel(Player.getLevel()));
         }

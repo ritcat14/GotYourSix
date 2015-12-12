@@ -63,20 +63,6 @@ public class Sprite {
     public static Sprite grassGrave = new Sprite(16,11,3,SpriteSheet.tiles);
     public static Sprite lavaGrave = new Sprite(16,12,3,SpriteSheet.tiles);
 
-    //Projectile sprites here:
-    public static Sprite  arrow           = new Sprite(16, 0, 0, SpriteSheet.projectiles);
-    public static Sprite  cannon          = new Sprite(16, 1, 0, SpriteSheet.projectiles);
-    //Ice
-    public static Sprite  icedArrow       = new Sprite(16, 0, 1, SpriteSheet.projectiles);
-    public static Sprite  icedCannon      = new Sprite(16, 1, 1, SpriteSheet.projectiles);
-    public static Sprite  iceBall         = new Sprite(16, 2, 0, SpriteSheet.projectiles);
-    public static Sprite  iceWall         = new Sprite(16, 2, 1, SpriteSheet.projectiles);
-    //Fire
-    public static Sprite  firedArrow      = new Sprite(16, 0, 3, SpriteSheet.projectiles);
-    public static Sprite  firedCannon     = new Sprite(16, 1, 3, SpriteSheet.projectiles);
-    public static Sprite  fireBall        = new Sprite(16, 2, 2, SpriteSheet.projectiles);
-    public static Sprite  fireWall         = new Sprite(16, 2, 3, SpriteSheet.projectiles);
-
     //Particles
     public static Sprite  particle_normal = new Sprite(2, 0xFF000000);
     public static Sprite  particle_blood  = new Sprite(2, 0xFFFF0000);

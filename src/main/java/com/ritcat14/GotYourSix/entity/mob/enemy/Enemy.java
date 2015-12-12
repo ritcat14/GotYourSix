@@ -5,8 +5,8 @@ import java.util.Random;
 
 import com.ritcat14.GotYourSix.graphics.AnimatedObject;
 import com.ritcat14.GotYourSix.graphics.Screen;
-import com.ritcat14.GotYourSix.graphics.UI.menus.StartScreen;
 import com.ritcat14.GotYourSix.items.*;
+import com.ritcat14.GotYourSix.items.armour.*;
 import com.ritcat14.GotYourSix.level.tile.Tile;
 import com.ritcat14.GotYourSix.level.TileCoordinate;
 import com.ritcat14.GotYourSix.util.Vector2i;
@@ -38,46 +38,34 @@ public abstract class Enemy extends Mob {
 
     public abstract void render(Screen screen);
 
-    public static Item getItem() {
+    public Item getItem() {
         Random ran = new Random();
-        int i = ran.nextInt(4);
-        if (StartScreen.state == StartScreen.playerViewState.MF || StartScreen.state == StartScreen.playerViewState.FF) {
-            if (i == 0) {
-                CannonBall cb = new CannonBall();
-                return cb;
-            } else if (i == 1) {
-                FireArrow fa = new FireArrow();
-                return fa;
-            } else if (i == 2) {
-                FireCannon fc = new FireCannon();
-                return fc;
-            } else if (i == 3) {
-                FireBall fb = new FireBall();
-                return fb;
-            } else if (i == 4) {
-                FireWall fw = new FireWall();
-                return fw;
-            }
-        } else if (StartScreen.state == StartScreen.playerViewState.MI || StartScreen.state == StartScreen.playerViewState.FI) {
-            if (i == 0) {
-                CannonBall cb = new CannonBall();
-                return cb;
-            } else if (i == 1) {
-                IceArrow ia = new IceArrow();
-                return ia;
-            } else if (i == 2) {
-                IceCannon ic = new IceCannon();
-                return ic;
-            } else if (i == 3) {
-                IceBall ib = new IceBall();
-                return ib;
-            } else if (i == 4) {
-                IceWall iw = new IceWall();
-                return iw;
+        int i = ran.nextInt(3);
+        switch(i){
+            case 0:
+                return new Water();
+            case 1: return new Food();
+        }
+        if (this instanceof Boss){
+            i = ran.nextInt(10);
+            switch(i){
+                case 0:
+                    int j = ran.nextInt(4);
+                    switch(j){
+                        case 0:
+                            return level.getClientPlayer().getArmour("Head");
+                        case 1:
+                            return level.getClientPlayer().getArmour("Chest");
+                        case 2:
+                            return level.getClientPlayer().getArmour("Legs");
+                        default:
+                            break;
+                    }
+                    break;
             }
         }
-        CannonBall c = new CannonBall();
-        return c;
+        //return appropriate item
+        return new Water();
     }
 
     public void loseHealth(int damage, Player player) {

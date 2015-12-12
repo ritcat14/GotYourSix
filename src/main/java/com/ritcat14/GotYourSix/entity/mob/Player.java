@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.awt.event.MouseEvent;
@@ -20,6 +21,7 @@ import com.ritcat14.GotYourSix.graphics.UI.menus.*;
 import com.ritcat14.GotYourSix.graphics.UI.menus.inventory.*;
 import com.ritcat14.GotYourSix.input.*;
 import com.ritcat14.GotYourSix.items.*;
+import com.ritcat14.GotYourSix.items.armour.*;
 import com.ritcat14.GotYourSix.level.Level;
 import com.ritcat14.GotYourSix.level.worlds.SpawnLevel;
 import com.ritcat14.GotYourSix.util.*;
@@ -32,14 +34,8 @@ public class Player extends Mob implements EventListener {
   
    public int hunger = 0, thirst = 0, fireRate = 0, stamina = 100;
   
-   private Sprite chestPlate = new Sprite(32,32,0xffff00ff);
-   private Sprite legs = new Sprite(32,32,0xffff00ff);
-   private Sprite helmet = new Sprite(32,32,0xffff00ff);
-  
-  
    private static boolean madeItem = false;
    private static String name = null;
-   private static Weapons    w = null;
   
    private boolean hit = false, dying = false, shooting = false, changePlayer = true, inventOpen = false, mapOpen = false;
 	private double speed = 1.5, invin = 1;
@@ -54,16 +50,16 @@ public class Player extends Mob implements EventListener {
    private Game game = Game.getGame();
   
    private List<Item> items = null;
-   private List<Projectile> shots = null;
+   private List<Armour> armour = new ArrayList<Armour>();
   
-   private static Inventory invent = new Inventory();
+   private Inventory invent = null;
    private Minimap m = new Minimap();
    private UIManager         ui = null;
    private CustomFont font = new CustomFont();
 	
    @Deprecated
 	public Player(String name, Keyboard input) {
-      this.name = name;
+      Player.name = name;
 		this.input = input;
 		animSprite = down;
       sprite = animSprite.getSprite();
@@ -81,7 +77,7 @@ public class Player extends Mob implements EventListener {
 		this.x = x;
 		this.y = y;
 		this.input = input;
-      this.name = name;
+      Player.name = name;
      
       // Player default attributes
       health = 100;
@@ -90,37 +86,33 @@ public class Player extends Mob implements EventListener {
       stamina = 100;
       staminaDec = 15;
       staminaInc = 3;
+     
+      fireRate = Projectile.FIRERATE;
       
       if (FileHandler.fileExists(FileHandler.netUserDir + name + ".txt")) setStats(FileHandler.getStats());
       AnimatedObject.init();
-     
-      Arrow a = new Arrow();
-      avShots.add(a);
-      Cannon c = new Cannon();
-      avShots.add(c);
-      if (StartScreen.state == StartScreen.playerViewState.MF || StartScreen.state == StartScreen.playerViewState.FF){
-        FirArrow fa = new FirArrow();
-        avShots.add(fa);
-        FirCannon fc = new FirCannon();
-        avShots.add(fc);
-        FirBall fb = new FirBall();
-        avShots.add(fb);
-        FirWall fw = new FirWall();
-        avShots.add(fw);
-      } else if (StartScreen.state == StartScreen.playerViewState.MI || StartScreen.state == StartScreen.playerViewState.FI){
-        IcArrow ia = new IcArrow();
-        avShots.add(ia);
-        IcCannon ic = new IcCannon();
-        avShots.add(ic);
-        IcBall ib = new IcBall();
-        avShots.add(ib);
-        IcWall iw = new IcWall();
-        avShots.add(iw);
+      
+      for (int yi = 0; yi < 3; yi++){
+          for (int xi = 0; xi < 6; xi++){
+              switch(yi){
+                case 0:
+                    Armour ah = new Head(xi * 5, new Sprite(32, xi, yi, SpriteSheet.armour),xi+1);
+                    armour.add(ah);
+                    break;
+                case 1:
+                    Armour ac = new Chest(xi * 5, new Sprite(32, xi, yi, SpriteSheet.armour),xi+1);
+                    armour.add(ac);
+                    break;
+                case 2:
+                    Armour al = new Legs(xi * 5, new Sprite(32, xi, yi, SpriteSheet.armour),xi+1);
+                    armour.add(al);
+                    break;
+              }
+          }
       }
-      ui = game.getUIManager();
-      w = new Weapons();
-      ui.addPanel(w);
-      if (w != null) fireRate = getShots().get(w.getSelected() - 1).FIRERATE;
+     
+      invent = new Inventory(this);
+      ui = Game.getUIManager();
       
       Stats s = new Stats();
       ui.addPanel(s);
@@ -135,10 +127,6 @@ public class Player extends Mob implements EventListener {
       sprite = animSprite.getSprite();
 	}
   
-   public List<Projectile> getShots(){
-     return avShots;
-   }
-  
    public BufferedImage getFace(){
        return image;
    }
@@ -147,7 +135,7 @@ public class Player extends Mob implements EventListener {
        return name;
    }
   
-   public static Inventory getInvent(){
+   public Inventory getInvent(){
      return invent;
    }
   
@@ -158,7 +146,15 @@ public class Player extends Mob implements EventListener {
   
    public void levelIn(){
        XPLevel ++;
-       checkWep();
+   }
+  
+   public Item getArmour(String type){
+       for (int i = 0; i < armour.size(); i++){
+           if (armour.get(i).getType() == type && armour.get(i).getLevel() == getLevel()){
+             return armour.get(i);
+           }
+       }
+     return null;
    }
  
    public void setStats(String stats){
@@ -283,8 +279,6 @@ public class Player extends Mob implements EventListener {
         dying = false;
       }*/
       if (time % 60 == 0 && health < 100 && !hit && !dying) health ++;
-     
-      w.update();
       
       if (input.sprint && time % 100 == 0 && stamina > staminaDec && walking) stamina -= staminaDec;
       else if (input.sprint && stamina > staminaDec && walking && speed >= 1.5) speed = 2.5;
@@ -296,7 +290,7 @@ public class Player extends Mob implements EventListener {
   
    private static int time = 0;
 	public void update() {
-      if (level != null) shots = level.getProjectiles();
+      health = 100;
       items = level.getItems();
       
       sprite = animSprite.getSprite();
@@ -343,18 +337,19 @@ public class Player extends Mob implements EventListener {
 	}
   
    private void updateShooting(){
-       if (!shooting || fireRate > 0) return;
-       double dx = Mouse.getX() - (Game.getWindowWidth()/2);
-       double dy = Mouse.getY() - (Game.getWindowHeight()/2);
-       double dir = Math.atan2(dy, dx);
-       shoot(x, y, dir);
-       w.removeWep();
-       if (w != null) fireRate = avShots.get(w.getSelected() - 1).FIRERATE;
+       if (!shooting) return;
+       if (fireRate <= 0){
+           double dx = Mouse.getX() - (Game.getWindowWidth()/2);
+           double dy = Mouse.getY() - (Game.getWindowHeight()/2);
+           double dir = Math.atan2(dy, dx);
+           shoot(x, y, dir);
+           fireRate = Projectile.FIRERATE;
+       }
    }
   
    public boolean onMousePressed(MousePressedEvent e) {
       if (Mouse.getX() > Game.getWindowWidth()) return false;
-		if(e.getButton() == MouseEvent.BUTTON1 && canShoot && w.canShoot()){
+		if(e.getButton() == MouseEvent.BUTTON1){
            shooting = true;
            return true;
 		} else return true;
@@ -390,62 +385,6 @@ public class Player extends Mob implements EventListener {
          break;
        }*/
    }
-  
-  private void checkWep(){
-      if (StartScreen.state == StartScreen.playerViewState.MF || StartScreen.state == StartScreen.playerViewState.FF){
-        if (XPLevel == 25){
-          for (int i = 0; i < XPLevel / 5; i++){
-            FireWall ib = new FireWall();
-            w.add(ib);
-          }
-        } else if (XPLevel == 40){
-          for (int i = 0; i < XPLevel / 5; i++){
-            FireBall ib = new FireBall();
-            w.add(ib);
-          }
-        } else if (XPLevel == 30){
-          for (int i = 0; i < XPLevel / 5; i++){
-            FireCannon ib = new FireCannon();
-            w.add(ib);
-          }
-        } else if (XPLevel == 20){
-          for (int i = 0; i < XPLevel / 5; i++){
-            FireArrow ib = new FireArrow();
-            w.add(ib);
-          }
-        }
-      } else if (StartScreen.state == StartScreen.playerViewState.MI || StartScreen.state == StartScreen.playerViewState.FI){
-        if (XPLevel == 50){
-          for (int i = 0; i < XPLevel / 5; i++){
-            IceWall ib = new IceWall();
-            w.add(ib);
-          }
-        } else if (XPLevel == 40){
-          for (int i = 0; i < XPLevel / 5; i++){
-            IceBall ib = new IceBall();
-            w.add(ib);
-          }
-        } else if (XPLevel == 30){
-          for (int i = 0; i < XPLevel / 5; i++){
-            IceCannon ib = new IceCannon();
-            w.add(ib);
-          }
-        } else if (XPLevel == 20){
-          for (int i = 0; i < XPLevel / 5; i++){
-            IceArrow ib = new IceArrow();
-            w.add(ib);
-          }
-        }
-      }
-      if (XPLevel == 10){
-          for (int i = 0; i < XPLevel / 5; i++){
-            CannonBall ib = new CannonBall();
-            w.add(ib);
-          }
-        } else if (XPLevel == 1){
-          Projectile.weapon = Projectile.Weapon.ARROW;
-        }
-  }
 	
 	private void clear() {
 		for(int i = 0; i < level.getProjectiles().size(); i++){
@@ -480,18 +419,13 @@ public class Player extends Mob implements EventListener {
         }
    }
   
-   public static Weapons getWepInvent(){
-       return w;
-   }
-  
       private void itemCollision(){
        for (int i = 0; i < items.size(); i++){
            if (time % 60 == 0) items.get(i).inLife();
            Rectangle r = new Rectangle(items.get(i).position.x, items.get(i).position.y, items.get(i).sprite.getWidth(), items.get(i).sprite.getHeight());
            if (r.x >= getBounds().x && r.x <= getBounds().x + getBounds().width
                && r.y >= getBounds().y && r.y <= getBounds().y + getBounds().height){
-               if (items.get(i) instanceof Weapon) invent.add((Item)items.get(i));
-               //else panel.getInvent().add(items.get(i));
+               invent.add((Item)items.get(i));
                items.get(i).remove();
            }
        }
@@ -500,8 +434,5 @@ public class Player extends Mob implements EventListener {
 	public void render(Screen screen) {
 		screen.renderMob((int)(x - 16), (int)(y - 16), sprite);
       font.render(0,0,0xffaaaaaa,name + " Level " + XPLevel,screen);
-      screen.renderMob((int)(x-16),(int)(y-16),helmet);
-      screen.renderMob((int)(x-16),(int)(y-16),chestPlate);
-      screen.renderMob((int)(x-16),(int)(y-16),legs);
 	}
 }

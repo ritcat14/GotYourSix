@@ -1,9 +1,17 @@
 package com.ritcat14.GotYourSix;
 
+import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.LayoutManager;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -46,6 +54,9 @@ public class Game extends Canvas implements Runnable, EventListener {
     private static int        width            = size.width / scale, height = size.height / scale, absoluteWidth = width,
         absoluteHeight = height;
 
+    private static int        frameWidth       = Toolkit.getDefaultToolkit().getScreenSize().width / scale;
+    private static int        frameHeight      = Toolkit.getDefaultToolkit().getScreenSize().height / scale;
+
     public static enum State {
         START,
         GAME,
@@ -53,37 +64,38 @@ public class Game extends Canvas implements Runnable, EventListener {
         PAUSE
     }
 
-    public static State      STATE      = State.START;
+    public static State      STATE        = State.START;
 
-    private Thread           thread     = null;
-    private JFrame           frame      = null;
-    private static Keyboard  key        = null;
-    private static Level     level      = null;
-    private static Player    player     = null;
-    private boolean          running    = false;
+    private Thread           thread       = null;
+    private JFrame           frame        = null;
+    private static Keyboard  key          = null;
+    private static Level     level        = null;
+    private static Player    player       = null;
+    private boolean          running      = false;
 
-    private static UIManager uiManager  = null, minimapManager = null;
-    private StartScreen      sc         = null;
-    private Pause            pause      = null;
+    private static UIManager uiManager    = null, minimapManager = null;
+    private StartScreen      sc           = null;
+    private Pause            pause        = null;
 
-    private Screen           screen     = null;
-    private BufferedImage    image      = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-    private int[]            pixels     = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
+    private Screen           screen       = null;
+    private BufferedImage    image        = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    private int[]            pixels       = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
 
-    private List<Layer>      layerStack = new ArrayList<Layer>();
-    private List<UILayer>      UILayerStack = new ArrayList<UILayer>();
+    private List<Layer>      layerStack   = new ArrayList<Layer>();
+    private List<UILayer>    UILayerStack = new ArrayList<UILayer>();
 
-    private static Game      game       = null;
-    public static boolean    loaded     = false, paused = false, initPause = false;;
-    private int              time       = 0;
-    private static Console   c          = null;
+    private static Game      game         = null;
+    public static boolean    loaded       = false, paused = false, initPause = false;;
+    private int              time         = 0;
+    private static Console   c            = null;
 
     public Game() {
-        Dimension size = new Dimension((width * scale), height * scale);
+        Dimension size = new Dimension((frameWidth * scale), frameHeight * scale);
         setPreferredSize(size);
         Game.game = this;
 
         screen = new Screen(width, height);
+        //setLocation(new Point((frameWidth / 2) - (width / 2), (frameHeight / 2) - (height / 2)));
         uiManager = new UIManager();
         UILayerStack.add(uiManager);
         minimapManager = new UIManager();
@@ -102,7 +114,8 @@ public class Game extends Canvas implements Runnable, EventListener {
         game = new Game();
         game.frame.setResizable(false);
         game.frame.setUndecorated(true); //Enable for full screen
-        game.frame.add(game);
+        game.frame.setLayout(new GridBagLayout());
+        game.frame.add(game, new GridBagConstraints());
         game.frame.pack();
         game.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
@@ -166,8 +179,8 @@ public class Game extends Canvas implements Runnable, EventListener {
             FileHandler.save(player);
             initPause = false;
             c.clearTextArea();
-            System.out.println("Controls: \n W/up -> Player up \n A/left -> Player left \n S/down -> Player down \n D/right -> Player right \n " +
-                               "Q -> Inventory \n Shift -> Sprint \n HOME -> home level \n M -> Map \n numbers 1-6 -> Weapons");
+            System.out.println("Controls: \n W/up -> Player up \n A/left -> Player left \n S/down -> Player down \n D/right -> Player right \n "
+                               + "Q -> Inventory \n Shift -> Sprint \n HOME -> home level \n M -> Map \n numbers 1-6 -> Weapons");
         } else if (state == State.START) {
             sc = new StartScreen();
             uiManager.addPanel(sc);
@@ -185,8 +198,8 @@ public class Game extends Canvas implements Runnable, EventListener {
     }
 
     public void changeLevel(Level lev) {
-        if (lev instanceof LavaLevel){
-          System.out.println();
+        if (lev instanceof LavaLevel) {
+            System.out.println();
         }
         if (level != null) {
             layerStack.remove(level);
@@ -200,9 +213,9 @@ public class Game extends Canvas implements Runnable, EventListener {
     public static UIManager getUIManager() {
         return uiManager;
     }
-  
-    public static Console getConsole(){
-      return c;
+
+    public static Console getConsole() {
+        return c;
     }
 
     public static UIManager getMapManager() {
@@ -252,13 +265,13 @@ public class Game extends Canvas implements Runnable, EventListener {
     public void removeLayer(Layer layer) {
         layerStack.remove(layer);
     }
-  
-    public void addUILayer(UILayer layer){
-      UILayerStack.add(layer);
+
+    public void addUILayer(UILayer layer) {
+        UILayerStack.add(layer);
     }
-  
+
     public void removeUILayer(UILayer layer) {
-      UILayerStack.remove(layer);
+        UILayerStack.remove(layer);
     }
 
     public BufferedImage getImage() {
@@ -337,8 +350,8 @@ public class Game extends Canvas implements Runnable, EventListener {
     }
 
     public void onEvent(Event event) {
-        for (int i = UILayerStack.size() - 1; i >= 0; i--){
-          UILayerStack.get(i).onEvent(event);
+        for (int i = UILayerStack.size() - 1; i >= 0; i--) {
+            UILayerStack.get(i).onEvent(event);
         }
         for (int i = layerStack.size() - 1; i >= 0; i--) {
             layerStack.get(i).onEvent(event);
@@ -358,8 +371,8 @@ public class Game extends Canvas implements Runnable, EventListener {
         //uiManager.update();
 
         //Update layers
-        for (int i = 0; i < UILayerStack.size(); i++){
-          UILayerStack.get(i).update();
+        for (int i = 0; i < UILayerStack.size(); i++) {
+            UILayerStack.get(i).update();
         }
         for (int i = 0; i < layerStack.size(); i++) {
             layerStack.get(i).update();
@@ -412,9 +425,9 @@ public class Game extends Canvas implements Runnable, EventListener {
 
 
         //uiManager.render(g);
-      
+
         for (int i = 0; i < UILayerStack.size(); i++) {
-          UILayerStack.get(i).render(g);
+            UILayerStack.get(i).render(g);
         }
         g.dispose();
         bs.show();

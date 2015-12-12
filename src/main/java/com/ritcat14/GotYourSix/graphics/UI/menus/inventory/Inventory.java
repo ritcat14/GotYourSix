@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ritcat14.GotYourSix.Game;
+import com.ritcat14.GotYourSix.entity.mob.Player;
 import com.ritcat14.GotYourSix.events.*;
 import com.ritcat14.GotYourSix.events.types.*;
+import com.ritcat14.GotYourSix.graphics.UI.UILabel;
 import com.ritcat14.GotYourSix.graphics.UI.UIPanel;
 import com.ritcat14.GotYourSix.items.Item;
 import com.ritcat14.GotYourSix.util.ImageUtil;
@@ -21,10 +23,11 @@ public class Inventory extends UIPanel {
     private ArmourSlot as = null;
     private ResSlot rs = null;
     private int slotSize = 50, defence = 0;
+    private UILabel def = null;
     
     private List<Slot> slots = new ArrayList<Slot>();
   
-    public Inventory() {
+    public Inventory(Player p) {
         super(new Vector2i(50,50), new Vector2i(Game.getAbsoluteWidth() - 100, Game.getAbsoluteHeight() - 100), ImageUtil.getImage("/ui/panels/inventory/inventory.png"));
         for (int x =5; x < 14; x++){
           for (int y = 0; y < 7; y++){
@@ -36,12 +39,17 @@ public class Inventory extends UIPanel {
         as = new ArmourSlot(new Vector2i((1 * (slotSize + 6)) + 50, (1 * (slotSize + 6)) + 50), "Head");
         slots.add(as);
         addComponent(as);
+        as.add(p.getArmour("Head"));
         as = new ArmourSlot(new Vector2i((1 * (slotSize + 6)) + 50, (2 * (slotSize + 6)) + 50), "Chest");
         slots.add(as);
         addComponent(as);
+        as.add(p.getArmour("Chest"));
         as = new ArmourSlot(new Vector2i((1 * (slotSize + 6)) + 50, (3 * (slotSize + 6)) + 50), "Legs");
         slots.add(as);
         addComponent(as);
+        as.add(p.getArmour("Legs"));
+        def = new UILabel(new Vector2i((1 * (slotSize + 6)) + 50, (1 * (slotSize + 6))), "Defence: " + getDefence());
+        addComponent(def);
         for (int x = 1; x < 3; x++){
           for (int y = 7; y < 8; y++){
             rs = new ResSlot(new Vector2i((x * (slotSize + 6)) + 50, (y * (slotSize + 6)) + 50));
@@ -82,13 +90,11 @@ public class Inventory extends UIPanel {
             boolean hasItems = (items.size() > 0);
             if (currSlot.getBounds().contains(p)){
                 if (right && !currSlot.isSelected() && hasItems && s.getItems().size() == 0){
-                    System.out.println("creating temp & selecting slot");
                     currSlot.select(true);
                     s.add(items.get(0));
                     currSlot.remove(items.get(items.size() - 1));
                 } else if (right && currSlot.isSelected()){
                   if (s.getItems().size() > 0){
-                      System.out.println("adding item to temp and removing from slot");
                       if (s.getItems().get(0).getClass().equals(items.get(0).getClass())){
                           s.add(items.get(0));
                           currSlot.remove(items.get(items.size() - 1));
@@ -100,9 +106,7 @@ public class Inventory extends UIPanel {
                       currSlot.updateBack();
                   }
                 } else if ((left || right) && s.getItems().size() == 0) {
-                    System.out.println("handled event, but temp is empty");
                 } else if (left){
-                    System.out.println("adding item to clicked slot from temp");
                   if (currSlot.getItems().size() > 0){
                     if (s.getItems().get(0).getClass().equals(items.get(0).getClass())){
                       currSlot.add(s.getItems().get(0));
@@ -119,8 +123,8 @@ public class Inventory extends UIPanel {
                 }
                 currSlot.updateBack();
             }
-        return true;
         }
+        return true;
     }
   
    public boolean onMouseReleased(MouseReleasedEvent e) {
@@ -132,10 +136,15 @@ public class Inventory extends UIPanel {
        return true;
    }
   
+   public List<Slot> getSlots(){
+       return slots;
+   }
+  
     public void add(Item item){
         for (int i = 0; i < slots.size(); i++){
-            if (slots.get(i).add(item)) break;
-        }
+            if (slots.get(i).isArmour()) break;
+            else if (slots.get(i).add(item)) break;
+        }      
     }
   
     public void remove(Item item){
@@ -145,8 +154,9 @@ public class Inventory extends UIPanel {
     }
   
     public int getDefence(){
+      defence = 0;
       for (int i = 0; i < slots.size(); i ++){
-          if (slots.get(i) instanceof ArmourSlot){
+          if (slots.get(i) instanceof ArmourSlot && slots.get(i).getItems().size() > 0){
              defence += ((ArmourSlot)(slots.get(i))).getDefence();
           }
       }
@@ -156,14 +166,20 @@ public class Inventory extends UIPanel {
     public void render(Graphics g){
         super.render(g);
         s.render(g);
+        def.render(g);
+        for (int i = 0; i < slots.size(); i++){
+          slots.get(i).render(g);
+        }
     }
   
     public void update(){
-      super.update();
-      s.update();
-      for (int i = 0; i < slots.size(); i++){
-        slots.get(i).update();
-      }
+        super.update();
+        s.update();
+        def.setText("Defence: " + getDefence());
+        def.update();
+        for (int i = 0; i < slots.size(); i++){
+            slots.get(i).update();
+        }
     }
   
 }

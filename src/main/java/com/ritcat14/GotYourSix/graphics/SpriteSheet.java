@@ -17,8 +17,8 @@ public class SpriteSheet {
     private BufferedImage image = null;
 
     public static SpriteSheet tiles                 = new SpriteSheet("/textures/sheets/spritesheet.png", 256);
-    public static SpriteSheet projectiles       = new SpriteSheet("/textures/sheets/projectiles/test.png", 48, 64);
-    public static SpriteSheet playerSheet = null, playerViewSheet = null, up  = null, down  = null, left  = null, right  = null;
+    public static SpriteSheet items = new SpriteSheet("/textures/sheets/items/items.png", 32, 16);
+    public static SpriteSheet playerSheet, playerViewSheet, up, down, left, right, armour, projectiles;
 
     private Sprite[]          sprites = null;
 
@@ -137,7 +137,10 @@ public class SpriteSheet {
     }
   
     public static void init(){
-      playerSheet = new SpriteSheet("/textures/sheets/mob/player/" + StartScreen.state.toString() + ".png", 128);
+      String plyer = StartScreen.state.toString() + ".png";
+      playerSheet = new SpriteSheet("/textures/sheets/mob/player/" + plyer, 128);
+      armour = new SpriteSheet("/textures/sheets/mob/player/armour/" + plyer, 192, 96);
+      projectiles = new SpriteSheet("/textures/sheets/projectiles/" + plyer, 48, 32);
       playerViewSheet = new SpriteSheet(playerSheet, 0, 0, 4, 1, 32);
       up = new SpriteSheet(playerSheet, 1, 0, 1, 2, 32);
       down = new SpriteSheet(playerSheet, 0, 0, 1, 2, 32);

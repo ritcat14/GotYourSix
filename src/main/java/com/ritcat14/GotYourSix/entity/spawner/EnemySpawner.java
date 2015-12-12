@@ -67,7 +67,7 @@ public class EnemySpawner extends Spawner {
                   case 3: type = "viking";
                   break;
                 }
-                level.add(new Zombie(x + xx, y + yy, "/textures/sheets/mob/enemy/goblin/"+ type + enemy + ".png"));
+                level.add(new Zombie(x + xx, y + yy, "/textures/sheets/mob/enemy/people/"+ type + enemy + ".png"));
             }
       }
     }

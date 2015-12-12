@@ -9,11 +9,12 @@ import com.ritcat14.GotYourSix.entity.Entity;
 import com.ritcat14.GotYourSix.entity.mob.enemy.*;
 import com.ritcat14.GotYourSix.entity.projectile.*;
 import com.ritcat14.GotYourSix.graphics.Screen;
+import com.ritcat14.GotYourSix.graphics.Sprite;
+import com.ritcat14.GotYourSix.graphics.SpriteSheet;
 import com.ritcat14.GotYourSix.level.worlds.LavaLevel;
 import com.ritcat14.GotYourSix.level.tile.SpawnEdgeTile;
 import com.ritcat14.GotYourSix.level.tile.SpawnLavaTile;
 import com.ritcat14.GotYourSix.level.tile.SpawnWaterTile;
-import com.ritcat14.GotYourSix.level.tile.Tile;
 
 public abstract class Mob extends Entity {
 
@@ -89,41 +90,28 @@ public abstract class Mob extends Entity {
     protected void shoot(double x, double y, double dir) {
         Projectile p;
         if (this instanceof Player) {
-            if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof Arrow) {
-					p = new Arrow(x, y, dir, this);
-               level.add(p);
-            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof Cannon) {
-              p = new Cannon(x, y, dir, this);
-              level.add(p);
-            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof  FirArrow) {
-              p = new FirArrow(x, y, dir, this);
-              level.add(p);
-            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof FirCannon) {
-              p = new FirCannon(x, y, dir, this);
-              level.add(p);
-            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof  FirBall) {
-              p = new FirBall(x, y, dir, this);
-              level.add(p);
-            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof FirWall) {
-              p = new FirWall(x, y, dir, this);
-              level.add(p);
-            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof IcArrow) {
-              p = new IcArrow(x, y, dir, this);
-              level.add(p);
-            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof IcCannon) {
-              p = new IcCannon(x, y, dir, this);
-              level.add(p);
-            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof IcBall) {
-              p = new IcBall(x, y, dir, this);
-              level.add(p);
-            } else if (avShots.get(Player.getWepInvent().getSelected() - 1) instanceof IcWall) {
-              p = new IcWall(x, y, dir, this);
-              level.add(p);
+            if (Player.getLevel() == 1){
+                p = new Projectile(x,y,dir,new Sprite(16, 0,0,SpriteSheet.projectiles),this,1,90,1);
+                level.add(p);
+            } else if (Player.getLevel() == 2){
+                p = new Projectile(x,y,dir,new Sprite(16,1,0,SpriteSheet.projectiles), this,2,60,20);
+                level.add(p);
+            } else if (Player.getLevel() == 3){
+                p = new Projectile(x,y,dir,new Sprite(16,2,0,SpriteSheet.projectiles),this,3,70,15);
+                level.add(p);
+            } else if (Player.getLevel() == 4) {
+                p = new Projectile(x,y,dir,new Sprite(16,0,1,SpriteSheet.projectiles),this,4,180,20);
+                level.add(p);
+            } else if (Player.getLevel() == 5) {
+                p = new Projectile(x,y,dir,new Sprite(16,1,1,SpriteSheet.projectiles),this,5,120,25);
+                level.add(p);
+            } else if (Player.getLevel() == 6){
+                p = new Projectile(x,y,dir,new Sprite(16,2,1,SpriteSheet.projectiles),this,6,140,30);
+                level.add(p);
             }
-        }
-        else{
-          p = new Arrow(x, y, dir, this);
-          level.add(p);
+        } else {
+            p = new Projectile(x,y,dir,new Sprite(16, 0,0,SpriteSheet.projectiles),this,1,90,Player.getLevel());
+            level.add(p);
         }
     }
 

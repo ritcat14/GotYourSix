@@ -20,9 +20,16 @@ public class ArmourSlot extends Slot {
       addComponent(typeLabel);
     }
   
+    public String getType(){
+        return type;
+    }
+  
     public boolean add(Item item){
         if (item instanceof Armour){
-            if (((Armour)item).getType() == this.type){
+          System.out.println("Item is armour");
+            if (((Armour)item).getType() == type){
+                items.add(item);
+                setBackgroundImage(item.getImage());
                 return true;
             }
         }
@@ -31,14 +38,16 @@ public class ArmourSlot extends Slot {
   
     public boolean remove(Item item){
         if (item instanceof Armour){
-            if (((Armour) item).getType() == this.type){
+            if (((Armour) item).getType() == type){
+                items.remove(item);
+                updateBack();
                 return true;
             }
         }
         return false;
     }
   
-    public int getdefence(){
+    public int getDefence(){
       defence = ((Armour)(getItems().get(0))).getDefence();
       return defence;
     }

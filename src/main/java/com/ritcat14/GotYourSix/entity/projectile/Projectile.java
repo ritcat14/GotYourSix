@@ -13,7 +13,7 @@ import com.ritcat14.GotYourSix.entity.spawner.ParticleSpawner;
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.graphics.Sprite;
 
-public abstract class Projectile extends Entity {
+public class Projectile extends Entity {
   
     public static enum Weapon{
       ARROW,
@@ -26,7 +26,7 @@ public abstract class Projectile extends Entity {
   
     public static Weapon weapon = Weapon.ARROW;
 
-    public static int FIRERATE;           //Higher is slower
+    public static int FIRERATE = 10;           //Higher is slower
 
     protected final double  xOrigin, yOrigin;
     protected double        angle = 0;
@@ -45,13 +45,21 @@ public abstract class Projectile extends Entity {
       yOrigin = 0;
     }
 
-    public Projectile(double x, double y, double dir, Mob m) {
+    public Projectile(double x, double y, double dir, Sprite sprite, Mob mob, int speed, int range, int damage) {
+        this.sprite = Sprite.rotate(sprite,dir);
         xOrigin = x;
         yOrigin = y;
         angle = dir;
         this.x = x;
         this.y = y;
-        this.mob = m;
+        this.mob = mob;
+        this.speed = speed;
+        this.range = range;
+        this.damage = damage;
+
+        nx = speed * Math.cos(angle);
+        ny = speed * Math.sin(angle);
+        Projectile.weapon = Weapon.CANNON;
     }
 
     public Sprite getSprite() {

@@ -24,10 +24,10 @@ public class AnimatedObject extends Sprite {
   
     public static void init(){
       SpriteSheet.init();
-      up         = new AnimatedObject(SpriteSheet.up, 32, 32, 2);
-      down       = new AnimatedObject(SpriteSheet.down, 32, 32, 2);
-      left       = new AnimatedObject(SpriteSheet.left, 32, 32, 2);
-      right      = new AnimatedObject(SpriteSheet.right, 32, 32, 2);
+      up         = new AnimatedObject(SpriteSheet.up,32,32,2);
+      down       = new AnimatedObject(SpriteSheet.down,32,32,2);
+      left       = new AnimatedObject(SpriteSheet.left,32,32,2);
+      right      = new AnimatedObject(SpriteSheet.right,32,32,2);
     }
 
     public void update() {

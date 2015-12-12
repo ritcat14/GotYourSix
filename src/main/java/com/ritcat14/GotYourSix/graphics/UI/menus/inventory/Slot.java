@@ -14,12 +14,13 @@ import com.ritcat14.GotYourSix.util.Vector2i;
 
 public class Slot extends UIPanel {
   
-    private List<Item> items = new ArrayList<Item>();
+    protected List<Item> items = new ArrayList<Item>();
     private UILabel counter = null;
-    private boolean selected = false;
+    private boolean selected = false, armour = false;
   
     public Slot(Vector2i position, boolean armour){
       super(position, new Vector2i(50,50), ImageUtil.getImage("/ui/panels/inventory/slot.png"));
+      this.armour = armour;
       if (!armour){
           counter = new UILabel(new Vector2i(5,5), "" + items.size());
           counter.setFont(new Font("Magneto",Font.BOLD, 10));
@@ -31,6 +32,10 @@ public class Slot extends UIPanel {
         if (items.size() == 0){
           setBackgroundImage(ImageUtil.getImage("/ui/panels/inventory/slot.png"));
         }
+    }
+  
+    public boolean isArmour(){
+      return armour;
     }
   
     public boolean add(Item item){

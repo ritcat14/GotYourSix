@@ -5,30 +5,25 @@ import com.ritcat14.GotYourSix.items.Item;
 
 public class Armour extends Item {
   
-    protected int defence = 0;
-    protected int strength = 0;
-    protected String type = "";
+    private int defence = 0, pLevel = 0;
+    private String type = "";
     
-    public Armour(int defence, int strength, Sprite sprite){
+    public Armour(int defence, String type, Sprite sprite, int pLevel){
         this.defence = defence;
-        this.strength = strength;
+        this.type = type;
         this.sprite = sprite;
+        this.pLevel = pLevel;
     }
   
-    public int getDefence(){
+    public int getDefence() {
       return defence;
     }
-  
-    public void reduceStrength(){
-      strength --;
-    }
-  
-    public int getStrength(){
-      return strength;
-    }
-  
-    public String getType(){
+    
+    public String getType() {
       return type;
     }
   
+    public int getLevel() {
+      return pLevel;
+    } 
 }
