@@ -3,6 +3,7 @@ package com.ritcat14.GotYourSix.entity.mob.enemy;
 import java.util.List;
 import java.util.Random;
 
+import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.entity.mob.Player;
 import com.ritcat14.GotYourSix.graphics.AnimatedObject;
 import com.ritcat14.GotYourSix.graphics.Screen;
@@ -18,7 +19,8 @@ public class Zombie extends Enemy {
 
     double                 xa         = 0, ya = 0;
 
-    public Zombie(int x, int y, String sheet) {
+    public Zombie(int x, int y, String sheet, String type) {
+        this.type = type;
         this.sheet = sheet;
         this.x = x << 4;
         this.y = y << 4;
@@ -37,6 +39,7 @@ public class Zombie extends Enemy {
         ya = 0;
         List<Player> players = level.getPlayers(this, 200);
             if (players.size() > 0) {
+                if (type == "Goblin") Game.s.loopSound("GOBLIN");
                 Player player = players.get(0);
                 if (x < player.getX())
                     xa += speed;
@@ -48,6 +51,7 @@ public class Zombie extends Enemy {
                     ya -= speed;
             } else {
                 super.move(xa, ya);
+                if (type == "Goblin") Game.s.stopSound("GOBLIN");
             }
         if (!collision(xa, ya)) {
             if (xa != 0 || ya != 0) {

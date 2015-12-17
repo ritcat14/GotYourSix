@@ -73,9 +73,15 @@ public class UIPanel extends UIComponent implements EventListener {
     }
   
     public void update() {
-        for (UIComponent component : components){
-            component.setOffset(position);
-            component.update();
+        for (int i = components.size() - 1; i > -1; i--){
+            components.get(i).setOffset(position);
+            components.get(i).update();
+        }
+    }
+  
+    public void clear(){
+        for (int i = components.size() - 1; i > -1; i--){
+            components.remove(i);
         }
     }
   
@@ -104,8 +110,8 @@ public class UIPanel extends UIComponent implements EventListener {
           g.setColor(colour);
           g.fillRect(position.x, position.y, size.x, size.y);
         }
-        for (UIComponent component : components){
-            component.render(g);
+        for (int i = components.size() - 1; i > -1; i--){
+            components.get(i).render(g);
         }
     }
 }

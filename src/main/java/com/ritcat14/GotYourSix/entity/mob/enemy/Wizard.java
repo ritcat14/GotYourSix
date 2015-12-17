@@ -22,7 +22,8 @@ public class Wizard extends Enemy {
     double                 xa         = 0, ya = 0;
     private List<Node>     path       = null;
 
-    public Wizard(int x, int y) {
+    public Wizard(int x, int y, String type) {
+        this.type = type;
         this.x = x << 4;
         this.y = y << 4;
         initSheets();

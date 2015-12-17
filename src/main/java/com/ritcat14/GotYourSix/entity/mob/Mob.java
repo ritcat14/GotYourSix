@@ -3,7 +3,6 @@ package com.ritcat14.GotYourSix.entity.mob;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.Rectangle;
 
 import com.ritcat14.GotYourSix.entity.Entity;
 import com.ritcat14.GotYourSix.entity.mob.enemy.*;
@@ -90,23 +89,23 @@ public abstract class Mob extends Entity {
     protected void shoot(double x, double y, double dir) {
         Projectile p;
         if (this instanceof Player) {
-            if (Player.getLevel() == 1){
-                p = new Projectile(x,y,dir,new Sprite(16, 0,0,SpriteSheet.projectiles),this,1,90,1);
+            if (Player.getLevel() >= 55){
+                p = new Projectile(x,y,dir,new Sprite(16,2,1,SpriteSheet.projectiles),this,6,140,30);
                 level.add(p);
-            } else if (Player.getLevel() == 2){
-                p = new Projectile(x,y,dir,new Sprite(16,1,0,SpriteSheet.projectiles), this,2,60,20);
-                level.add(p);
-            } else if (Player.getLevel() == 3){
-                p = new Projectile(x,y,dir,new Sprite(16,2,0,SpriteSheet.projectiles),this,3,70,15);
-                level.add(p);
-            } else if (Player.getLevel() == 4) {
-                p = new Projectile(x,y,dir,new Sprite(16,0,1,SpriteSheet.projectiles),this,4,180,20);
-                level.add(p);
-            } else if (Player.getLevel() == 5) {
+            } else if (Player.getLevel() >= 35){
                 p = new Projectile(x,y,dir,new Sprite(16,1,1,SpriteSheet.projectiles),this,5,120,25);
                 level.add(p);
-            } else if (Player.getLevel() == 6){
-                p = new Projectile(x,y,dir,new Sprite(16,2,1,SpriteSheet.projectiles),this,6,140,30);
+            } else if (Player.getLevel() >= 20){
+                p = new Projectile(x,y,dir,new Sprite(16,0,1,SpriteSheet.projectiles),this,4,180,20);
+                level.add(p);
+            } else if (Player.getLevel() >= 10) {
+                p = new Projectile(x,y,dir,new Sprite(16,2,0,SpriteSheet.projectiles),this,3,70,15);
+                level.add(p);
+            } else if (Player.getLevel() >= 5) {
+                p = new Projectile(x,y,dir,new Sprite(16,1,0,SpriteSheet.projectiles), this,2,60,20);
+                level.add(p);
+            } else if (Player.getLevel() >= 1){
+                p = new Projectile(x,y,dir,new Sprite(16, 0,0,SpriteSheet.projectiles),this,1,90,1);
                 level.add(p);
             }
         } else {
@@ -117,7 +116,7 @@ public abstract class Mob extends Entity {
 
     protected boolean entityCollided(Entity e) {
         boolean collided = false;
-        /*for (int c = 0; c < 4; c++) {
+        for (int c = 0; c < 4; c++) {
             double xt = ((x + e.getX()) - (c % 2) * 15) / 16;
             double yt = ((y + e.getY()) - (c / 2) * 15) / 16;
             int ix = (int)Math.ceil(xt);
@@ -126,10 +125,7 @@ public abstract class Mob extends Entity {
             int height = e.getSprite().getHeight();
             if (ix >= x || ix <= x + width || iy >= y || iy <= y + height)
                 collided = true;
-        }*/
-        Rectangle r1 = new Rectangle((int)x - 16, (int)y, 32, 16);
-        Rectangle r2 = new Rectangle((int)e.getX() - 16, (int)e.getY(), 32, 16);
-        collided = (r1.intersects(r2));
+        }
         return collided;
     }
 
@@ -152,14 +148,8 @@ public abstract class Mob extends Entity {
                 iy = (int)Math.floor(yt);
             if (this instanceof Enemy && level.getTile(ix, iy) instanceof SpawnEdgeTile && !(level instanceof LavaLevel))
                 return true;
-            /*if (this instanceof Enemy){
-              int index = level.getEnemies().indexOf(this);
-              for (int i = 0; i < level.getEnemies().size(); i++){
-                if (entityCollided(level.getEnemies().get(i)) && i != index){
-                    return true;
-                }
-              }
-            }*/
+            if (this instanceof Player && level.getTile(ix, iy) instanceof SpawnEdgeTile && !(level instanceof LavaLevel))
+                return true;
             if (this instanceof Player) {
                 if (level.getTile(ix, iy) instanceof SpawnWaterTile) {
                 } else if (level.getTile(ix,iy) instanceof SpawnLavaTile){

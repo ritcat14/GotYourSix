@@ -32,7 +32,7 @@ public class EnemySpawner extends Spawner {
                 if (j == 0) type = "baby";
                 else if (j == 1) type = "blue";
                 else if (j == 2) type = "female";
-                level.add(new Zombie(x + xx, y + yy, "/textures/sheets/mob/enemy/zombie/"+ type + enemy + ".png"));
+                level.add(new Zombie(x + xx, y + yy, "/textures/sheets/mob/enemy/zombie/"+ type + enemy + ".png", enemy));
             } else if (enemy == "Goblin"){
                 int j = ran.nextInt(4);
                 switch (j){
@@ -45,7 +45,7 @@ public class EnemySpawner extends Spawner {
                   case 3: type = "naked";
                   break;
                 }
-                level.add(new Zombie(x + xx, y + yy, "/textures/sheets/mob/enemy/goblin/"+ type + enemy + ".png"));
+                level.add(new Zombie(x + xx, y + yy, "/textures/sheets/mob/enemy/goblin/"+ type + enemy + ".png", enemy));
             } else if (enemy == "Mummy"){
                 int j = ran.nextInt(2);
                 switch (j){
@@ -54,7 +54,7 @@ public class EnemySpawner extends Spawner {
                   case 1: type = "eye";
                   break;
                 }
-                level.add(new Zombie(x + xx, y + yy, "/textures/sheets/mob/enemy/mummy/"+ type + enemy + ".png"));
+                level.add(new Zombie(x + xx, y + yy, "/textures/sheets/mob/enemy/mummy/"+ type + enemy + ".png", enemy));
           } else if (enemy == "Person"){
                 int j = ran.nextInt(4);
                 switch (j){
@@ -67,7 +67,7 @@ public class EnemySpawner extends Spawner {
                   case 3: type = "viking";
                   break;
                 }
-                level.add(new Zombie(x + xx, y + yy, "/textures/sheets/mob/enemy/people/"+ type + enemy + ".png"));
+                level.add(new Zombie(x + xx, y + yy, "/textures/sheets/mob/enemy/people/"+ type + enemy + ".png", enemy));
             }
       }
     }

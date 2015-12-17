@@ -19,32 +19,35 @@ import com.ritcat14.GotYourSix.input.Mouse;
 
 public class Inventory extends UIPanel {
   
-    private Slot slot = null, s = new Slot(new Vector2i(Mouse.getX(), Mouse.getY()), false);
+    private Slot slot = null, s = null;
     private ArmourSlot as = null;
     private ResSlot rs = null;
     private int slotSize = 50, defence = 0;
     private UILabel def = null;
+    public Player p;
     
     private List<Slot> slots = new ArrayList<Slot>();
   
     public Inventory(Player p) {
         super(new Vector2i(50,50), new Vector2i(Game.getAbsoluteWidth() - 100, Game.getAbsoluteHeight() - 100), ImageUtil.getImage("/ui/panels/inventory/inventory.png"));
+        s = new Slot(new Vector2i(Mouse.getX(), Mouse.getY()), false, p);
+        this.p = p;
         for (int x =5; x < 14; x++){
           for (int y = 0; y < 7; y++){
-            slot = new Slot(new Vector2i((x * (slotSize + 6)) + 50, (y * (slotSize + 6)) + 50), false);
+            slot = new Slot(new Vector2i((x * (slotSize + 6)) + 50, (y * (slotSize + 6)) + 50), false, p);
             slots.add(slot);
             addComponent(slot);
           }
         }
-        as = new ArmourSlot(new Vector2i((1 * (slotSize + 6)) + 50, (1 * (slotSize + 6)) + 50), "Head");
+        as = new ArmourSlot(new Vector2i((1 * (slotSize + 6)) + 50, (1 * (slotSize + 6)) + 50), "Head", p);
         slots.add(as);
         addComponent(as);
         as.add(p.getArmour("Head"));
-        as = new ArmourSlot(new Vector2i((1 * (slotSize + 6)) + 50, (2 * (slotSize + 6)) + 50), "Chest");
+        as = new ArmourSlot(new Vector2i((1 * (slotSize + 6)) + 50, (2 * (slotSize + 6)) + 50), "Chest", p);
         slots.add(as);
         addComponent(as);
         as.add(p.getArmour("Chest"));
-        as = new ArmourSlot(new Vector2i((1 * (slotSize + 6)) + 50, (3 * (slotSize + 6)) + 50), "Legs");
+        as = new ArmourSlot(new Vector2i((1 * (slotSize + 6)) + 50, (3 * (slotSize + 6)) + 50), "Legs", p);
         slots.add(as);
         addComponent(as);
         as.add(p.getArmour("Legs"));
@@ -52,7 +55,7 @@ public class Inventory extends UIPanel {
         addComponent(def);
         for (int x = 1; x < 3; x++){
           for (int y = 7; y < 8; y++){
-            rs = new ResSlot(new Vector2i((x * (slotSize + 6)) + 50, (y * (slotSize + 6)) + 50));
+            rs = new ResSlot(new Vector2i((x * (slotSize + 6)) + 50, (y * (slotSize + 6)) + 50), p);
             slots.add(rs);
             addComponent(rs);
           }

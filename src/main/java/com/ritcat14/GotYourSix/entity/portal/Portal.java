@@ -10,7 +10,7 @@ import com.ritcat14.GotYourSix.graphics.Sprite;
 import com.ritcat14.GotYourSix.level.Level;
 
 public class Portal extends Entity {
-  
+    
     private Level currLevel = null;
     private boolean locked = false;
   

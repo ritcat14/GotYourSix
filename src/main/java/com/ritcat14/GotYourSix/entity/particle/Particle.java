@@ -10,10 +10,10 @@ import com.ritcat14.GotYourSix.graphics.Sprite;
 
 public class Particle extends Entity {
 
-    private Sprite   sprite = null;
+    protected Sprite   sprite = null;
 
-    private int      life = 0;
-    private int      time = 0;
+    protected int      life = 0;
+    protected int      time = 0;
 
     protected double xx = 0, yy = 0, zz = 0;
     protected double xa = 0, ya = 0, za = 0;

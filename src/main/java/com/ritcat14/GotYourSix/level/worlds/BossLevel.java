@@ -42,7 +42,7 @@ public class BossLevel extends Level {
           EnemySpawner es = new EnemySpawner(x, y, 100, 5, this, bossName);
           add(es);
         } else if (tiles[x + y * width] == Tile.col_boss){
-            Boss bs = new Boss(x, y,health, "/textures/sheets/mob/enemy/" + bossName.toLowerCase() + "/king" + bossName + ".png");
+            Boss bs = new Boss(x, y,health, "/textures/sheets/mob/enemy/" + bossName.toLowerCase() + "/king" + bossName + ".png", bossName);
             add(bs);
         }
       }

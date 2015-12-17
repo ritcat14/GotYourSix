@@ -57,6 +57,10 @@ public class AnimatedObject extends Sprite {
         sprite = sheet.getSprites()[index];
     }
   
+    public void setSpriteSheet(SpriteSheet sheet){
+      this.sheet = sheet;
+    }
+  
     public int getFrame(){
       return frame;
     }

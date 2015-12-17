@@ -39,7 +39,7 @@ public class Player extends Mob implements EventListener {
   
    private boolean hit = false, dying = false, shooting = false, changePlayer = true, inventOpen = false, mapOpen = false;
 	private double speed = 1.5, invin = 1;
-   private int staminaDec = 15, staminaInc = 3, defence = 10;
+   private int staminaDec = 15, staminaInc = 3, defence = 10, money = 5;
   
 	private AnimatedObject down = null, up = null, left = null, right = null; // All the movement animatedObjects. These are set depending on the player you choose in the selection screen
    private Sprite weapon = null;
@@ -110,8 +110,6 @@ public class Player extends Mob implements EventListener {
               }
           }
       }
-     
-      invent = new Inventory(this);
       ui = Game.getUIManager();
       
       Stats s = new Stats();
@@ -140,8 +138,15 @@ public class Player extends Mob implements EventListener {
    }
   
    public String getStats(){
+       if (invent == null) invent = new Inventory(this);
      String nl = "\n";
-     return health + nl + hunger + nl + thirst + nl + XPLevel + nl + StartScreen.state.toString() + nl + defence + nl;
+     String stats = /*0*/health + nl + /*1*/hunger + nl + /*2*/thirst + nl + /*3*/XPLevel + nl + /*4*/StartScreen.state.toString() + nl + /*5*/defence + nl + /*6*/money + nl;
+     String inventStats = "";
+     List<Slot> slots = invent.getSlots();
+     for (int i = 0; i < slots.size(); i++){
+         if (slots.get(i).getItems().size() > 0) inventStats = inventStats + slots.get(i).getItems().get(0).getType() + ":" + slots.get(i).getItems().size() + nl;
+     }
+     return stats + inventStats;
    }
   
    public void levelIn(){
@@ -158,13 +163,36 @@ public class Player extends Mob implements EventListener {
    }
  
    public void setStats(String stats){
+       if (invent == null) invent = new Inventory(this);
        String[] parts = stats.split("\n");
        health = Integer.parseInt(parts[0]);
        hunger = Integer.parseInt(parts[1]);
        thirst = Integer.parseInt(parts[2]);
        XPLevel = Integer.parseInt(parts[3]);
        defence = Integer.parseInt(parts[5]);
+       money = Integer.parseInt(parts[6]);
+       
        StartScreen.state = StartScreen.playerViewState.valueOf(parts[4]);
+       
+       for (int i = 7; i < parts.length; i++){
+           String type = parts[i].split(":")[0];
+           System.out.println(type);
+           int amount = Integer.parseInt(parts[i].split(":")[1]);
+           System.out.println(amount);
+           for (int j = 0; j < amount; j++){
+               if (type.equals("Food")){
+                   invent.add(new Food());
+               } else if (type.equals("Water")){
+                   invent.add(new Water());
+               } else if (type.equals("Head")){
+                   invent.add(getArmour(type));
+               } else if (type.equals("Chest")){
+                   invent.add(getArmour(type));
+               } else if (type.equals("Legs")){
+                   invent.add(getArmour(type));
+               }
+           }
+       }
    }
   
    public int getDefence(){
@@ -267,7 +295,7 @@ public class Player extends Mob implements EventListener {
          hit = false;
        }
       }
-      /*if (time % 180 == 0 && thirst < 100) thirst += 2;
+      if (time % 180 == 0 && thirst < 100) thirst += 2;
       if (time % 180 == 0 && hunger < 100) hunger += 1;
       if (time % 180 == 0 && thirst>= 100){
         loseHealth(4);
@@ -277,7 +305,7 @@ public class Player extends Mob implements EventListener {
         dying = true;
       } else {
         dying = false;
-      }*/
+      }
       if (time % 60 == 0 && health < 100 && !hit && !dying) health ++;
       
       if (input.sprint && time % 100 == 0 && stamina > staminaDec && walking) stamina -= staminaDec;
@@ -310,6 +338,8 @@ public class Player extends Mob implements EventListener {
         if (input.left) animSprite = left;
         if (input.right) animSprite = right;
       }
+      if (walking) Game.s.loopSound("WALK");
+      else if (!walking) Game.s.stopSound("WALK");
 		if(input.up) {
 			ya -= speed;
 		}else if(input.down) {
@@ -374,16 +404,13 @@ public class Player extends Mob implements EventListener {
        return false;
      }
    }
-  
-   private void updateArmour(){
-       /*switch(animSprite){
-         case animSprite.equals(up):
-         break;
-         case animSprite.equals(down):
-         break;
-         case animSprite.equals(left):
-         break;
-       }*/
+
+   public void water(int i){
+       if (thirst > i) thirst -= i;
+   }
+
+   public void food(int i){
+       if (hunger > i) hunger -= i;
    }
 	
 	private void clear() {
@@ -425,7 +452,8 @@ public class Player extends Mob implements EventListener {
            Rectangle r = new Rectangle(items.get(i).position.x, items.get(i).position.y, items.get(i).sprite.getWidth(), items.get(i).sprite.getHeight());
            if (r.x >= getBounds().x && r.x <= getBounds().x + getBounds().width
                && r.y >= getBounds().y && r.y <= getBounds().y + getBounds().height){
-               invent.add((Item)items.get(i));
+               if (items.get(i) instanceof Money) money ++;
+               else invent.add((Item)items.get(i));
                items.get(i).remove();
            }
        }
@@ -434,5 +462,7 @@ public class Player extends Mob implements EventListener {
 	public void render(Screen screen) {
 		screen.renderMob((int)(x - 16), (int)(y - 16), sprite);
       font.render(0,0,0xffaaaaaa,name + " Level " + XPLevel,screen);
+      font.render(10 / 3, 15, 0xff000000,"" + money, screen);
+      screen.renderSprite(0, 15, new Sprite(8,4,0,SpriteSheet.items), false);
 	}
 }

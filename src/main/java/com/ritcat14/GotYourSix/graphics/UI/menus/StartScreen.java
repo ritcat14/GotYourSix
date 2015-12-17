@@ -2,6 +2,7 @@ package com.ritcat14.GotYourSix.graphics.UI.menus;
 
 import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.graphics.UI.*;
+import com.ritcat14.GotYourSix.graphics.UI.menus.Options;
 import com.ritcat14.GotYourSix.graphics.SpriteSheet;
 import com.ritcat14.GotYourSix.util.*;
 import com.ritcat14.GotYourSix.entity.mob.Player;
@@ -18,12 +19,14 @@ import javax.swing.JOptionPane;
 
 public class StartScreen extends UIPanel implements KeyListener {
   
-    private boolean menuActive = false, activateMenu = false, keyAdded = false;
+    private boolean menuActive = false, activateMenu = false, keyAdded = false, activateOps = false, opsActive = false, startActive = false, activeStart = true;
     private boolean[] keys      = new boolean[1000];
     private List<UIComponent> menuItems = new ArrayList<UIComponent>();
     
     //Start screen items
     private UILabel options = new UILabel(new Vector2i((Game.getAbsoluteWidth() / 2) - 50, (Game.getAbsoluteHeight() - 200)), "START");
+    private UIPanel leftArrow = new UIPanel(new Vector2i((Game.getAbsoluteWidth() / 2) - 65, (Game.getAbsoluteHeight() - 215)), new Vector2i(15,15), ImageUtil.getImage("/ui/buttons/leftArrowStart.png"));
+    private UIPanel rightArrow = new UIPanel(new Vector2i(((Game.getAbsoluteWidth() / 2) + 30), (Game.getAbsoluteHeight() - 215)), new Vector2i(15,15), ImageUtil.getImage("/ui/buttons/rightArrowStart.png"));
     private UIButton left = new UIButton(new Vector2i((Game.getAbsoluteWidth() / 12) - 50, (Game.getAbsoluteHeight() / 2) - 50), ImageUtil.getImage("/ui/buttons/arrowLeft.png"), new UIActionListener() {
       public void perform() {
           if (state == playerViewState.MF) state = playerViewState.MI;
@@ -93,15 +96,17 @@ public class StartScreen extends UIPanel implements KeyListener {
         }
     }, "");
   
+    private Options o = null;
+  
     private UIPanel character = new UIPanel(new Vector2i((Game.getAbsoluteWidth() / 12) + 125, (Game.getAbsoluteHeight() / 2) - 140), ImageUtil.getImage("/ui/panels/characters/MF.png"));
     public static enum playerViewState {
       MF, MI, FF, FI;
     }
-    public static playerViewState state = playerViewState.MF;
-    private enum optionState {
-      START, HELP;
+    public static playerViewState state = playerViewState.MI;
+    public static enum optionState {
+      START, OPTIONS;
     }
-    private optionState opState = optionState.START;
+    public static optionState opState = optionState.START;
     private boolean setupCreated = false;
     private UITextBox nameBox = new UITextBox(new Vector2i((Game.getAbsoluteWidth() / 12) + 115, ((Game.getAbsoluteHeight() / 2) - 180) + 406), "NAME: ");
     private UITextBox groupNameBox = new UITextBox(new Vector2i((Game.getAbsoluteWidth() / 2) + 200, ((Game.getAbsoluteHeight() / 2) - 150)), "GROUP: ");
@@ -117,6 +122,8 @@ public class StartScreen extends UIPanel implements KeyListener {
         Dimension newDimension = Game.getScaledDimension(imgSize, boundary);
         setSize(new Vector2i(newDimension.width, newDimension.height));
         addComponent(options);
+        addComponent(leftArrow);
+        addComponent(rightArrow);
         menuItems.add(left);
         menuItems.add(right);
         menuItems.add(start);
@@ -159,24 +166,39 @@ public class StartScreen extends UIPanel implements KeyListener {
     public String getGroupPass(){
       return groupPassBox.getTypedText();
     }
+  
+    public void goToStart(){
+            menuActive = false;
+            activateMenu = false;
+            activateOps = false;
+            opsActive = false;
+            clear();
+            addComponent(options);
+            addComponent(leftArrow);
+            addComponent(rightArrow);
+            activeStart = false;
+            startActive = true;
+    }
 
     public void keyPressed(KeyEvent e) {
         keys[e.getKeyCode()] = true;
         if (keys[KeyEvent.VK_ENTER]){
-          if (!menuActive && opState == optionState.START) {
-              activateMenu = true;
-              if (FileHandler.fileExists(FileHandler.localUserFile)){
-                nameBox.setText(FileHandler.getPlayerName());
-                
-              }
-              removeComponent(options);
-          }
+            if (!menuActive && opState == optionState.START) {
+                activateMenu = true;
+                if (FileHandler.fileExists(FileHandler.localUserFile)){
+                    nameBox.setText(FileHandler.getPlayerName());
+                    state = playerViewState.valueOf(FileHandler.getStats().split("\n")[4]);
+                }
+            } else if (!opsActive && opState == optionState.OPTIONS){
+                activateOps = true;
+            }
+            removeComponent(options);
         } else if (keys[KeyEvent.VK_LEFT]) {
-            if (opState == optionState.START) opState = optionState.HELP;
-          else if (opState == optionState.HELP) opState = optionState.START;
+            if (opState == optionState.START) opState = optionState.OPTIONS;
+          else if (opState == optionState.OPTIONS) opState = optionState.START;
         } else if (keys[KeyEvent.VK_RIGHT]) {
-            if (opState == optionState.HELP) opState = optionState.START;
-            else if (opState == optionState.START) opState = optionState.HELP;
+            if (opState == optionState.OPTIONS) opState = optionState.START;
+            else if (opState == optionState.START) opState = optionState.OPTIONS;
         }
     }
 
@@ -186,7 +208,7 @@ public class StartScreen extends UIPanel implements KeyListener {
 
     public void keyTyped(KeyEvent e) {}
   
-    public void update(){      
+    public void update(){
         if (Game.getGame() != null && !keyAdded){
           Game.getGame().addKeyListener(this);
           keyAdded = true;
@@ -194,6 +216,7 @@ public class StartScreen extends UIPanel implements KeyListener {
       if (opState == optionState.START){
           if (!menuActive && activateMenu) {
               //initiate menu
+              clear();
               for (int i = 0; i < menuItems.size(); i++){
                   addComponent(menuItems.get(i));
               }
@@ -206,29 +229,26 @@ public class StartScreen extends UIPanel implements KeyListener {
               System.out.println("Please fill out name and group. If you'd like to create a group, enter a name and password, or enter an existing one to join a group. Use the arrow buttons to select a character");
           } else if (menuActive){
               //update menu
-              for (UIComponent comp : menuItems) {
-                  if (comp.hoverable() && comp.equals(character)) {
-                        if (comp.isHovered() && !messageBoxAdded){
-                          if (state == playerViewState.MF) mb = new MessageBox(new Vector2i(0, 0), "MF");
-                          else if (state == playerViewState.FF) mb = new MessageBox(new Vector2i(0, 0), "FF");
-                          else if (state == playerViewState.MI) mb = new MessageBox(new Vector2i(0, 0), "MI");
-                          else if (state == playerViewState.FI) mb = new MessageBox(new Vector2i(0, 0), "FI");
-                          addComponent(mb);
-                          messageBoxAdded = true;
-                        } else if (!comp.isHovered() && messageBoxAdded){
-                          removeComponent(mb);
-                          messageBoxAdded = false;
-                        }
-                  }
-              }
               String charName = state.toString();
               character.setBackgroundImage(ImageUtil.getImage("/ui/panels/characters/" + charName + ".png"));
           }
+      } else if (opState == optionState.OPTIONS){
+          if (!opsActive && activateOps){
+              clear();
+              //initiate ops menu
+              o = new Options(this);
+              addComponent(o);
+              System.out.println("Added option panel");
+              opsActive = true;
+              activateOps = false;
+          } else if (opsActive){
+              o.update();
+          }
       }
-      if (!menuActive){
+      if (!menuActive && !opsActive){
           //update start
           if (opState == optionState.START) options.setText("START");
-          else if (opState == optionState.HELP) options.setText("HELP");
+          else if (opState == optionState.OPTIONS) options.setText("OPTION");
           if (options.getFontMetrics() != null) options.setPosition(new Vector2i((Game.getAbsoluteWidth() / 2) - ((options.getFontMetrics().stringWidth(options.getText()))), (Game.getAbsoluteHeight() - 200)));
       }
       super.update();

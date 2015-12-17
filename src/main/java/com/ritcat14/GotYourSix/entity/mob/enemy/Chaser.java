@@ -15,7 +15,8 @@ public class Chaser extends Enemy { // Extends enemy class
 
     int                    xa         = 0, ya = 0; // X and Y values to ba added to the X and Y coordinate of the sprites location
 
-    public Chaser(int x, int y) { // Require a coordinate to spawn at when the sprite is created
+    public Chaser(int x, int y, String type) {
+        this.type = type;
         this.x = x << 4; // mulitplies the value of X by 4^2 (4x4) by shifting the bits to the left 4 spaces.
         this.y = y << 4;
         initSheets();

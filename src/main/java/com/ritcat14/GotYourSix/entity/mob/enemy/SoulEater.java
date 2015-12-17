@@ -10,7 +10,8 @@ public class SoulEater extends Enemy {
     private int            time       = 0;
     int                    xa         = 0, ya = 0;
 
-    public SoulEater(int x, int y) {
+    public SoulEater(int x, int y, String type) {
+        this.type = type;
         this.x = x << 4;
         this.y = y << 4;
         initSheets();

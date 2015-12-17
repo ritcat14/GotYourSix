@@ -17,8 +17,8 @@ public class UIManager extends UILayer {
     }
 
     public void onEvent(Event event) {
-      for (UIPanel panel : panels) {
-        panel.onEvent(event);
+      for (int i = panels.size() - 1; i > -1; i--) {
+        panels.get(i).onEvent(event);
       }
     }
 
@@ -35,14 +35,14 @@ public class UIManager extends UILayer {
     }
 
     public void update() {
-        for (UIPanel panel : panels) {
-            panel.update();
+        for (int i = panels.size() - 1; i > -1; i--) {
+            panels.get(i).update();
         }
     }
 
     public void render(Graphics g) {
-        for (UIPanel panel : panels) {
-            panel.render(g);
+        for (int i = panels.size() - 1; i > -1; i--) {
+            panels.get(i).render(g);
         }
     }
 

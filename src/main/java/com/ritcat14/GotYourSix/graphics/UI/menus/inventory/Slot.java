@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ritcat14.GotYourSix.entity.mob.Player;
 import com.ritcat14.GotYourSix.graphics.UI.UILabel;
 import com.ritcat14.GotYourSix.graphics.UI.UIPanel;
 import com.ritcat14.GotYourSix.items.Item;
@@ -17,9 +18,11 @@ public class Slot extends UIPanel {
     protected List<Item> items = new ArrayList<Item>();
     private UILabel counter = null;
     private boolean selected = false, armour = false;
+    public Player p;
   
-    public Slot(Vector2i position, boolean armour){
+    public Slot(Vector2i position, boolean armour, Player p){
       super(position, new Vector2i(50,50), ImageUtil.getImage("/ui/panels/inventory/slot.png"));
+      this.p = p;
       this.armour = armour;
       if (!armour){
           counter = new UILabel(new Vector2i(5,5), "" + items.size());

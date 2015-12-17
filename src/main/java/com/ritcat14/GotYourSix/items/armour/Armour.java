@@ -9,6 +9,7 @@ public class Armour extends Item {
     private String type = "";
     
     public Armour(int defence, String type, Sprite sprite, int pLevel){
+        super(type);
         this.defence = defence;
         this.type = type;
         this.sprite = sprite;
@@ -25,5 +26,5 @@ public class Armour extends Item {
   
     public int getLevel() {
       return pLevel;
-    } 
+    }
 }

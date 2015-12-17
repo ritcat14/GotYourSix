@@ -11,10 +11,12 @@ public class Item {
     public Sprite sprite = null;
     protected int amount = 0;
     public Vector2i position = null;
+    public String type = "";
     private boolean removed = false;
     int life = 10;
   
-    public Item(){
+    public Item(String type){
+        this.type = type;
     }
   
     public Item(Vector2i position){
@@ -27,6 +29,10 @@ public class Item {
   
    public void setPosition(Vector2i position){
        this.position = position;
+   }
+  
+   public String getType(){
+     return type;
    }
   
    public void inLife(){

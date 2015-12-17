@@ -25,7 +25,7 @@ public class Keyboard implements KeyListener{
       invnt = keys[KeyEvent.VK_Q];
       map = keys[KeyEvent.VK_M];
       paused = keys[KeyEvent.VK_ESCAPE];
-      home = keys[KeyEvent.VK_HOME];
+      home = keys[KeyEvent.VK_HOME] || keys[KeyEvent.VK_H];
 	}
 
 	public void keyPressed(KeyEvent e) {

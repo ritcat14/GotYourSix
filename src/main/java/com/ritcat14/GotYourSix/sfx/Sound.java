@@ -6,8 +6,10 @@ import java.net.URL;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+//import javax.sound.sampled.DataLine;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
+//import javax.sound.sampled.Mixer;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Sound {
@@ -17,7 +19,7 @@ public class Sound {
     public String        name = "";
     private Clip clip = null;
     private boolean      running     = false;
-    public static float volume = 5.0f;
+    public static float volume = 2.0f;
     private FloatControl control = null;
 
     private Sound() {
@@ -31,6 +33,7 @@ public class Sound {
              // Get a sound clip resource.
              clip = AudioSystem.getClip();
              // Open audio clip and load samples from the audio input stream.
+             System.out.println(audioIn.getFormat());
              clip.open(audioIn);
              control = (FloatControl) 
                      clip.getControl(FloatControl.Type.MASTER_GAIN);

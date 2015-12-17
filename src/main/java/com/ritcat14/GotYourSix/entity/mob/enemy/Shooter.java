@@ -13,7 +13,8 @@ import java.util.List;
 public class Shooter extends Enemy {  
     int                    xa         = 0, ya = 0;
 
-    public Shooter(int x, int y) {
+    public Shooter(int x, int y, String type) {
+        this.type = type;
         this.x = x << 4;
         this.y = y << 4;
         initSheets();

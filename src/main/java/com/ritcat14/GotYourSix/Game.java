@@ -1,33 +1,35 @@
 package com.ritcat14.GotYourSix;
 
-import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.LayoutManager;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.util.ArrayList;
-import java.util.List;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import java.io.IOException;
+import java.io.InputStream;
+
+import java.awt.Font;
+import java.awt.FontFormatException;
 
 import com.ritcat14.GotYourSix.entity.mob.Player;
 import com.ritcat14.GotYourSix.events.Event;
 import com.ritcat14.GotYourSix.events.EventListener;
-import com.ritcat14.GotYourSix.graphics.Screen;
+import com.ritcat14.GotYourSix.graphics.*;
 import com.ritcat14.GotYourSix.graphics.UI.UIManager;
 import com.ritcat14.GotYourSix.graphics.UI.UIPanel;
 import com.ritcat14.GotYourSix.graphics.UI.menus.Pause;
@@ -39,10 +41,9 @@ import com.ritcat14.GotYourSix.input.Mouse;
 import com.ritcat14.GotYourSix.level.Level;
 import com.ritcat14.GotYourSix.level.TileCoordinate;
 import com.ritcat14.GotYourSix.level.worlds.LavaLevel;
-import com.ritcat14.GotYourSix.util.Console;
-import com.ritcat14.GotYourSix.util.FileHandler;
-import com.ritcat14.GotYourSix.util.ImageUtil;
-import com.ritcat14.GotYourSix.util.Installer;
+import com.ritcat14.GotYourSix.sfx.Sound;
+import com.ritcat14.GotYourSix.sfx.SoundManager;
+import com.ritcat14.GotYourSix.util.*;
 
 public class Game extends Canvas implements Runnable, EventListener {
     private static final long serialVersionUID = 1L;
@@ -54,12 +55,10 @@ public class Game extends Canvas implements Runnable, EventListener {
     private static int        width            = size.width / scale, height = size.height / scale, absoluteWidth = width,
         absoluteHeight = height;
 
-    private static int        frameWidth       = Toolkit.getDefaultToolkit().getScreenSize().width / scale;
-    private static int        frameHeight      = Toolkit.getDefaultToolkit().getScreenSize().height / scale;
-
     public static enum State {
         START,
         GAME,
+        OPTION,
         WAITING,
         PAUSE
     }
@@ -87,15 +86,34 @@ public class Game extends Canvas implements Runnable, EventListener {
     private static Game      game         = null;
     public static boolean    loaded       = false, paused = false, initPause = false;;
     private int              time         = 0;
-    private static Console   c            = null;
+    private static Console   c            = new Console();
+    public static Font       font         = new Font("Magneto", Font.BOLD, 24);
+    private static Graphics g;
+    public static SoundManager s = new SoundManager() {
+        public void initSounds() {
+            sounds.add(new Sound("INTRO", Sound.getURL("Intro.wav")));
+            //sounds.add(new Sound("WALK", Sound.getURL("footstepDirt.wav")));
+            /*sounds.add(new Sound("FIRESHOOT", Sound.getURL("SpellFire.wav")));
+            sounds.add(new Sound("ICESHOOT", Sound.getURL("SpellIce.wav")));
+            sounds.add(new Sound("ACHIEVE", Sound.getURL("Achievement.wav")));
+            sounds.add(new Sound("DOORCLOSE", Sound.getURL("DoorClose.wav")));*/
+            sounds.add(new Sound("GOBLIN", Sound.getURL("Goblin1.wav")));
+            /*sounds.add(new Sound("ENEMY2", Sound.getURL("Goblin2.wav")));
+            sounds.add(new Sound("ENEMY3", Sound.getURL("Goblin3.wav")));
+            sounds.add(new Sound("ENEMY4", Sound.getURL("Goblin4.wav")));
+            sounds.add(new Sound("ENEMY5", Sound.getURL("Goblin5.wav")));
+            sounds.add(new Sound("LOSE", Sound.getURL("Lose.wav")));
+            sounds.add(new Sound("SELECT", Sound.getURL("Select.wav")));
+            sounds.add(new Sound("WIN", Sound.getURL("Win.wav")));*/
+        }
+      };
 
     public Game() {
-        Dimension size = new Dimension((frameWidth * scale), frameHeight * scale);
+        Dimension size = new Dimension((width * scale), height * scale);
         setPreferredSize(size);
         Game.game = this;
 
         screen = new Screen(width, height);
-        //setLocation(new Point((frameWidth / 2) - (width / 2), (frameHeight / 2) - (height / 2)));
         uiManager = new UIManager();
         UILayerStack.add(uiManager);
         minimapManager = new UIManager();
@@ -115,7 +133,10 @@ public class Game extends Canvas implements Runnable, EventListener {
         game.frame.setResizable(false);
         game.frame.setUndecorated(true); //Enable for full screen
         game.frame.setLayout(new GridBagLayout());
-        game.frame.add(game, new GridBagConstraints());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.CENTER;
+        game.frame.add(game, gbc);
+
         game.frame.pack();
         game.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
@@ -152,9 +173,40 @@ public class Game extends Canvas implements Runnable, EventListener {
         game.frame.setVisible(true);
         game.frame.requestFocus();
         game.start();
-        c = new Console();
+        s.loopSound("INTRO");
         game.frame.requestFocus();
         System.out.println("Press Enter to start...");
+    }
+
+    public static Font createFont() {
+        Font font2 = null;
+        InputStream is = game.getClass().getResourceAsStream("/fonts/BOOTERZO.ttf");
+        try {
+            font2 = Font.createFont(Font.TRUETYPE_FONT, is);
+        } catch (FontFormatException e) {
+        } catch (IOException e) {
+        }
+        return font2.deriveFont(30f);
+    }
+
+    public static Console getConsole() {
+        return c;
+    }
+
+    public static synchronized void playSound(final String url) {
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Clip clip = AudioSystem.getClip();
+                    AudioInputStream inputStream =
+                                                   AudioSystem.getAudioInputStream(Game.class.getResourceAsStream("/music/" + url));
+                    clip.open(inputStream);
+                    clip.start();
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        }).start();
     }
 
     public static void infoBox(String infoMessage, String titleBar) {
@@ -178,9 +230,9 @@ public class Game extends Canvas implements Runnable, EventListener {
             changeLevel(Level.activeLevel);
             FileHandler.save(player);
             initPause = false;
-            c.clearTextArea();
+            /*c.clearTextArea();
             System.out.println("Controls: \n W/up -> Player up \n A/left -> Player left \n S/down -> Player down \n D/right -> Player right \n "
-                               + "Q -> Inventory \n Shift -> Sprint \n HOME -> home level \n M -> Map \n numbers 1-6 -> Weapons");
+                               + "Q -> Inventory \n Shift -> Sprint \n HOME -> home level \n M -> Map \n numbers 1-6 -> Weapons");*/
         } else if (state == State.START) {
             sc = new StartScreen();
             uiManager.addPanel(sc);
@@ -212,10 +264,6 @@ public class Game extends Canvas implements Runnable, EventListener {
 
     public static UIManager getUIManager() {
         return uiManager;
-    }
-
-    public static Console getConsole() {
-        return c;
     }
 
     public static UIManager getMapManager() {
@@ -307,7 +355,7 @@ public class Game extends Canvas implements Runnable, EventListener {
     public synchronized void start() { //Starts the Thread running
         running = true;
         thread = new Thread(this, "Display"); //Initialises the Thread
-        thread.start(); //Runs the Thread
+        thread.start(); //Runs the Thread=
     }
 
     public synchronized void stop() { //Stops the Thread
@@ -389,6 +437,7 @@ public class Game extends Canvas implements Runnable, EventListener {
         screen.clear();
 
         Graphics g = bs.getDrawGraphics();
+        this.g = g;
         if (STATE != State.WAITING) {
             List<UIPanel> panels = uiManager.getPanels();
             for (int i = 0; i < panels.size(); i++) {
@@ -422,9 +471,6 @@ public class Game extends Canvas implements Runnable, EventListener {
         }
 
         g.drawImage(image, 0, 0, newWidth, newHeight, null);
-
-
-        //uiManager.render(g);
 
         for (int i = 0; i < UILayerStack.size(); i++) {
             UILayerStack.get(i).render(g);

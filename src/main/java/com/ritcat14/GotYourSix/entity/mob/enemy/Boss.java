@@ -12,7 +12,8 @@ public class Boss extends Enemy {
 
     double                 xa         = 0, ya = 0;
 
-    public Boss(int x, int y, int health, String sheet) {
+    public Boss(int x, int y, int health, String sheet, String type) {
+        this.type = type;
         this.sheet = sheet;
         this.x = x << 4;
         this.y = y << 4;

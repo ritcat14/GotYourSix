@@ -6,7 +6,6 @@ import java.util.Random;
 import com.ritcat14.GotYourSix.graphics.AnimatedObject;
 import com.ritcat14.GotYourSix.graphics.Screen;
 import com.ritcat14.GotYourSix.items.*;
-import com.ritcat14.GotYourSix.items.armour.*;
 import com.ritcat14.GotYourSix.level.tile.Tile;
 import com.ritcat14.GotYourSix.level.TileCoordinate;
 import com.ritcat14.GotYourSix.util.Vector2i;
@@ -30,6 +29,7 @@ public abstract class Enemy extends Mob {
     protected AnimatedObject right      = null;
     protected String         sheet      = "";
     protected double speed = 0;
+    protected String type = "";
 
     // Animated Objects for each direction of the enemies movement.
     protected AnimatedObject animSprite = null;
@@ -65,7 +65,11 @@ public abstract class Enemy extends Mob {
             }
         }
         //return appropriate item
-        return new Water();
+        return new Money();
+    }
+  
+    public String getType(){
+        return type;
     }
 
     public void loseHealth(int damage, Player player) {

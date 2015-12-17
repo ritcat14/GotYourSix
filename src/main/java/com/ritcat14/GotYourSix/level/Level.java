@@ -84,7 +84,7 @@ public class Level extends Layer {
       switch (levelID){
         case 0:
           activeLevel = new SpawnLevel("/levels/spawn.png");
-          activeLevel.add(new LevelPortal(4,4,activeLevel));
+          activeLevel.add(new Portal(4,4,activeLevel));
           return activeLevel;
       }
       Random r = new Random();
@@ -105,45 +105,18 @@ public class Level extends Layer {
           break;
       }
       int lev = r.nextInt(5);
+      System.out.println(levelID);
       if (levelID > 5){
-        i = r.nextInt(1);
-        switch(i){
+        switch(lev){
           case 0:
-            switch(lev){
-              case 2:
-                break;
-              default:
-                activeLevel = new BossLevel("/levels/level" + lev + ".png",levelType,60 * levelID);
-                break;
-            }
+            activeLevel = new SnowLevel("/levels/level3.png",levelType,60*levelID);
           case 1:
             activeLevel = new LavaLevel("/levels/level2.png",levelType,60*levelID);
-            break;
+          default:
+            activeLevel = new BossLevel("/levels/level1.png",levelType,60*levelID);
         }
       } else {
-          switch(lev){
-            case 2:
-              break;
-            default:
-              activeLevel = new BossLevel("/levels/level" + lev + ".png",levelType,60*levelID);
-          }
-      }
-      switch (levelID){
-        case 0: activeLevel = new SpawnLevel("/levels/spawn.png");
-        activeLevel.add(new LevelPortal(4,4,activeLevel));
-        break;
-        case 1: activeLevel = new BossLevel("/levels/level1.png", "Zombie", 60);
-        break;
-        case 2: activeLevel = new LavaLevel("/levels/level2.png", "Mummy", 120);
-        break;
-        case 3: activeLevel = new BossLevel("/levels/level1.png", "Goblin", 180);
-        break;
-        case 4: activeLevel = new BossLevel("/levels/level1.png", "Mummy", 240);
-        break;
-        case 5: activeLevel = new BossLevel("/levels/level1.png", "Goblin", 180);
-        break;
-        case 6: activeLevel = new BossLevel("/levels/level1.png", "Zombie", 60);
-        break;
+        activeLevel = new BossLevel("/levels/level1.png",levelType,60*levelID);
       }
       return activeLevel;
     }
@@ -457,6 +430,7 @@ public class Level extends Layer {
     public Tile getTile(int x, int y) {
         if (x < 0 || y < 0 || x >= width || y >= height){
           if (this instanceof LavaLevel) return Tile.lava;
+          else if (this instanceof SnowLevel) return Tile.ice;
           else return Tile.water;
         }
         if (tiles[x + y * width] == Tile.col_sand)
@@ -529,12 +503,32 @@ public class Level extends Layer {
           return Tile.lavaMR;
         if (tiles[x + y * width] == Tile.col_lavaBR)
           return Tile.lavaBR;
+        if (tiles[x + y * width] == Tile.col_snowTL)
+          return Tile.snowTL;
+        if (tiles[x + y * width] == Tile.col_snowML)
+          return Tile.snowML;
+        if (tiles[x + y * width] == Tile.col_snowBL)
+          return Tile.snowBL;
+        if (tiles[x + y * width] == Tile.col_snowTM)
+          return Tile.snowTM;
+        if (tiles[x + y * width] == Tile.col_snow)
+          return Tile.snow;
+        if (tiles[x + y * width] == Tile.col_snowBM)
+          return Tile.snowBM;
+        if (tiles[x + y * width] == Tile.col_snowTR)
+          return Tile.snowTR;
+        if (tiles[x + y * width] == Tile.col_snowMR)
+          return Tile.snowMR;
+        if (tiles[x + y * width] == Tile.col_snowBR)
+          return Tile.snowBR;
         if (tiles[x + y * width] == Tile.col_enemy)
           return Tile.enemy;
         if (tiles[x + y * width] == Tile.col_boss)
           return Tile.boss;
         if (tiles[x + y * width] == Tile.col_stump)
           return Tile.stump;
+        if (tiles[x + y * width] == Tile.col_snowStump)
+          return Tile.snowStump;
         if (tiles[x + y * width] == Tile.col_reed)
           return Tile.reed;
         if (tiles[x + y * width] == Tile.col_bush01)
@@ -543,11 +537,16 @@ public class Level extends Layer {
           return Tile.bush02;
         if (tiles[x + y * width] == Tile.col_rocks)
           return Tile.rocks;
+        if (tiles[x + y * width] == Tile.col_snowRocks)
+          return Tile.snowRocks;
         if (tiles[x + y * width] == Tile.col_grassGrave)
           return Tile.grassGrave;
         if (tiles[x + y * width] == Tile.col_lavaGrave)
           return Tile.lavaGrave;
+        if (tiles[x + y * width] == Tile.col_snowGrave)
+          return Tile.snowGrave;
         if (this instanceof LavaLevel) return Tile.lava;
+        else if (this instanceof SnowLevel) return Tile.ice;
         else return Tile.water;
     }
 

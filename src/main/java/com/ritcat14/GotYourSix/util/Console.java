@@ -1,5 +1,6 @@
+/* Class was used as output console for debugging. If required again, simply uncomment line #175 in Game class */
+
 package com.ritcat14.GotYourSix.util;
-import com.ritcat14.GotYourSix.Game;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -29,8 +30,7 @@ public class Console implements ActionListener{
   public Console(){
     this.frame = new JFrame("Server Console");
     this.frame.setSize(600, 600);
-    JFrame gameFrame = Game.getGame().getFrame();
-    this.frame.setLocation(gameFrame.getX() + gameFrame.getWidth(), gameFrame.getY());
+    this.frame.setLocationRelativeTo(null);
     this.frame.setUndecorated(false);
     this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     

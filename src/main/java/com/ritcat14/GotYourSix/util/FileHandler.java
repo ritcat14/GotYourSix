@@ -141,8 +141,5 @@ public class FileHandler {
           pw.write(p.getStats());
           pw.close();
         } catch (IOException ex) {}
-        
-        //3. Save inventory in player's file
-        
       }
     }

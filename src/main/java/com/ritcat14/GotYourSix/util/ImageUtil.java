@@ -27,10 +27,7 @@ public class ImageUtil {
     try {
       final BufferedImage result = ImageIO.read(url);
 
-      if (result == null) {
-        final String message = "Could not load image: " + filename;
-        throw new Error();
-      }
+      if (result == null) {}
       return result;
     } catch (IOException e) {
       return null;

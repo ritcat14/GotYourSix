@@ -1,5 +1,6 @@
 package com.ritcat14.GotYourSix.graphics.UI;
 
+import com.ritcat14.GotYourSix.Game;
 import com.ritcat14.GotYourSix.util.Vector2i;
 
 import java.awt.Graphics;
@@ -11,12 +12,12 @@ import java.awt.FontMetrics;
 public class UILabel extends UIComponent {
   
     public String text = "";
-    private Font font = null;
+    protected Font font = null;
     private FontMetrics fm = null;
   
     public UILabel(Vector2i position, String text) {
         super(position);
-        font = new Font("Magneto",Font.BOLD, 24);
+        font = Game.createFont();
         this.text = text;
         colour = new Color(0xfaf572);
     }

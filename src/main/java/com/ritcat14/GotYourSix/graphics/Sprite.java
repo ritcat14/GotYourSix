@@ -37,7 +37,7 @@ public class Sprite {
     public static Sprite grassBR = new Sprite(16,4,2,SpriteSheet.tiles);
     public static Sprite enemy = new Sprite(16,4,3,SpriteSheet.tiles);
     public static Sprite waterTL = new Sprite(16,5,0,SpriteSheet.tiles);
-    public static Sprite  waterML = new Sprite(16,5,1,SpriteSheet.tiles);
+    public static Sprite waterML = new Sprite(16,5,1,SpriteSheet.tiles);
     public static Sprite waterBL = new Sprite(16,5,2,SpriteSheet.tiles);
     public static Sprite boss = new Sprite(16,5,3,SpriteSheet.tiles);
     public static Sprite waterTM = new Sprite(16,6,0,SpriteSheet.tiles);
@@ -62,6 +62,19 @@ public class Sprite {
   	 public static Sprite rocks = new Sprite(16,10,3,SpriteSheet.tiles);
     public static Sprite grassGrave = new Sprite(16,11,3,SpriteSheet.tiles);
     public static Sprite lavaGrave = new Sprite(16,12,3,SpriteSheet.tiles);
+    public static Sprite snowStump = new Sprite(16,6,4,SpriteSheet.tiles);
+    public static Sprite snowRocks = new Sprite(16,7,4,SpriteSheet.tiles);
+    public static Sprite snowGrave = new Sprite(16,8,4,SpriteSheet.tiles);
+    public static Sprite snowTL = new Sprite(16,11,0,SpriteSheet.tiles);
+    public static Sprite snowML = new Sprite(16,11,1,SpriteSheet.tiles);
+    public static Sprite snowBL = new Sprite(16,11,2,SpriteSheet.tiles);
+    public static Sprite snowTM = new Sprite(16,12,0,SpriteSheet.tiles);
+    public static Sprite snow = new Sprite(16,12,1,SpriteSheet.tiles);
+    public static Sprite snowBM = new Sprite(16,12,2,SpriteSheet.tiles);
+    public static Sprite snowTR = new Sprite(16,13,0,SpriteSheet.tiles);
+    public static Sprite snowMR = new Sprite(16,13,1,SpriteSheet.tiles);
+    public static Sprite snowBR = new Sprite(16,13,2,SpriteSheet.tiles);
+    public static Sprite ice = new Sprite(16,14,0,SpriteSheet.tiles);
 
     //Particles
     public static Sprite  particle_normal = new Sprite(2, 0xFF000000);
