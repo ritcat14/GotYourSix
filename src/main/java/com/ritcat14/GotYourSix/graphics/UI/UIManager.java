@@ -21,6 +21,12 @@ public class UIManager extends UILayer {
         panels.get(i).onEvent(event);
       }
     }
+  
+    public void clear(){
+        for (int i = panels.size() - 1; i > -1; i--) {
+            panels.remove(i);
+        }
+    }
 
     public void addPanel(UIPanel panel) {
         panels.add(panel);

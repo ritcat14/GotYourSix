@@ -39,7 +39,6 @@ public class Zombie extends Enemy {
         ya = 0;
         List<Player> players = level.getPlayers(this, 200);
             if (players.size() > 0) {
-                if (type == "Goblin") Game.s.loopSound("GOBLIN");
                 Player player = players.get(0);
                 if (x < player.getX())
                     xa += speed;

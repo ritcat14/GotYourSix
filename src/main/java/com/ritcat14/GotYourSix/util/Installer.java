@@ -45,7 +45,7 @@ public void actionPerformed(ActionEvent arg0) {
     FileHandler.setupGame();
     this.install.setText(System.getenv("userprofile"));
   try {
-    createInternetShortcut("Got Your Six", FileHandler.netDir + "Current Version/GotYourSix-" + Game.getVersion(this) + ".jar");
+    createInternetShortcut("Got Your Six", FileHandler.netDir + "Current Version/GotYourSix-" + Game.getVersion(this) + ".jar", "/logo.png");
   } catch (IOException e){}
   this.install.setVisible(false);
   this.install.enable(false);
@@ -57,13 +57,13 @@ public void actionPerformed(ActionEvent arg0) {
   }
   
   public static void createInternetShortcut(String name, String target) throws IOException {
-     String path = getWindowsCurrentUserPath() + "/"+ name + ".URL";
+     String path = getWindowsCurrentUserPath() + "/"+ name + ".lnk";
      createInternetShortcut(name, path, target, "");
   }
   
   public static void createInternetShortcut
       (String name, String target, String icon) throws IOException {
-    String path = getWindowsCurrentUserPath() + "/"+ name + ".URL";
+    String path = getWindowsCurrentUserPath() + "/"+ name + ".lnk";
     createInternetShortcut(name, path, target, icon);
   }
   

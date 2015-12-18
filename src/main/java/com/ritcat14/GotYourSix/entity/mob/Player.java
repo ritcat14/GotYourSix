@@ -176,21 +176,19 @@ public class Player extends Mob implements EventListener {
        
        for (int i = 7; i < parts.length; i++){
            String type = parts[i].split(":")[0];
-           System.out.println(type);
            int amount = Integer.parseInt(parts[i].split(":")[1]);
-           System.out.println(amount);
            for (int j = 0; j < amount; j++){
                if (type.equals("Food")){
                    invent.add(new Food());
                } else if (type.equals("Water")){
                    invent.add(new Water());
-               } else if (type.equals("Head")){
+               } /*else if (type.equals("Head")){
                    invent.add(getArmour(type));
                } else if (type.equals("Chest")){
                    invent.add(getArmour(type));
                } else if (type.equals("Legs")){
                    invent.add(getArmour(type));
-               }
+               }*/
            }
        }
    }
@@ -441,7 +439,6 @@ public class Player extends Mob implements EventListener {
        hit = true;
      }
         if (health <= 1){
-            Game.STATE = Game.State.PAUSE;
             health = 1;
         }
    }
