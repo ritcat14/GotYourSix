@@ -62,7 +62,8 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 
     public static State      STATE        = State.START; // Instance of the state, which is static, so is accessible to any other class.
-	/* standard variable declerations. 
+	/* 
+	* Standard variable declerations.
 	* Each variable is set to null to ensure that "floating" variables don't occur
 	*/
     private Thread           thread       = null; //Create main thread
@@ -110,10 +111,8 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
       };
 	  
 	  /*
-	  *
 	  * Game constructor
 	  * Sets up the canvas ready to be drawn to the frame
-	  *
 	  */
 	  
     public Game() {
@@ -137,9 +136,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* Method used for initiating the main game frame, seetting up the close strategy and starting the game
-	*
 	*/
 	
     public static void startGame() {
@@ -155,9 +152,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
         game.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); //Tell the frame not to close if the user tries to exit
 		
 		/*
-		*
 		* Sets up a custom way of exiting the game
-		*
 		*/
 		
         WindowListener exitListener = new WindowAdapter() { //Default event class that triggers when the window is tried to be closed
@@ -195,9 +190,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* A method for creating a font object from a font file
-	*
 	*/
 	
     public static Font createFont() {
@@ -212,9 +205,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* Returns the instance of the output console
-	*
 	*/
 	
     public static Console getConsole() {
@@ -222,9 +213,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* Create a message box, setting the title and message to the title and message passed into the parameters
-	*
 	*/
 
     public static void infoBox(String infoMessage, String titleBar) {
@@ -232,9 +221,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* Return the version value stored in Maven's pom.xml. This ensures the game name is savd witht the correct version in the name.
-	*
 	*/
 	
     public static String getVersion(Object classRes) {
@@ -242,9 +229,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* Initiate the game state. This loads the necessary game objects depending on the state
-	*
 	*/
 	
     private void init(State state) {
@@ -276,9 +261,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* Return the current JFrame
-	*
 	*/
 	
     public JFrame getWindow() {
@@ -286,9 +269,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* A method used for changing the game's level, and transfering the game objects (e.g. player) to the new level
-	*
 	*/
 	
     public void changeLevel(Level lev) {
@@ -302,9 +283,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* Returns the current UI manager so other classes can add items to it
-	*
 	*/
 	
     public static UIManager getUIManager() {
@@ -312,9 +291,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	*  //Return the current UI map manager
-	*
 	*/
 	
     public static UIManager getMapManager() {
@@ -322,9 +299,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* //Return the value of the window Width, unscaled
-	*
 	*/
 	
     public static int getWindowWidth() {
@@ -332,9 +307,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* Return the value of the window Height unscaled
-	*
 	*/
 	
     public static int getWindowHeight() {
@@ -342,9 +315,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* Return the absolute window width
-	*
 	*/
 	
     public static int getAbsoluteWidth() {
@@ -352,9 +323,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
-	* Returnt he absolute window height
-	*
+	* Return the absolute window height
 	*/
 	
     public static int getAbsoluteHeight() {
@@ -362,9 +331,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* Return the scale variable
-	*
 	*/
 	
     public static int getScale() {
@@ -372,9 +339,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* Return the non-sttic instance of game
-	*
 	*/
 	
     public synchronized static Game getGame() {
@@ -384,9 +349,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* Returnt he current level
-	*
 	*/
 	
     public static Level getLevel() {
@@ -394,9 +357,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* Returns the current keyboard controller
-	*
 	*/
 	
     public static Keyboard getKeyboard() {
@@ -404,9 +365,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* Allows other classes to add layers into the stack
-	*
 	*/
 	
     public void addLayer(Layer layer) {
@@ -414,9 +373,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* Allows other classes to remove layers from the stack
-	*
 	*/
 	
     public void removeLayer(Layer layer) {
@@ -424,9 +381,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* Allows other classes to add UI ayers to the UI stack
-	*
 	*/
 	
     public void addUILayer(UILayer layer) {
@@ -434,9 +389,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* Alows other classes to remove UI layers from the UI stack
-	*
 	*/
 	
     public void removeUILayer(UILayer layer) {
@@ -444,9 +397,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* //Returns the image used for drawing the game
-	*
 	*/
 	
     public BufferedImage getImage() {
@@ -454,9 +405,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* Scales the dimensions given to have the same ratio of the screen width to the screen height
-	*
 	*/
 	
     public static Dimension getScaledDimension(Dimension imgSize, Dimension boundary) {
@@ -487,9 +436,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* //synchronized method to start the main thread
-	*
 	*/
 	
     public synchronized void start() { //Starts the Thread running
@@ -499,9 +446,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* Synchronized method to stop the main thread
-	*
 	*/
 	
     public synchronized void stop() { //Stops the Thread
@@ -514,9 +459,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* This method is defualt. It is overriden from the thread superclass, and is automatically called when the thread is started
-	*
 	*/
 	
 	@Override
@@ -551,9 +494,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* The event method for EventListener
-	*
 	*/
 	
     public void onEvent(Event event) {
@@ -570,9 +511,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* The main game update method. Handles updating all game items
-	*
 	*/
 	
     public void update() {
@@ -596,9 +535,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* Main game render method. Handles rendering of all game objects to the image
-	*
 	*/
 	
     public void render() {
@@ -659,9 +596,7 @@ public class Game extends Canvas implements Runnable, EventListener { //Set up g
     }
 	
 	/*
-	*
 	* The main mehod, which is a default method that is called when the jar is first run.
-	*
 	*/
 	
     public static void main(String[] args) {
